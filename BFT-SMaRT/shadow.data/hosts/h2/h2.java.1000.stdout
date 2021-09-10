@@ -1,0 +1,422 @@
+-- Using view stored on disk
+-- Connection refused (SocketException)
+-- ID = 1
+-- N = 4
+-- F = 1
+-- Port (client <-> server) = 11000
+-- Port (server <-> server) = 11001
+-- requestTimeout = 2000
+-- maxBatch = 1024
+-- Binded replica to IP address 11.0.0.2
+-- SSL/TLS enabled, protocol version: TLSv1.2
+-- In current view: ID:0; F:1; Processes:0(/11.0.0.1:11000),1(/11.0.0.2:11000),2(/11.0.0.3:11000),3(/11.0.0.4:11000),
+-- Retrieving State
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)
+-- Connection refused (SocketException)
+-- Failed to set TCPNODELAY
+java.net.SocketException: Protocol not available
+	at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:452)
+	at java.base/sun.nio.ch.Net.setSocketOption(Net.java:390)
+	at java.base/sun.nio.ch.NioSocketImpl.setOption(NioSocketImpl.java:1042)
+	at java.base/java.net.Socket.setTcpNoDelay(Socket.java:1071)
+	at java.base/sun.security.ssl.BaseSSLSocketImpl.setTcpNoDelay(BaseSSLSocketImpl.java:362)
+	at bftsmart.communication.server.ServersCommunicationLayer.setSSLSocketOptions(ServersCommunicationLayer.java:390)
+	at bftsmart.communication.server.ServersCommunicationLayer.run(ServersCommunicationLayer.java:331)

@@ -1,0 +1,55 @@
+general:
+  stop_time: 60s
+network:
+  graph:
+    type: 1_gbit_switch
+experimental:
+  use_legacy_working_dir: true
+host_defaults:
+  pcap_directory: .
+hosts:
+  h1:
+    network_node_id: 0
+    ip_addr: "11.0.0.1"
+    options:
+      log_level: debug    
+    processes:
+    - path: /usr/bin/java 
+      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 0
+      start_time: 0s
+  h2:
+    network_node_id: 0
+    ip_addr: "11.0.0.2"
+    options:
+      log_level: debug    
+    processes:
+    - path: /usr/bin/java 
+      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 1
+      start_time: 0s
+  h3:
+    network_node_id: 0
+    ip_addr: "11.0.0.3"
+    options:
+      log_level: debug    
+    processes:
+    - path: /usr/bin/java 
+      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 2
+      start_time: 0s
+  h4:
+    network_node_id: 0
+    ip_addr: "11.0.0.4"
+    options:
+      log_level: debug    
+    processes:
+    - path: /usr/bin/java 
+      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 3
+      start_time: 0s
+
+###################################################################################################
+# THIS IS THE CLIENT WHICH IS CURRENTLY COMMENTED OUT DUE TO REPLICAS NOT SUCCESSFULLY BOOTING UP #
+###################################################################################################
+#  h5:
+#    processes:
+#    - path: /usr/bin/java 
+#      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterClient 1001 1 1600
+#      start_time: 5s
