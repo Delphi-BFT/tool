@@ -1,5 +1,5 @@
 general:
-  stop_time: 60s
+  stop_time: 100s
 network:
   graph:
     type: 1_gbit_switch
@@ -48,8 +48,10 @@ hosts:
 ###################################################################################################
 # THIS IS THE CLIENT WHICH IS CURRENTLY COMMENTED OUT DUE TO REPLICAS NOT SUCCESSFULLY BOOTING UP #
 ###################################################################################################
-#  h5:
-#    processes:
-#    - path: /usr/bin/java 
-#      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterClient 1001 1 1600
-#      start_time: 5s
+  h5:
+    network_node_id: 0
+    ip_addr: "11.0.0.5"
+    processes:
+    - path: /usr/bin/java 
+      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterClient 1001 1 10
+      start_time: 30s
