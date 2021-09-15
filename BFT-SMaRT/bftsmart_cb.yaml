@@ -15,7 +15,7 @@ hosts:
       log_level: debug    
     processes:
     - path: /home/cb/Downloads/jdk-16.0.2/bin/java
-      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 0
+      args: -Djava.security.properties="/home/cb/Downloads/jdk-16.0.2/conf/security/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 0
       start_time: 0s
   h2:
     network_node_id: 0
@@ -24,8 +24,8 @@ hosts:
       log_level: debug    
     processes:
     - path: /home/cb/Downloads/jdk-16.0.2/bin/java
-      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 1
-      start_time: 0s
+      args: -Djava.security.properties="/home/cb/Downloads/jdk-16.0.2/conf/security/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 1
+      start_time: 1s
   h3:
     network_node_id: 0
     ip_addr: "11.0.0.3"
@@ -33,8 +33,8 @@ hosts:
       log_level: debug    
     processes:
     - path: /home/cb/Downloads/jdk-16.0.2/bin/java
-      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 2
-      start_time: 0s
+      args: -Djava.security.properties="/home/cb/Downloads/jdk-16.0.2/conf/security/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 2
+      start_time: 2s
   h4:
     network_node_id: 0
     ip_addr: "11.0.0.4"
@@ -42,8 +42,8 @@ hosts:
       log_level: debug    
     processes:
     - path: /home/cb/Downloads/jdk-16.0.2/bin/java
-      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 3
-      start_time: 0s
+      args: -Djava.security.properties="/home/cb/Downloads/jdk-16.0.2/conf/security/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterServer 3
+      start_time: 3s
 
 ###################################################################################################
 # THIS IS THE CLIENT WHICH IS CURRENTLY COMMENTED OUT DUE TO REPLICAS NOT SUCCESSFULLY BOOTING UP #
@@ -53,5 +53,5 @@ hosts:
     ip_addr: "11.0.0.5"
     processes:
     - path: /usr/lib/jvm/java-16-openjdk-amd64/bin/java 
-      args: -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterClient 1001 1 10
+      args: -Djava.security.properties="/home/cb/Downloads/jdk-16.0.2/conf/security/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp ./bin/*:./lib/* bftsmart.demo.counter.CounterClient 1001 1 10
       start_time: 30s
