@@ -1,3 +1,4 @@
 *.pcap
 *.log
+*.gml
 *shadow.data/*
