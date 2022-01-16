@@ -1,0 +1,3 @@
+[submodule "libhotstuff"]
+	path = libhotstuff
+	url = https://github.com/bentoumia/libhotstuff.git
