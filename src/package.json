@@ -1,0 +1,25 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate-env.js",
+  "dependencies": {
+    "await-exec": "^0.1.2",
+    "awk": "^1.0.0",
+    "chart.js": "^3.7.1",
+    "chartjs-node-canvas": "^4.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "js-yaml": "^4.1.0",
+    "pidusage": "^3.0.0",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "prettier": "2.6.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
