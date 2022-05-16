@@ -1,0 +1,868 @@
+## Only for HotStuff && soon outdated
+hotStuffPath: ../libhotstuff
+plots: [delay]
+experiments:
+#    - 4R3C0KB100:
+#        replicas: 4
+#        clients : 2
+#        bandwidth: 10 Gbit
+#        reqSize: 0
+#        blocksize: 100
+#        outstandingPerClient: 300
+#        shadowFile: shadow.yaml
+#        plots: [10kkkkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 8R3C0KB100:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 0
+#        bandwidth: 10 Gbit
+#        blocksize: 100
+#        outstandingPerClient: 2000
+#        shadowFile: shadow.yaml
+#        plots: [10kkkkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C0KB100:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        latency: 1
+#        blocksize: 100
+#        bandwidth: 10 Gbit
+#        plots: [10kkkkb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C0KB100:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        shadowFile: shadow.yaml
+#        bandwidth: 10 Gbit
+#        blocksize: 100
+#        plots: [10kkkkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C0KB100:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        bandwidth: 10 Gbit
+#        plots: [10kkkkb]
+#        shadowFile: shadow.yaml
+#        blocksize: 100
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C0KB100:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        latency: 1
+#        blocksize: 100
+#        bandwidth: 10 Gbit
+#        plots: [10kkkkb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 4R3C0KB800:
+#        replicas: 4
+#        clients : 3
+#        bandwidth: 10 Gbit
+#        reqSize: 0
+#        blocksize: 800
+#        outstandingPerClient: 2000
+#        shadowFile: shadow.yaml
+#        plots: [10kkkkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 8R3C0KB800:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 0
+#        bandwidth: 10 Gbit
+#        blocksize: 800
+#        outstandingPerClient: 2000
+#        shadowFile: shadow.yaml
+#        plots: [10kkkkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C0KB800:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        latency: 1
+#        blocksize: 800
+#        bandwidth: 10 Gbit
+#        plots: [10kkkkb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C0KB800:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        shadowFile: shadow.yaml
+#        bandwidth: 10 Gbit
+#        blocksize: 800
+#        plots: [10kkkkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C0KB800:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        bandwidth: 10 Gbit
+#        plots: [10kkkkb]
+#        shadowFile: shadow.yaml
+#        blocksize: 800
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C0KB800:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 2000
+#        latency: 1
+#        blocksize: 800
+#        bandwidth: 10 Gbit
+#        plots: [10kkkkb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 4R3C10KB1GB:
+#        replicas: 4
+#        clients : 3
+#        bandwidth: 1 Gbit
+#        reqSize: 10240
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [10kkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 8R3C10KB1GB:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 10240
+#        bandwidth: 1 Gbit
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [10kkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C10KB1GB:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 10240
+#        outstandingPerClient: 800
+#        latency: 1
+#        bandwidth: 1 Gbit
+#        plots: [10kkb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C10KB1GB:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 10240
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        bandwidth: 1 Gbit
+#        plots: [10kkb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C10KB1GB:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 10240
+#        outstandingPerClient: 800
+#        bandwidth: 1 Gbit
+#        plots: [10kkb]
+#        shadowFile: shadow.yaml
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C10KB1GB:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 10240
+#        outstandingPerClient: 800
+#        latency: 1
+#        bandwidth: 1 Gbit
+#        plots: [10kkb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 4R3C1KB1GB:
+#        replicas: 4
+#        clients : 3
+#        bandwidth: 1 Gbit
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [1gb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 8R3C1KB1GB:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 1024
+#        bandwidth: 1 Gbit
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [1gb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C1KB1GB:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        latency: 1
+#        bandwidth: 1 Gbit
+#        plots: [1gb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C1KB1GB:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        bandwidth: 1 Gbit
+#        plots: [1gb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C1KB1GB:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        bandwidth: 1 Gbit
+#        plots: [1gb]
+#        shadowFile: shadow.yaml
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C1KB1GB:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        latency: 1
+#        bandwidth: 1 Gbit
+#        plots: [1gb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#        - 4R3C0KB800:
+#            replicas: 4
+#            clients : 3
+#            reqSize: 0
+#            outstandingPerClient: 800
+#            shadowFile: shadow.yaml
+#            plots: [0kb, delay]
+#            latency: 1
+#            gmlPath: jul.gml
+#    - 8R3C0KB:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [0kb, delay]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C0KB:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        latency: 1
+#        plots: [0kb, delay]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C0KB:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [0kb, delay]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C0KB:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        plots: [0kb, delay]
+#        shadowFile: shadow.yaml
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C0KB:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        latency: 1
+#        plots: [0kb, delay]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 4R3C128B:
+#        replicas: 4
+#        clients : 3
+#        reqSize: 128
+#        outstandingPerClient: 800
+#        plots: [128b]
+#        shadowFile: shadow.yaml
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 8R3C128B:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 128
+#        outstandingPerClient: 800
+#        plots: [128b]
+#        shadowFile: shadow.yaml
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C128B:
+#        replicas: 16
+#        clients : 3
+#        plots: [128b]
+#        reqSize: 128
+#        outstandingPerClient: 800
+#        latency: 1
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C128B:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 128
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [128b]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C128B:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 128
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [128b]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C128B:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 128
+#        outstandingPerClient: 800
+#        latency: 1
+#        plots: [128b]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 4R3C1KB:
+#        replicas: 4
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        latency: 1
+#        plots: [1kb]
+#        gmlPath: jul.gml
+#    - 8R3C1KB:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [1kb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 16R3C1KB:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        latency: 1
+#        plots: [1kb]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C1KB:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [1kb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 64R3C1KB:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 1024
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [1kb]
+#        latency: 1
+#        gmlPath: jul.gml
+#    - 128R3C1KB:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 1024
+#        plots: [1kb]
+#        outstandingPerClient: 800
+#        latency: 1
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+##    - 4R3C10KB:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 1
+##        gmlPath: jul.gml
+##    - 8R3C10KB:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 1
+##        gmlPath: jul.gml
+##    - 16R3C10KB:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        latency: 1
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C10KB:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 1
+##        gmlPath: jul.gml
+##    - 64R3C10KB:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 1
+##        gmlPath: jul.gml
+##    - 128R3C10KB:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        latency: 1
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+    - 4R3C0KB5ms:
+        replicas: 4
+        clients : 3
+        bandwidth: 10 Gbit
+        reqSize: 0
+        blocksize: 400
+        outstandingPerClient: 800
+        shadowFile: shadow.yaml
+        latency: 5
+        plots: [delay]
+        gmlPath: jul.gml
+#    - 8R3C0KB5ms:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [delay]
+#        latency: 5
+#        gmlPath: jul.gml
+#    - 16R3C0KB5ms:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        latency: 5
+#        shadowFile: shadow.yaml
+#        plots: [delay]
+#        gmlPath: jul.gml
+#    - 32R3C0KB5ms:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        latency: 5
+#        plots: [delay]
+#        gmlPath: jul.gml
+#    - 64R3C0KB5ms:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        latency: 5
+#        plots: [delay]
+#        gmlPath: jul.gml
+#    - 128R3C0KB5ms:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        latency: 5
+#        shadowFile: shadow.yaml
+#        plots: [delay]
+#        gmlPath: jul.gml
+##    - 4R3C128B:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 8R3C128B:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 16R3C128B:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        latency: 5
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C128B:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 64R3C128B:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 128R3C128B:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        latency: 5
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 4R3C1KB5ms:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 8R3C1KB5ms:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 16R3C1KB5ms:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        latency: 5
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C1KB5ms:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 64R3C1KB5ms:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 128R3C1KB5ms:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        latency: 5
+##        plots: [delay]
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 4R3C10KB5ms:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 8R3C10KB5ms:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 16R3C10KB5ms:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        latency: 5
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C10KB5ms:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 64R3C10KB5ms:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 5
+##        gmlPath: jul.gml
+##    - 128R3C10KB5ms:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        latency: 5
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+    - 4R3C0KB10ms:
+        replicas: 4
+        clients : 3
+        reqSize: 0
+        bandwidth: 10 Gbit
+        outstandingPerClient: 800
+        blocksize: 400
+        shadowFile: shadow.yaml
+        plots: [delay]
+        latency: 10
+        gmlPath: jul.gml
+#    - 8R3C0KB10ms:
+#        replicas: 8
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [delay]
+#        latency: 10
+#        gmlPath: jul.gml
+#    - 16R3C0KB10ms:
+#        replicas: 16
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        latency: 10
+#        plots: [delay]
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+#    - 32R3C0KB10ms:
+#        replicas: 32
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [delay]
+#        latency: 10
+#        gmlPath: jul.gml
+#    - 64R3C0KB10ms:
+#        replicas: 64
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        shadowFile: shadow.yaml
+#        plots: [delay]
+#        latency: 10
+#        gmlPath: jul.gml
+#    - 128R3C0KB10ms:
+#        replicas: 128
+#        clients : 3
+#        reqSize: 0
+#        outstandingPerClient: 800
+#        plots: [delay]
+#        latency: 10
+#        shadowFile: shadow.yaml
+#        gmlPath: jul.gml
+##    - 4R3C128B:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 8R3C128B:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 16R3C128B:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        latency: 10
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C128B:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 64R3C128B:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 128R3C128B:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 128
+##        outstandingPerClient: 800
+##        latency: 10
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 4R3C1KB10ms:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 8R3C1KB10ms:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 16R3C1KB10ms:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        latency: 10
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C1KB10ms:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 64R3C1KB10ms:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 128R3C1KB10ms:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 1024
+##        outstandingPerClient: 800
+##        latency: 10
+##        shadowFile: shadow.yaml
+##        plots: [delay]
+##        gmlPath: jul.gml
+##    - 4R3C10KB10ms:
+##        replicas: 4
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 8R3C10KB10ms:
+##        replicas: 8
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 16R3C10KB10ms:
+##        replicas: 16
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        latency: 10
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
+##    - 32R3C10KB10ms:
+##        replicas: 32
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 64R3C10KB10ms:
+##        replicas: 64
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        shadowFile: shadow.yaml
+##        latency: 10
+##        gmlPath: jul.gml
+##    - 128R3C10KB10ms:
+##        replicas: 128
+##        clients : 3
+##        reqSize: 10240
+##        outstandingPerClient: 800
+##        latency: 10
+##        shadowFile: shadow.yaml
+##        gmlPath: jul.gml
