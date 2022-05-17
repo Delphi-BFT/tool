@@ -1,12 +1,13 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
-let makeConfigTemplate = (fullPathgml, dir) => { 
+let makeConfigTemplate = (fullPathgml, dir, misc) => { 
     let res = new Object();
-    res.general = {stop_time: '15 s', data_directory: dir, parallelism: 20};
+    res.general = {stop_time: misc.duration, data_directory: dir, parallelism: misc.parallelism};
     res.experimental = new Object();
     res.experimental.use_legacy_working_dir = true;
     res.network = new Object();
     res.network.graph = { type: 'gml', file: {path: fullPathgml}};
+    res.network.use_shortest_path = misc.use_shortest_path;
     res.hosts = new Object();
     return res;
 }

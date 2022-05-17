@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { promisified_exec } = require('../util/exec');
+const { promisified_spawn } = require('../util/exec');
 const path = require('path');
 const ipUtil = require('../util/ipUtil');
 
@@ -7,6 +7,7 @@ const ipUtil = require('../util/ipUtil');
 const buildDir = 'build/install/library';
 const sysconfFile = path.join(buildDir, '/config/system.config');
 const hostsFile = path.join(buildDir, '/config/hosts.config');
+const viewFile = path.join(buildDir, '/config/currentView');
 const bftSmartPort = 11000;
 const bftSmartPort1 = 11001;
 const sysconf = {
@@ -64,8 +65,8 @@ const javaArgs =
 
 async function build(workingDir, log) {
   log.info('building BFT-SMaRt ...');
-  let cmd = './gradlew installDist';
-  await promisified_exec(cmd, workingDir, log);
+  let cmd = { proc: './gradlew', args: ['installDist'] };
+  await promisified_spawn(cmd.proc, cmd.args, workingDir, log);
   log.info('build sucessful!');
 }
 async function genSystemConfig(workingDir, replicas, batchsize) {
@@ -91,6 +92,7 @@ async function genHostsConfig(workingDir, replicas) {
   for (let i = 0; i < replicaIPs.length; i++) {
     hostsString += `${i} ${replicaIPs[i].ip} ${bftSmartPort} ${bftSmartPort1}\n`;
   }
+  hostsString += `7000 12.0.0.1 11100\n`;
   fs.writeFileSync(path.join(workingDir, hostsFile), hostsString);
   return replicaIPs;
 }
@@ -114,7 +116,16 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
   });
   return replicaIPs;
 }
+async function deleteCurrentView(workingDir) {
+  try {
+    fs.unlinkSync(path.join(workingDir, viewFile));
+  } catch (err) {
+    console.error(err);
+  }
+}
 async function configure(workingDir, experiment, log) {
+  log.info('deleting old view');
+  await deleteCurrentView(workingDir);
   log.info('reading experiment details ...');
   let experimentId = Object.keys(experiment)[0];
   /* Replica Settings */
