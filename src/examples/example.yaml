@@ -1,14 +1,14 @@
 protocolName: bftsmart
 protocolPath: ../library/
 executionDir: ../library/build/install/library # directory to put Shadow YAML file
-experiments_directory: /root/myShadowExperiments # USE AN ABSOLUTE PATH
+experimentsDirectory: /root/myShadowExperiments # USE AN ABSOLUTE PATH
 experiments:
   - 4repAWSSucessful: # this will be passed to as data_dir value in shadow.yaml
       misc:
         duration: 1000 s
         clientDelay: 60 s # timestamp to start CLIs
         parallelism: 20
-        use_shortest_path: false
+        useShortestPath: false
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)
@@ -39,7 +39,7 @@ experiments:
         duration: 1000 s
         clientDelay: 60 s # timestamp to start CLIs
         parallelism: 20
-        use_shortest_path: false
+        useShortestPath: false
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)
@@ -70,7 +70,7 @@ experiments:
         duration: 1000 s
         clientDelay: 60 s # timestamp to start CLIs
         parallelism: 20
-        use_shortest_path: false
+        useShortestPath: false
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)

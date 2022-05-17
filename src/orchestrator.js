@@ -59,7 +59,7 @@ async function main() {
   let protocol = getProtocolObject(experimentDetails.protocolName);
   let workingDir = experimentDetails.protocolPath;
   let executionDir = experimentDetails.executionDir;
-  let experimentsPath = experimentDetails.experiments_directory;
+  let experimentsPath = experimentDetails.experimentsDirectory;
   /* winston logger settings */
   const shadowLogFormat = printf(({ level, message, timestamp }) => {
     let msg = `${timestamp} [${level}] : ${message} `;
@@ -70,7 +70,7 @@ async function main() {
     format: combine(format.colorize(), splat(), timestamp(), shadowLogFormat),
     transports: [
       new transports.File({
-        filename: path.join(executionDir, 'combined.log'),
+        filename: path.join(experimentsPath, 'combined.log'),
       }),
       new transports.Console(),
     ],

@@ -7,7 +7,7 @@ let makeConfigTemplate = (fullPathgml, dir, misc) => {
     res.experimental.use_legacy_working_dir = true;
     res.network = new Object();
     res.network.graph = { type: 'gml', file: {path: fullPathgml}};
-    res.network.use_shortest_path = misc.use_shortest_path;
+    res.network.use_shortest_path = misc.useShortestPath;
     res.hosts = new Object();
     return res;
 }
