@@ -9,6 +9,13 @@ first clone this repo then run:
 to start an experiment you have to pass an experiment description file to the orchestrator. For BFT-SMaRt experiments
 see example/example.yaml.
 
+NOTE: If you are planning on using example.yaml, change the experimentsDirectory as it is pointing to my root in the VM
+
+example:
+
+`node orchestrator.js example/example.yaml`
+
+
 
 # If you want to make a connector for another protocol
 
