@@ -13,7 +13,7 @@ NOTE: If you are planning on using example.yaml, change the experimentsDirectory
 
 example:
 
-`node orchestrator.js example/example.yaml`
+`node orchestrator.js examples/example.yaml`
 
 
 
