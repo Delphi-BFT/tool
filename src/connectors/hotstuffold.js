@@ -1,71 +1,151 @@
-const fs = require('fs').promises;
+/* Author: Sadok Ben Toumia */
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
+const fs = require('fs');
+const envGen = require('./generate-env');
+const { execSync, spawnSync } = require('child_process');
+const exec = require('await-exec');
 const path = require('path');
-const ipUtil = require('../util/ipUtil');
-const { promisified_spawn } = require('../util/exec');
-//const awk = require('awk');
-//const pidusage = require('pidusage');
-const replicasFile = 'scripts/deploy/replicas.txt';
-const clientsFile = 'scripts/deploy/clients.txt';
-const replicaPrefix = 'hotStuffReplica';
-const clientPrefix = 'hotStuffClient';
-const genScriptWd = 'scripts/deploy';
-const hotStuffAppExec = 'examples/hotstuff-app';
-const hotStuffCliExec = 'examples/hotstuff-client';
+const yamlGen = require('./yamlGen.js');
+const yaml = require('js-yaml');
+const awk = require('awk');
+const pidusage = require('pidusage');
+let _writeClients = (hotStuffDir, clientString) => {
+  fs.writeFileSync(path.join(hotStuffDir, 'scripts/deploy/clients.txt'));
+  console.log('Writing clients...');
+};
+let _populateClis = (nClients) => {
+  var clis = new Map();
+  for (let i = 0; i < nClients; i++) {
+    let ip =
+      11 +
+      '.' +
+      Math.floor(Math.random() * 255) +
+      '.' +
+      Math.floor(Math.random() * 255) +
+      '.' +
+      Math.floor(Math.random() * 255);
+    clis['hotstuffClient' + i] = ip;
+  }
+  return clis;
+};
+let _populateReplicas = (nReplicas) => {
+  var reps = new Map();
+  for (let i = 0; i < nReplicas; i++) {
+    let ip =
+      11 +
+      '.' +
+      Math.floor(Math.random() * 255) +
+      '.' +
+      Math.floor(Math.random() * 255) +
+      '.' +
+      Math.floor(Math.random() * 255);
+    reps['hotstuffReplica' + i] = ip;
+  }
+  return reps;
+};
+let _writeReplicas = (hotStuffDir, replicaString) => {
+  fs.writeFileSync(
+    path.join(hotStuffDir, 'scripts/deploy/replicas.txt'),
+    replicaString,
+  );
+  console.log('Writing replicas...');
+};
 
-async function writeHosts(hotStuffDir, ips, log) {
-  let replicaString = '';
+let createPeers = (hotStuffDir, replicaMap) => {
+  let peerString = '';
+  for (const [key, value] of Object.entries(replicaMap)) {
+    peerString += value + ' ' + value + '\n';
+  }
+  console.log('peerString : ' + peerString);
+  _writeReplicas(hotStuffDir, peerString);
+};
+
+let createClients = (hotStuffDir, clientMap) => {
   let clientString = '';
-  for (let i = 0; i < ips.length; i++) {
-    if (ips[i].isClient) clientString += ips[i].ip + ' ' + ips[i].ip + '\n';
-    else replicaString += ips[i].ip + ' ' + ips[i].ip + '\n';
+  for (const [key, value] of Object.entries(clientMap)) {
+    clientString += value + ' ' + value + '\n';
   }
-  await fs.writeFile(path.join(hotStuffDir, replicasFile), replicaString);
-  log.info('Wrote replicas file!');
-  await fs.writeFile(path.join(hotStuffDir, clientsFile), clientString);
-  log.info('Wrote clients file!');
-}
+  console.log('clientString : ' + clientString);
+  _writeClients(hotStuffDir, clientString);
+};
 
-async function genArtifacts(hotStuffDir, blockSize, log) {
-  log.info('Generating artifacts...');
-  await promisified_spawn(
-    './gen_all.sh',
-    [blockSize],
-    path.join(hotStuffDir, genScriptWd),
-    log,
-  );
-  log.info('Finished generating artifacts...');
-}
-async function passArgs(workingDir, hosts, outStandingPerClient, log) {
-  let replicaIndex = 0;
-  let clientIndex = 0;
-  for (let i = 0; i < hosts.length; i++) {
-    if (hosts[i].isClient) {
-      hosts[i].proc = hotStuffCliExec;
-      hosts[i].env = '';
-      hosts[
-        i
-      ].args = `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`;
-      clientIndex++;
-      continue;
-    }
-    let conf = path.join(genScriptWd, `hotstuff.gen-sec${replicaIndex}.conf`);
-    hosts[i].proc = hotStuffAppExec;
-    hosts[i].env = '';
-    hosts[i].args = `--conf ${conf}`;
-    replicaIndex++;
+let genArtifacts = (hotStuffDir, blockSize) => {
+  console.log('Generating artifacts...');
+  genScript = execSync('./gen_all.sh ' + blockSize, {
+    cwd: path.join(hotStuffDir, '/scripts/deploy/'),
+  });
+  console.log(genScript.toString());
+  console.log('Finished generating artifacts...');
+};
+
+let createShadowHostConfigForHotStuff = (hotStuffDir, res, reps, clis) => {
+  let i = 0;
+  for (const [key, value] of Object.entries(reps)) {
+    res = yamlGen.makeHost(
+      res,
+      key,
+      value,
+      i,
+      path.join(hotStuffDir, '/examples/hotstuff-app'),
+      '',
+      '--conf ' +
+        path.join(
+          hotStuffDir,
+          '/scripts/deploy/hotstuff.gen-sec' + i + '.conf',
+        ),
+      '0s',
+    );
+    ++i;
   }
-  return hosts;
-}
-async function copyConfig(hotStuffDir, log) {
-  await promisified_spawn(
-    'cp',
-    [
-      path.join(hotStuffDir, path.join(genScriptWd, 'hotstuff.gen.conf')),
+  i = 0;
+  let nodeId = Object.keys(reps).length;
+  for (const [key, value] of Object.entries(clis)) {
+    res = yamlGen.makeHost(
+      res,
+      key,
+      value,
+      nodeId++,
+      path.join(hotStuffDir, '/examples/hotstuff-client'),
+      '',
+      '--idx ' + i + ' --iter -1 --max-async ' + outStandingPerClient,
+      '10s',
+    );
+    ++i;
+  }
+  return res;
+};
+let newBuild = (path, reqSize) => {
+  console.log('rebuilding hotstuff');
+  var cmakeScript = execSync(
+    'cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON "-DCMAKE_CXX_FLAGS=-g -DHOTSTUFF_ENABLE_BENCHMARK -DHOTSTUFF_CMD_RESPSIZE=' +
+      reqSize +
+      ' -DHOTSTUFF_CMD_REQSIZE=' +
+      reqSize +
+      '"',
+    { cwd: path },
+  ).toString();
+  console.log(cmakeScript);
+  console.log('CMake finished...');
+  console.log('make...');
+  var makeScript = execSync('make', { cwd: path }).toString();
+  console.log(makeScript);
+  console.log('Finished generating artifacts...');
+};
+let copyUtils = (hotStuffDir) => {
+  var copyHotStuffConf = execSync(
+    'cp ' +
+      path.join(hotStuffDir, '/scripts/deploy/hotstuff.gen.conf') +
+      ' ' +
       path.join(hotStuffDir, 'hotstuff.conf'),
-    ],
-    hotStuffDir,
-    log,
-  );
+  ).toString();
+  console.log(copyHotStuffConf);
+};
+async function runExp(hotStuffDir, shadowFile, arg) {
+  let b = 0;
+  await exec('~/.local/bin/shadow ' + shadowFile + ' &> log.txt', {
+    cwd: hotStuffDir,
+    maxBuffer: 1024 * 1024 * 1024 * 10,
+  });
 }
 let saveExp = (hotStuffDir, shadowFile, newName) => {
   var saveExp = execSync(
@@ -133,42 +213,8 @@ let getStats = (appUsage, shadowUsage) => {
   return res;
 };
 var stop = false;
-
-async function build(workingDir, replicaSettings, clientSettings, log) {
-  await promisified_spawn(
-    'cmake',
-    [
-      '-DCMAKE_BUILD_TYPE=Release',
-      '-DBUILD_SHARED=ON',
-      '-DHOTSTUFF_PROTO_LOG=ON',
-      `-DCMAKE_CXX_FLAGS=-g -DHOTSTUFF_ENABLE_BENCHMARK -DHOTSTUFF_CMD_RESPSIZE=${replicaSettings.replySize} -DHOTSTUFF_CMD_REQSIZE=${clientSettings.requestSize}`,
-    ],
-    workingDir,
-    log,
-  );
-  log.info('HotStuff build terminated successfully!');
-}
-async function configure(workingDir, replicaSettings, clientSettings, log) {
-  const hostIPs = await ipUtil.getIPs({
-    [replicaPrefix]: replicaSettings.replicas,
-    [clientPrefix]: clientSettings.clients,
-  });
-  for (let i = 0; i < hostIPs.length; i++) {
-    if (hostIPs[i].name.startsWith(replicaPrefix)) hostIPs[i].isClient = false;
-    else hostIPs[i].isClient = true;
-  }
-  await writeHosts(workingDir, hostIPs, log);
-  await genArtifacts(workingDir, replicaSettings.blockSize, log);
-  let hosts = await passArgs(
-    workingDir,
-    hostIPs,
-    clientSettings.outStandingPerClient,
-    log,
-  );
-  await copyConfig(workingDir, log);
-  return hosts;
-}
-/*async function main() {
+/* Start */
+async function main() {
   let args = process.argv.slice();
   let yamlFile = args[2];
   try {
@@ -321,6 +367,6 @@ async function configure(workingDir, replicaSettings, clientSettings, log) {
   } catch (e) {
     console.log(e);
   }
-}*/
+}
 
-module.exports = { build, configure };
+main();

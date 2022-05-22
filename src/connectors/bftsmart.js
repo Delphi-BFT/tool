@@ -63,11 +63,11 @@ const javaProc = '/usr/bin/java';
 const javaArgs =
   '-Djava.security.properties=config/java.security -Dlogback.configurationFile=config/logback.xml -cp lib/*';
 
-async function build(workingDir, log) {
+async function build(workingDir, replicaSettings, clientSettings, log) {
   log.info('building BFT-SMaRt ...');
   let cmd = { proc: './gradlew', args: ['installDist'] };
   await promisified_spawn(cmd.proc, cmd.args, workingDir, log);
-  log.info('build sucessful!');
+  log.info('BFT-SMaRt build terminated sucessfully!');
 }
 async function genSystemConfig(workingDir, replicas, batchsize) {
   let viewString = '';
@@ -87,7 +87,7 @@ async function genSystemConfig(workingDir, replicas, batchsize) {
   fs.writeFileSync(path.join(workingDir, sysconfFile), sysconfString);
 }
 async function genHostsConfig(workingDir, replicas) {
-  let replicaIPs = await ipUtil.getIPs('bftsmartReplica', replicas);
+  let replicaIPs = await ipUtil.getIPs({ bftsmartReplica: replicas });
   let hostsString = '';
   for (let i = 0; i < replicaIPs.length; i++) {
     hostsString += `${i} ${replicaIPs[i].ip} ${bftSmartPort} ${bftSmartPort1}\n`;
@@ -123,13 +123,13 @@ async function deleteCurrentView(workingDir) {
     console.error(err);
   }
 }
-async function configure(workingDir, experiment, log) {
+async function configure(workingDir, replicaSettings, clientSettings, log) {
   log.info('deleting old view');
   await deleteCurrentView(workingDir);
   log.info('reading experiment details ...');
-  let experimentId = Object.keys(experiment)[0];
+  //let experimentId = Object.keys(experiment)[0];
   /* Replica Settings */
-  let replicaSettings = {
+  /* let replicaSettings = {
     replicas: experiment[experimentId].replica.replicas,
     blockSize: experiment[experimentId].replica.blocksize,
     replicaInterval: experiment[experimentId].replica.replicaInterval,
@@ -137,9 +137,9 @@ async function configure(workingDir, experiment, log) {
     stateSize: experiment[experimentId].replica.statesize,
     context: experiment[experimentId].replica.context,
     replicaSig: experiment[experimentId].replica.replicaSig,
-  };
+  };*/
   /* Client Settings */
-  let clientSettings = {
+  /*let clientSettings = {
     clients: experiment[experimentId].client.clients,
     opPerClient: experiment[experimentId].client.opPerClient,
     reqSize: experiment[experimentId].client.requestsize,
@@ -147,7 +147,7 @@ async function configure(workingDir, experiment, log) {
     readOnly: experiment[experimentId].client.readOnly,
     verbose: experiment[experimentId].client.verbose,
     clientSig: experiment[experimentId].client.clientSig,
-  };
+  };*/
   log.info('generating system.config ...');
   await genSystemConfig(
     workingDir,

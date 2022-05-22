@@ -1,7 +1,7 @@
 const eg = require('./util/generate-env');
 const yg = require('./util/yamlUtilities');
 const yaml = require('js-yaml');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const { createLogger, format, transports } = require('winston');
 const { combine, splat, timestamp, printf } = format;
@@ -12,17 +12,34 @@ const shadowFileName = 'shadow.yaml';
 //const experimentDirectoryPrefix = 'experiments';
 
 /* Connectors */
-//const hotstuff = require('hotstuff');
+const hotstuff = require('./connectors/hotstuff');
 const bftsmart = require('./connectors/bftsmart');
 const { promisified_spawn } = require('./util/exec');
 
-async function build(protocol, workingDir, log) {
+async function build(
+  protocol,
+  workingDir,
+  replicaSettings,
+  clientSettings,
+  log,
+) {
   log.info('Calling protocol build function ...');
-  await protocol.build(workingDir, log);
+  await protocol.build(workingDir, replicaSettings, clientSettings, log);
 }
-async function configure(protocol, workingDir, experiment, log) {
+async function configure(
+  protocol,
+  workingDir,
+  replicaSettings,
+  clientSettings,
+  log,
+) {
   log.info('Calling protocol configure function ...');
-  return await protocol.configure(workingDir, experiment, log);
+  return await protocol.configure(
+    workingDir,
+    replicaSettings,
+    clientSettings,
+    log,
+  );
 }
 async function run(protocol, executionDir, log) {
   try {
@@ -51,11 +68,12 @@ async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
 
 function getProtocolObject(name) {
   if (name == 'bftsmart') return bftsmart;
+  if (name == 'hotstuff') return hotstuff;
 }
 
 async function main() {
   let args = process.argv.slice();
-  let experimentDetails = yaml.load(fs.readFileSync(args[2], 'utf8'));
+  let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'));
   let protocol = getProtocolObject(experimentDetails.protocolName);
   let workingDir = experimentDetails.protocolPath;
   let executionDir = experimentDetails.executionDir;
@@ -80,6 +98,8 @@ async function main() {
   for (e of experimentDetails.experiments) {
     logger.info('starting new experiment ...');
     let experimentId = Object.keys(e)[0];
+    let replicaSettings = e[experimentId].replica;
+    let clientSettings = e[experimentId].client;
     logger.info('deleting clashing directories ...');
     await deleteDirectoryIfExists(path.join(experimentsPath, experimentId));
     let shadowTemplate = yg.makeConfigTemplate(
@@ -87,15 +107,21 @@ async function main() {
       path.join(experimentsPath, experimentId),
       e[experimentId].misc,
     );
-    await build(protocol, workingDir, logger);
-    let hosts = await configure(protocol, workingDir, e, logger);
+    await build(protocol, workingDir, replicaSettings, clientSettings, logger);
+    let hosts = await configure(
+      protocol,
+      workingDir,
+      replicaSettings,
+      clientSettings,
+      logger,
+    );
     shadowTemplate = await createShadowHostConfig(
       shadowTemplate,
       hosts,
       e[experimentId].misc.clientDelay,
     );
     // Generate Shadow File
-    yg.out(path.join(executionDir, shadowFileName), shadowTemplate);
+    await yg.out(path.join(executionDir, shadowFileName), shadowTemplate);
     let myGraph = '';
     if (e[experimentId].network.latency.uniform)
       myGraph = eg.createGraphSimple(
@@ -115,7 +141,7 @@ async function main() {
         logger,
       );
     }
-    fs.writeFileSync(path.join(executionDir, networkFileName), myGraph);
+    await fs.writeFile(path.join(executionDir, networkFileName), myGraph);
     await run(protocol, executionDir, logger);
     //await getStats(protocol);
   }
