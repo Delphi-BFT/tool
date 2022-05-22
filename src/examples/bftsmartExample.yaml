@@ -34,6 +34,37 @@ experiments:
 #        readOnly: false
 #        verbose: true
 #        clientSig: nosig
+  - 4repAWSMore: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        duration: 1000 s
+        clientDelay: 60 s # timestamp to start CLIs
+        parallelism: 20
+        useShortestPath: false
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        #latency:
+        # uniform: true
+        # delay: 1
+        latency:
+          uniform: false
+          hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        blockSize: 400
+        replicaInterval: 800
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 2
+        opPerClient: 1600
+        requestSize: 0
+        clientInterval: 800
+        readOnly: false
+        verbose: true
+        clientSig: nosig
 #  - 4repAWSFails: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
 #        duration: 1000 s
@@ -65,63 +96,63 @@ experiments:
 #        readOnly: false
 #        verbose: true
 #        clientSig: nosig
-  - 32repAWS: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        duration: 1000 s
-        clientDelay: 60 s # timestamp to start CLIs
-        parallelism: 20
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gbit # does not apply to clients (for now)
-        bandwidthDown: 10 Gbit # does not apply to clients (for now)
-        #latency:
-        # uniform: true
-        # delay: 1
-        latency:
-          uniform: false
-          hosts: ['us-west-1': 6, 'eu-west-1': 6, 'us-east-1': 5, 'af-south-1': 5, 'ap-east-1': 5, 'ap-southeast-1': 5] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 32
-        blockSize: 100
-        replicaInterval: 100
-        replySize: 0
-        stateSize: 0
-        context: false
-        replicaSig: nosig
-      client:
-        clients: 2
-        opPerClient: 100
-        requestSize: 4000
-        clientInterval: 100
-        readOnly: false
-        verbose: true
-        clientSig: nosig
-  - 16repUniform: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        duration: 1000 s
-        clientDelay: 60 s # timestamp to start CLIs
-        parallelism: 20
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gbit # does not apply to clients (for now)
-        bandwidthDown: 10 Gbit # does not apply to clients (for now)
-        latency:
-          uniform: true
-          delay: 5
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 32
-        blockSize: 100
-        replicaInterval: 100
-        replySize: 0
-        stateSize: 0
-        context: false
-        replicaSig: nosig
-      client:
-        clients: 2
-        opPerClient: 100
-        requestSize: 4000
-        clientInterval: 100
-        readOnly: false
-        verbose: true
-        clientSig: nosig
-
+#  - 32repAWS: # this will be passed to as data_dir value in shadow.yaml
+#      misc:
+#        duration: 1000 s
+#        clientDelay: 60 s # timestamp to start CLIs
+#        parallelism: 20
+#        useShortestPath: false
+#      network:
+#        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+#        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+#        #latency:
+#        # uniform: true
+#        # delay: 1
+#        latency:
+#          uniform: false
+#          hosts: ['us-west-1': 6, 'eu-west-1': 6, 'us-east-1': 5, 'af-south-1': 5, 'ap-east-1': 5, 'ap-southeast-1': 5] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+#      replica: # should be validated by connectors (currently not done, they are passed as-is)
+#        replicas: 32
+#        blockSize: 100
+#        replicaInterval: 100
+#        replySize: 0
+#        stateSize: 0
+#        context: false
+#        replicaSig: nosig
+#      client:
+#        clients: 2
+#        opPerClient: 100
+#        requestSize: 4000
+#        clientInterval: 100
+#        readOnly: false
+#        verbose: true
+#        clientSig: nosig
+#  - 16repUniform: # this will be passed to as data_dir value in shadow.yaml
+#      misc:
+#        duration: 1000 s
+#        clientDelay: 60 s # timestamp to start CLIs
+#        parallelism: 20
+#        useShortestPath: false
+#      network:
+#        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+#        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+#        latency:
+#          uniform: true
+#          delay: 5
+#      replica: # should be validated by connectors (currently not done, they are passed as-is)
+#        replicas: 32
+#        blockSize: 100
+#        replicaInterval: 100
+#        replySize: 0
+#        stateSize: 0
+#        context: false
+#        replicaSig: nosig
+#      client:
+#        clients: 2
+#        opPerClient: 100
+#        requestSize: 4000
+#        clientInterval: 100
+#        readOnly: false
+#        verbose: true
+#        clientSig: nosig
+#
