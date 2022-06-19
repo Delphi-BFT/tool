@@ -70,7 +70,9 @@ function getProtocolObject(name) {
   if (name == 'bftsmart') return bftsmart;
   if (name == 'hotstuff') return hotstuff;
 }
-
+async function backUpArtifact(source, dest) {
+  await fs.copyFile(source, dest);
+}
 async function main() {
   let args = process.argv.slice();
   let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'));
@@ -100,6 +102,8 @@ async function main() {
     let experimentId = Object.keys(e)[0];
     let replicaSettings = e[experimentId].replica;
     let clientSettings = e[experimentId].client;
+    let shadowFilePath = path.join(executionDir, shadowFileName);
+    let networkFilePath = path.join(executionDir, networkFileName);
     logger.info('deleting clashing directories ...');
     await deleteDirectoryIfExists(path.join(experimentsPath, experimentId));
     let shadowTemplate = yg.makeConfigTemplate(
@@ -121,7 +125,7 @@ async function main() {
       e[experimentId].misc.clientDelay,
     );
     // Generate Shadow File
-    await yg.out(path.join(executionDir, shadowFileName), shadowTemplate);
+    await yg.out(shadowFilePath, shadowTemplate);
     let myGraph = '';
     if (e[experimentId].network.latency.uniform)
       myGraph = eg.createGraphSimple(
@@ -141,8 +145,16 @@ async function main() {
         logger,
       );
     }
-    await fs.writeFile(path.join(executionDir, networkFileName), myGraph);
+    await fs.writeFile(networkFilePath, myGraph);
     await run(protocol, executionDir, logger);
+    await backUpArtifact(
+      networkFilePath,
+      path.join(experimentsPath, path.join(experimentId, networkFileName)),
+    );
+    await backUpArtifact(
+      shadowFilePath,
+      path.join(experimentsPath, path.join(experimentId, shadowFileName)),
+    );
     //await getStats(protocol);
   }
 }
