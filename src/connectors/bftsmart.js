@@ -102,7 +102,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
     replicaIPs[i].env = '';
     replicaIPs[
       i
-    ].args = `${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`;
+    ].args = `-Xmx500m ${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`;
     replicaIPs[i].isClient = false;
   }
   /* add in client */
@@ -111,7 +111,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
     ip: '12.0.0.1',
     proc: javaProc,
     env: '',
-    args: `${javaArgs} ${throughputLatencyClientClass} 7000 ${clientSettings.clients} ${clientSettings.opPerClient} ${clientSettings.reqSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
+    args: `-Xmx500m ${javaArgs} ${throughputLatencyClientClass} 7000 ${clientSettings.clients} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
     isClient: true,
   });
   return replicaIPs;
