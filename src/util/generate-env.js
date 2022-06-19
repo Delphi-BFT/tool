@@ -47,7 +47,7 @@ let createEdge = (source, target, latency, packet_loss) => {
     tab +
     'latency "' +
     latency +
-    ' ms"' +
+    '"' +
     '\n' +
     tab +
     tab +
@@ -117,7 +117,7 @@ let createGraphSimple = (
 
     // Create the edges between the hosts...
     for (let j = 0; j < hosts.length; j++) {
-      if (hosts[i].isClient || hosts[j].isClient) latencies[i].push(1);
+      if (hosts[i].isClient || hosts[j].isClient) latencies[i].push('100 us');
       else latencies[i].push(latency);
       packet_losses[i].push(packet_loss);
     }
@@ -215,10 +215,10 @@ async function makeAWSGraph(
     }
     for (let j = 0; j < replicasIPs.length; j++) {
       if (replicasIPs[i].isClient || replicasIPs[j].isClient || i==j)
-        latencies[i].push(1);
+        latencies[i].push('100 us');
       else {
         latencies[i].push(
-          awsLatencies[awsHosts[replicaIndex[i]]][awsHosts[replicaIndex[j]]],
+          awsLatencies[awsHosts[replicaIndex[i]]][awsHosts[replicaIndex[j]]]+' ms'
         );
       }
       packet_losses[i].push(packet_loss);
