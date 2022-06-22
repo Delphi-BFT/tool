@@ -17,7 +17,6 @@ const hotstuff = require('./connectors/hotstuff');
 const bftsmart = require('./connectors/bftsmart');
 const { promisified_spawn } = require('./util/exec');
 async function getStats(protocol, experimentsPath, protocolPath) {
-  console.log('Calling getstats');
   return protocol.getStats(experimentsPath, protocolPath);
 }
 async function build(
@@ -73,7 +72,9 @@ function getProtocolObject(name) {
   if (name == 'bftsmart') return bftsmart;
   if (name == 'hotstuff') return hotstuff;
 }
-
+async function backUpArtifact(source, dest) {
+  await fs.copyFile(source, dest);
+}
 async function main() {
   let args = process.argv.slice();
   let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'));
@@ -106,6 +107,8 @@ async function main() {
     let experimentId = Object.keys(e)[0];
     let replicaSettings = e[experimentId].replica;
     let clientSettings = e[experimentId].client;
+    let shadowFilePath = path.join(executionDir, shadowFileName);
+    let networkFilePath = path.join(executionDir, networkFileName);
     logger.info('deleting clashing directories ...');
     await deleteDirectoryIfExists(path.join(experimentsPath, experimentId));
     let shadowTemplate = yg.makeConfigTemplate(
@@ -127,7 +130,7 @@ async function main() {
       e[experimentId].misc.clientDelay,
     );
     // Generate Shadow File
-    await yg.out(path.join(executionDir, shadowFileName), shadowTemplate);
+    await yg.out(shadowFilePath, shadowTemplate);
     let myGraph = '';
     if (e[experimentId].network.latency.uniform)
       myGraph = eg.createGraphSimple(
@@ -147,27 +150,29 @@ async function main() {
         logger,
       );
     }
-    await fs.writeFile(path.join(executionDir, networkFileName), myGraph);
+    await fs.writeFile(networkFilePath, myGraph);
     await run(protocol, executionDir, logger);
-    let perfStats = await getStats(protocol, path.join(experimentsPath,experimentId), workingDir);
-    console.log(JSON.stringify(perfStats));
-    logger.info(`Throughput: ${perfStats.throughput} Latency: ${perfStats.latency}`)
     if(e[experimentId].plots) {
+      let perfStats = await getStats(protocol, path.join(experimentsPath,experimentId), workingDir);
       for(let p of e[experimentId].plots) {
-        console.log('HERE');
-        console.log(p);
         if(p.metric == 'tps') {
-          logger.info(`TPS`)
           plot.pushValue(p.name,p.label,perfStats.throughput);
           continue;
         }
         if(p.metric == 'latency') {
-          logger.info(`LATENCY`)
           plot.pushValue(p.name,p.label,perfStats.latency);
           continue;
         }
       }
     }
+    await backUpArtifact(
+      networkFilePath,
+      path.join(experimentsPath, path.join(experimentId, networkFileName)),
+    );
+    await backUpArtifact(
+      shadowFilePath,
+      path.join(experimentsPath, path.join(experimentId, shadowFileName)),
+    );
   }
   logger.info('generating plots...');
   await plot.generatePlots(experimentsPath);
