@@ -138,7 +138,6 @@ const interval = async (time, procName, usage) => {
 };
 var stop = false;*/
 async function getStats(experimentsPath, protocolPath) {
-  console.log('expPath:' + experimentsPath)
   let grep = await exec(`cat ./hosts/*/*.stderr | python3 ${path.join(protocolPath,statsScript)}`, {cwd: experimentsPath});
   console.log(grep.stdout.toString());
   let tokens = grep.stdout.toString().split('\n');

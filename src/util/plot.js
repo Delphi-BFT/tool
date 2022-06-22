@@ -54,7 +54,6 @@ async function createPlots(plots) {
                 ]
             }
         };
-        console.log(JSON.stringify(plotsMap));
         for(let predefinedPlot of Object.entries(plotObj.predefinedPlots)) {
             let predefinedPlotObj = predefinedPlot[1];
             console.log(predefinedPlotObj);
@@ -76,7 +75,6 @@ async function pushValue (plotId, label, value) {
     let objectToPush =  {};
     objectToPush.x = String(label);
     objectToPush.y = String(value);
-    console.log('toPush:'+JSON.stringify(objectToPush));
     plotsMap[plotId].data.datasets[0].data.push(objectToPush);
 }
 async function generatePlots(experimentsPath) {
@@ -84,7 +82,6 @@ async function generatePlots(experimentsPath) {
   await fs.mkdir(savePath, {recursive: true});
   console.log(JSON.stringify(plotsMap));
   for (const [key, value] of Object.entries(plotsMap)) {
-    console.log('KEY:'+key);
     const buffer =  renderer.renderToBufferSync(value);
     await fs.writeFile(path.join(savePath,'./' + key + '.svg'), buffer, 'base64');
   }
