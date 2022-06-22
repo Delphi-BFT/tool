@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 function promisified_spawn(cmd, args, workingDir ,log) {
   return new Promise((resolve, reject) => {
     const process = spawn(cmd, args, { cwd: workingDir });
@@ -21,6 +21,7 @@ function promisified_spawn(cmd, args, workingDir ,log) {
       log.error('childprocess: ' + data.toString());
     });
   });
-}
+  }
 
-module.exports = { promisified_spawn };
+
+module.exports = { promisified_spawn }

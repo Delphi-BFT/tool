@@ -1,5 +1,6 @@
 const eg = require('./util/generate-env');
 const yg = require('./util/yamlUtilities');
+const plot = require('./util/plot');
 const yaml = require('js-yaml');
 const fs = require('fs').promises;
 const path = require('path');
@@ -15,7 +16,10 @@ const shadowFileName = 'shadow.yaml';
 const hotstuff = require('./connectors/hotstuff');
 const bftsmart = require('./connectors/bftsmart');
 const { promisified_spawn } = require('./util/exec');
-
+async function getStats(protocol, experimentsPath, protocolPath) {
+  console.log('Calling getstats');
+  return protocol.getStats(experimentsPath, protocolPath);
+}
 async function build(
   protocol,
   workingDir,
@@ -48,7 +52,6 @@ async function run(protocol, executionDir, log) {
     log.error('simulation exited with non-zero code!');
   }
 }
-async function getStats(protocol, workingDir) {}
 
 async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
   for (let i = 0; i < replicas.length; i++) {
@@ -78,6 +81,9 @@ async function main() {
   let workingDir = experimentDetails.protocolPath;
   let executionDir = experimentDetails.executionDir;
   let experimentsPath = experimentDetails.experimentsDirectory;
+  if(experimentDetails.plots) {
+    await plot.createPlots(experimentDetails.plots);
+  }
   /* winston logger settings */
   const shadowLogFormat = printf(({ level, message, timestamp }) => {
     let msg = `${timestamp} [${level}] : ${message} `;
@@ -143,7 +149,28 @@ async function main() {
     }
     await fs.writeFile(path.join(executionDir, networkFileName), myGraph);
     await run(protocol, executionDir, logger);
-    //await getStats(protocol);
+    let perfStats = await getStats(protocol, path.join(experimentsPath,experimentId), workingDir);
+    console.log(JSON.stringify(perfStats));
+    logger.info(`Throughput: ${perfStats.throughput} Latency: ${perfStats.latency}`)
+    if(e[experimentId].plots) {
+      for(let p of e[experimentId].plots) {
+        console.log('HERE');
+        console.log(p);
+        if(p.metric == 'tps') {
+          logger.info(`TPS`)
+          plot.pushValue(p.name,p.label,perfStats.throughput);
+          continue;
+        }
+        if(p.metric == 'latency') {
+          logger.info(`LATENCY`)
+          plot.pushValue(p.name,p.label,perfStats.latency);
+          continue;
+        }
+      }
+    }
   }
+  logger.info('generating plots...');
+  await plot.generatePlots(experimentsPath);
+  logger.info('plots generated!');
 }
 main();

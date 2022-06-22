@@ -9,6 +9,7 @@ let makeConfigTemplate = (fullPathgml, dir, misc) => {
   };
   res.experimental = new Object();
   res.experimental.use_legacy_working_dir = true;
+  res.experimental.runahead = misc.runahead;
   res.network = new Object();
   res.network.graph = { type: 'gml', file: { path: fullPathgml } };
   res.network.use_shortest_path = misc.useShortestPath;

@@ -2,8 +2,11 @@ const fs = require('fs').promises;
 const path = require('path');
 const ipUtil = require('../util/ipUtil');
 const { promisified_spawn } = require('../util/exec');
+const util = require('util');
+const exec = util.promisify(require('node:child_process').exec);
 //const awk = require('awk');
 //const pidusage = require('pidusage');
+
 const replicasFile = 'scripts/deploy/replicas.txt';
 const clientsFile = 'scripts/deploy/clients.txt';
 const replicaPrefix = 'hotStuffReplica';
@@ -11,6 +14,7 @@ const clientPrefix = 'hotStuffClient';
 const genScriptWd = 'scripts/deploy';
 const hotStuffAppExec = 'examples/hotstuff-app';
 const hotStuffCliExec = 'examples/hotstuff-client';
+const statsScript = 'scripts/thr_hist.py';
 
 async function writeHosts(hotStuffDir, ips, log) {
   let replicaString = '';
@@ -121,7 +125,7 @@ const interval = async (time, procName, usage) => {
     if (!stop) interval(time, procName, usage);
   }, time);
 };
-let getStats = (appUsage, shadowUsage) => {
+/*let getStats = (appUsage, shadowUsage) => {
   let res = {
     app: { proc: appUsage.proc, mem: appUsage.mem },
     shadow: { proc: shadowUsage.proc, mem: shadowUsage.mem },
@@ -132,8 +136,26 @@ let getStats = (appUsage, shadowUsage) => {
   //shadowUsage.mem.forEach(element => res.shadow.mem+=(element/shadowUsage.mem.length));
   return res;
 };
-var stop = false;
+var stop = false;*/
+async function getStats(experimentsPath, protocolPath) {
+  console.log('expPath:' + experimentsPath)
+  let grep = await exec(`cat ./hosts/*/*.stderr | python3 ${path.join(protocolPath,statsScript)}`, {cwd: experimentsPath});
+  console.log(grep.stdout.toString());
+  let tokens = grep.stdout.toString().split('\n');
+  let stripped = tokens[0].replace('[', '').replace(']', '');
+  let arr = stripped.split(', ');
+  let numArr = [];
+  arr.forEach((element) => numArr.push(Number(element)));
+  let max = -1;
+  numArr.forEach((element) => {
+    max = element > max ? element : max;
+  });
+  let latencyString = tokens[1].replace('lat = ', '').replace('ms', '');
+  let latency = Number(latencyString);
+  let returnVal = { throughput: max, latency: latency };
+  return returnVal;
 
+}
 async function build(workingDir, replicaSettings, clientSettings, log) {
   await promisified_spawn(
     'cmake',
@@ -323,4 +345,4 @@ async function configure(workingDir, replicaSettings, clientSettings, log) {
   }
 }*/
 
-module.exports = { build, configure };
+module.exports = { build, configure, getStats };

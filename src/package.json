@@ -13,6 +13,8 @@
     "js-yaml": "^4.1.0",
     "node-fetch": "^2.6.7",
     "pidusage": "^3.0.0",
+    "util": "^0.12.4",
+    "util.promisify": "^1.1.1",
     "winston": "^3.7.2"
   },
   "devDependencies": {
