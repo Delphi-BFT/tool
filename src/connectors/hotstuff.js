@@ -7,6 +7,8 @@ const exec = util.promisify(require('node:child_process').exec);
 //const awk = require('awk');
 //const pidusage = require('pidusage');
 
+const processName = 'hotstuff-app';
+
 const replicasFile = 'scripts/deploy/replicas.txt';
 const clientsFile = 'scripts/deploy/clients.txt';
 const replicaPrefix = 'hotStuffReplica';
@@ -15,6 +17,10 @@ const genScriptWd = 'scripts/deploy';
 const hotStuffAppExec = 'examples/hotstuff-app';
 const hotStuffCliExec = 'examples/hotstuff-client';
 const statsScript = 'scripts/thr_hist.py';
+
+function getProcessName() {
+  return processName;
+}
 
 async function writeHosts(hotStuffDir, ips, log) {
   let replicaString = '';
@@ -344,4 +350,4 @@ async function configure(workingDir, replicaSettings, clientSettings, log) {
   }
 }*/
 
-module.exports = { build, configure, getStats };
+module.exports = { build, configure, getStats, getProcessName };

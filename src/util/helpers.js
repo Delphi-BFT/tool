@@ -14,4 +14,17 @@ async function transformLatencies(hosts) {
 async function deleteDirectoryIfExists(path) {
   fs.rmSync(path, { recursive: true, force: true });
 }
-module.exports = { transformLatencies, deleteDirectoryIfExists };
+
+function median(values) {
+  if(values.length ===0) 
+    throw new Error("Array for median calcuation is empty!");
+
+  values.sort(function(first,second){
+    return first-second;
+  });
+
+  var mid = Math.floor(values.length / 2);
+  
+  return (values.length & 1) ? values[mid]:(values[mid - 1] + values[mid]) / 2.0;
+}
+module.exports = { transformLatencies, deleteDirectoryIfExists, median };

@@ -14,7 +14,6 @@ async function createPlots(plots) {
       for(let p of Object.entries(plots)) {
         let plotId = p[0];
         let plotObj = p[1];
-        console.log(plotId);
         plotsMap[plotId] = {
             type: 'line',
             options: {
@@ -54,9 +53,9 @@ async function createPlots(plots) {
                 ]
             }
         };
+        if(plotObj.predefinedPlots) {
         for(let predefinedPlot of Object.entries(plotObj.predefinedPlots)) {
             let predefinedPlotObj = predefinedPlot[1];
-            console.log(predefinedPlotObj);
             let plotDetails = {};
             plotDetails.label = predefinedPlotObj.style.label;
             plotDetails.borderColor = predefinedPlotObj.style.borderColor;
@@ -69,6 +68,7 @@ async function createPlots(plots) {
             plotsMap[plotId].data.datasets.push(plotDetails);
         }
     }
+  }
 }
 
 async function pushValue (plotId, label, value) {
@@ -80,7 +80,6 @@ async function pushValue (plotId, label, value) {
 async function generatePlots(experimentsPath) {
   let savePath = path.join(experimentsPath, 'plots');
   await fs.mkdir(savePath, {recursive: true});
-  console.log(JSON.stringify(plotsMap));
   for (const [key, value] of Object.entries(plotsMap)) {
     const buffer =  renderer.renderToBufferSync(value);
     await fs.writeFile(path.join(savePath,'./' + key + '.svg'), buffer, 'base64');

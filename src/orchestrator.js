@@ -1,6 +1,7 @@
 const eg = require('./util/generate-env');
 const yg = require('./util/yamlUtilities');
 const plot = require('./util/plot');
+const monitor = require('./util/resource-monitor');
 const yaml = require('js-yaml');
 const fs = require('fs').promises;
 const path = require('path');
@@ -10,12 +11,14 @@ const { deleteDirectoryIfExists } = require('./util/helpers');
 /* misc */
 const networkFileName = 'network.gml';
 const shadowFileName = 'shadow.yaml';
+const shadowProcessName = 'shadow';
 //const experimentDirectoryPrefix = 'experiments';
 
 /* Connectors */
 const hotstuff = require('./connectors/hotstuff');
 const bftsmart = require('./connectors/bftsmart');
 const { promisified_spawn } = require('./util/exec');
+
 async function getStats(protocol, experimentsPath, protocolPath) {
   return protocol.getStats(experimentsPath, protocolPath);
 }
@@ -151,7 +154,8 @@ async function main() {
       );
     }
     await fs.writeFile(networkFilePath, myGraph);
-    await run(protocol, executionDir, logger);
+    await Promise.all([run(protocol, executionDir, logger), shadowInterval  = monitor.register(shadowProcessName, 2000, logger), procInterval = monitor.register(protocol.getProcessName(), 2000, logger)]);
+    let resourceUsage = await monitor.unregister(logger);
     if(e[experimentId].plots) {
       let perfStats = await getStats(protocol, path.join(experimentsPath,experimentId), workingDir);
       for(let p of e[experimentId].plots) {
@@ -161,6 +165,14 @@ async function main() {
         }
         if(p.metric == 'latency') {
           plot.pushValue(p.name,p.label,perfStats.latency);
+          continue;
+        }
+        if(p.metric == 'cpu') {
+          plot.pushValue(p.name,p.label,resourceUsage[shadowProcessName].medianCPU);
+          continue;
+        }
+        if(p.metric == 'mem') {
+          plot.pushValue(p.name,p.label,resourceUsage[shadowProcessName].medianMEM);
           continue;
         }
       }
