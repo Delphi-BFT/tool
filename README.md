@@ -21,7 +21,20 @@
 
 ### Dependencies
 
-Node: 16.3.0
+**Node version (16.3.0):** 
+
+```
+curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh -o install_nvm.sh
+
+bash install_nvm.sh
+
+export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+nvm install 16.3.0
+
+```
 
 **Shadow:**
 
@@ -66,13 +79,21 @@ apt-get install -y \
 
 Ubuntu:
 
-`apt-get install libssl-dev libuv1-dev cmake make`
+
+```
+apt-get install libssl-dev libuv1-dev cmake make
+
+```
 
 ### Building
 
 first clone this repo then run:
 
-`cd shadow-experiments && git submodule update --init --recursive && cd src && npm install`
+
+```
+cd shadow-experiments && git submodule update --init --recursive && cd src && npm install
+
+```
 
 to start an experiment you have to pass an experiment description file to the orchestrator. For BFT-SMaRt experiments
 see example/example.yaml.
@@ -81,7 +102,10 @@ NOTE: If you are planning on using example.yaml, change the experimentsDirectory
 
 example:
 
-`node orchestrator.js examples/example.yaml`
+
+```
+node orchestrator.js examples/example.yaml
+```
 
 
 
