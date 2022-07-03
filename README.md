@@ -81,7 +81,7 @@ Ubuntu:
 
 
 ```
-apt-get install libssl-dev libuv1-dev cmake make
+apt-get install libssl-dev libuv1-dev cmake make libtool autoreconf
 
 ```
 
