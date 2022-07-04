@@ -18,6 +18,9 @@
 - **Debian 10:** NOT Working :anguished:
 - **Debian 11:** Shadow does NOT pass determinism tests :anguished:
 
+**Themis**:
+
+- **Arch with Kernel 5.18.5-arch1-1 with GLIBC 2.35:** NOT working (Shadow v2.0 issues other Shadow versions have rseq error) :anguished:
 
 ### Dependencies
 
