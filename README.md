@@ -1,10 +1,99 @@
-### Shadow Experiments
+# Shadow Experiments
 
-# Building
+### Compatibility
+
+**HotStuff**:
+
+- **Arch with Kernel 5.18.5-arch1-1 with GLIBC 2.35:** Working :rocket:
+- **Ubuntu 22.04:** Working but not throughly tested :rocket:
+- **Ubuntu 20.10:** Working (albeit the Shadow 2.0 does not) :anguished:
+- **Ubuntu 18.04:** NOT working (due to GLIBC 2.27) :anguished:
+- **Debian 10:** NOT Working  :anguished:
+- **Debian 11:** Shadow does NOT pass determinism tests :anguished:
+
+**BFT-SMaRt**:
+- **Arch with Kernel 5.18.5-arch1-1 with GLIBC 2.35:** ONLY basic simulations working :rocket:
+- **Ubuntu 20.10:** Working (albeit the Shadow 2.0 does not)  :anguished:
+- **Ubuntu 18.04:** ONLY basic simulations working :rocket:
+- **Debian 10:** NOT Working :anguished:
+- **Debian 11:** Shadow does NOT pass determinism tests :anguished:
+
+
+### Dependencies
+
+**Node version (16.3.0):** 
+
+```
+curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh -o install_nvm.sh
+
+bash install_nvm.sh
+
+export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+nvm install 16.3.0
+
+```
+
+**Shadow:**
+
+
+Ubuntu:
+
+```
+ apt-get install -y \
+    cmake \
+    findutils \
+    libc-dbg \
+    libglib2.0-0 \
+    libglib2.0-dev \
+    make \
+    python3 \
+    python3-pip \
+    xz-utils \
+    util-linux \
+    gcc \
+    g++ 
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+apt-get install -y \
+    python3-numpy \
+    python3-lxml \
+    python3-matplotlib \
+    python3-networkx \
+    python3-scipy \
+    python3-yaml
+
+apt-get install -y \
+    dstat \
+    git \
+    htop \
+    tmux
+
+```
+
+
+**HotStuff:**
+
+Ubuntu:
+
+
+```
+apt-get install libssl-dev libuv1-dev cmake make libtool autoreconf
+
+```
+
+### Building
 
 first clone this repo then run:
 
-`cd shadow-experiments && git submodule update --init --recursive && cd src && npm install`
+
+```
+cd shadow-experiments && git submodule update --init --recursive && cd src && npm install
+
+```
 
 to start an experiment you have to pass an experiment description file to the orchestrator. For BFT-SMaRt experiments
 see example/example.yaml.
@@ -13,11 +102,14 @@ NOTE: If you are planning on using example.yaml, change the experimentsDirectory
 
 example:
 
-`node orchestrator.js examples/example.yaml`
+
+```
+node orchestrator.js examples/example.yaml
+```
 
 
 
-# If you want to make a connector for another protocol
+### If you want to make a connector for another protocol
 
 Your connector has to have the methods `build` and `configure` (see orchestrator.js)
 Experiment description files have to adhere to a certain format:
@@ -53,7 +145,7 @@ experiments: Array describing the experiments to be made
 
 
 
-## Outdated
+### Outdated
 Steps : 
 
 - cd into BFT-SMaRT
