@@ -6,12 +6,19 @@ const exec = util.promisify(require('node:child_process').exec);
 const procIntervals = new Map();
 
 async function getPids(processName){
- let result = await exec(`pidof ${processName}`);
- return result.stdout.toString().split(' ').map(Number);
+  try {
+    let result = await exec(`pidof ${processName}`);
+    return result.stdout.toString().split(' ').map(Number);
+  } catch(error) {
+    log.error(`could not retrieve usage data for ${processName}`);
+    return null;
+  }
 }
 
 async function compute(processName, log) {
   let pids = await getPids(processName);
+  if(pids == null)
+    return;
   pidusage(pids, function (err, stats) {
     let cputotal = 0.0;
     let mem = 0.0

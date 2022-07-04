@@ -17,6 +17,7 @@ const shadowProcessName = 'shadow';
 /* Connectors */
 const hotstuff = require('./connectors/hotstuff');
 const bftsmart = require('./connectors/bftsmart');
+const themis = require('./connectors/themis');
 const { promisified_spawn } = require('./util/exec');
 
 async function getStats(protocol, experimentsPath, protocolPath) {
@@ -27,35 +28,49 @@ async function build(
   workingDir,
   replicaSettings,
   clientSettings,
-  log,
+  log
 ) {
   log.info('Calling protocol build function ...');
-  await protocol.build(workingDir, replicaSettings, clientSettings, log);
+  await protocol.build(
+    workingDir,
+    replicaSettings,
+    clientSettings,
+    log
+  );
 }
 async function configure(
   protocol,
   workingDir,
   replicaSettings,
   clientSettings,
-  log,
+  log
 ) {
   log.info('Calling protocol configure function ...');
   return await protocol.configure(
     workingDir,
     replicaSettings,
     clientSettings,
-    log,
+    log
   );
 }
 async function run(protocol, executionDir, log) {
   try {
-    await promisified_spawn('shadow', ['shadow.yaml'], executionDir, log);
+    await promisified_spawn(
+      'shadow',
+      ['shadow.yaml'],
+      executionDir,
+      log
+    );
   } catch (e) {
     log.error('simulation exited with non-zero code!');
   }
 }
 
-async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
+async function createShadowHostConfig(
+  shadowTemplate,
+  replicas,
+  clientDelay
+) {
   for (let i = 0; i < replicas.length; i++) {
     shadowTemplate = yg.makeHost(
       shadowTemplate,
@@ -65,7 +80,7 @@ async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
       replicas[i].proc,
       replicas[i].env,
       replicas[i].args,
-      replicas[i].isClient ? clientDelay : '0s',
+      replicas[i].isClient ? clientDelay : '0s'
     );
   }
   return shadowTemplate;
@@ -74,18 +89,21 @@ async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
 function getProtocolObject(name) {
   if (name == 'bftsmart') return bftsmart;
   if (name == 'hotstuff') return hotstuff;
+  return themis;
 }
 async function backUpArtifact(source, dest) {
   await fs.copyFile(source, dest);
 }
 async function main() {
   let args = process.argv.slice();
-  let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'));
+  let experimentDetails = yaml.load(
+    await fs.readFile(args[2], 'utf8')
+  );
   let protocol = getProtocolObject(experimentDetails.protocolName);
   let workingDir = experimentDetails.protocolPath;
   let executionDir = experimentDetails.executionDir;
   let experimentsPath = experimentDetails.experimentsDirectory;
-  if(experimentDetails.plots) {
+  if (experimentDetails.plots) {
     await plot.createPlots(experimentDetails.plots);
   }
   /* winston logger settings */
@@ -95,7 +113,12 @@ async function main() {
   });
   const logger = createLogger({
     level: 'info',
-    format: combine(format.colorize(), splat(), timestamp(), shadowLogFormat),
+    format: combine(
+      format.colorize(),
+      splat(),
+      timestamp(),
+      shadowLogFormat
+    ),
     transports: [
       new transports.File({
         filename: path.join(experimentsPath, 'combined.log'),
@@ -113,24 +136,32 @@ async function main() {
     let shadowFilePath = path.join(executionDir, shadowFileName);
     let networkFilePath = path.join(executionDir, networkFileName);
     logger.info('deleting clashing directories ...');
-    await deleteDirectoryIfExists(path.join(experimentsPath, experimentId));
+    await deleteDirectoryIfExists(
+      path.join(experimentsPath, experimentId)
+    );
     let shadowTemplate = yg.makeConfigTemplate(
       networkFileName,
       path.join(experimentsPath, experimentId),
-      e[experimentId].misc,
+      e[experimentId].misc
     );
-    await build(protocol, workingDir, replicaSettings, clientSettings, logger);
+    await build(
+      protocol,
+      workingDir,
+      replicaSettings,
+      clientSettings,
+      logger
+    );
     let hosts = await configure(
       protocol,
       workingDir,
       replicaSettings,
       clientSettings,
-      logger,
+      logger
     );
     shadowTemplate = await createShadowHostConfig(
       shadowTemplate,
       hosts,
-      e[experimentId].misc.clientDelay,
+      e[experimentId].misc.clientDelay
     );
     // Generate Shadow File
     await yg.out(shadowFilePath, shadowTemplate);
@@ -141,7 +172,7 @@ async function main() {
         e[experimentId].network.bandwidthUp,
         e[experimentId].network.bandwidthDown,
         e[experimentId].network.latency.delay,
-        '0.0',
+        '0.0'
       );
     else {
       myGraph = await eg.makeAWSGraph(
@@ -150,40 +181,70 @@ async function main() {
         e[experimentId].network.bandwidthUp,
         e[experimentId].network.bandwidthDown,
         '0.0',
-        logger,
+        logger
       );
     }
     await fs.writeFile(networkFilePath, myGraph);
-    await Promise.all([run(protocol, executionDir, logger), shadowInterval  = monitor.register(shadowProcessName, 2000, logger), procInterval = monitor.register(protocol.getProcessName(), 2000, logger)]);
+    await Promise.all([
+      run(protocol, executionDir, logger),
+      (shadowInterval = monitor.register(
+        shadowProcessName,
+        2000,
+        logger
+      )),
+      (procInterval = monitor.register(
+        protocol.getProcessName(),
+        2000,
+        logger
+      )),
+    ]);
     let resourceUsage = await monitor.unregister(logger);
-    if(e[experimentId].plots) {
-      let perfStats = await getStats(protocol, path.join(experimentsPath,experimentId), workingDir);
-      for(let p of e[experimentId].plots) {
-        if(p.metric == 'tps') {
-          plot.pushValue(p.name,p.label,perfStats.throughput);
+    if (e[experimentId].plots) {
+      let perfStats = await getStats(
+        protocol,
+        path.join(experimentsPath, experimentId),
+        workingDir
+      );
+      for (let p of e[experimentId].plots) {
+        if (p.metric == 'tps') {
+          plot.pushValue(p.name, p.label, perfStats.throughput);
           continue;
         }
-        if(p.metric == 'latency') {
-          plot.pushValue(p.name,p.label,perfStats.latency);
+        if (p.metric == 'latency') {
+          plot.pushValue(p.name, p.label, perfStats.latency);
           continue;
         }
-        if(p.metric == 'cpu') {
-          plot.pushValue(p.name,p.label,resourceUsage[shadowProcessName].medianCPU);
+        if (p.metric == 'cpu') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage[shadowProcessName].medianCPU
+          );
           continue;
         }
-        if(p.metric == 'mem') {
-          plot.pushValue(p.name,p.label,resourceUsage[shadowProcessName].medianMEM);
+        if (p.metric == 'mem') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage[shadowProcessName].medianMEM
+          );
           continue;
         }
       }
     }
     await backUpArtifact(
       networkFilePath,
-      path.join(experimentsPath, path.join(experimentId, networkFileName)),
+      path.join(
+        experimentsPath,
+        path.join(experimentId, networkFileName)
+      )
     );
     await backUpArtifact(
       shadowFilePath,
-      path.join(experimentsPath, path.join(experimentId, shadowFileName)),
+      path.join(
+        experimentsPath,
+        path.join(experimentId, shadowFileName)
+      )
     );
   }
   logger.info('generating plots...');

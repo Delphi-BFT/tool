@@ -1,0 +1,32 @@
+protocolName: themis
+protocolPath: /home/sadok/shadow-experiments/themis/
+executionDir: /home/sadok/shadow-experiments/themis/ # directory to put Shadow YAML file
+experimentsDirectory: /home/sadok/myShadowExperiments/myThemisExperiments # USE AN ABSOLUTE PATH
+experiments:
+  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 630 us
+        duration: 3 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 6
+        useShortestPath: false
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        latency:
+          uniform: true
+          delay: 630 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        minBatchSize: 100
+        maxBatchSize: 100
+        replySize: 100
+        peerAuthentication: Ed25519
+        clientAuthentication: Hmac
+        timeout:
+          secs: 0
+          nano: 10_000_000
+      client:
+        clients: 1
+        payload: 4000
+        concurrent: 10
