@@ -88,6 +88,13 @@ apt-get install libssl-dev libuv1-dev cmake make libtool autoreconf
 
 ```
 
+Ubuntu: ( at least 20.04 ?) additionally:
+
+```
+sudo apt-get install libtool autoconf
+
+```
+
 ### Building
 
 first clone this repo then run:
