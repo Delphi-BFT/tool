@@ -1,6 +1,8 @@
 # Shadow Experiments
 
-### Compatibility
+We recommend Ubuntu 20.04 LTS and Shadow v2.2 (newest version as of time of writing)
+
+### Compatibility (tested but no gurantees are given)
 
 **HotStuff**:
 
@@ -95,22 +97,26 @@ sudo apt-get install libtool autoconf
 
 ```
 
-In shadow-experiments/libhotstuff test if build works:
+
+
+### Building, and Getting started :-)
+
+
+First, install Shadow v2.2, for details on this, we refer to https://github.com/shadow/shadow
+
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON
-make
+$ ./setup build --clean --test
+$ ./setup test
+$ ./setup install
 ```
 
-### Building
-
-After installing Shadow, run:
+After installing Shadow, it is imporant for the orchestrator to add it to your PATH:
 
 ```
 echo 'export PATH="${PATH}:/home/${USER}/.local/bin"' >> ~/.bashrc && source ~/.bashrc
 ```
 
-
-first clone this repo then run:
+Now it is time, to clone this repository:
 
 
 ```
@@ -118,25 +124,36 @@ cd shadow-experiments && git submodule update --init --recursive && cd src && np
 
 ```
 
-to start an experiment you have to pass an experiment description file to the orchestrator. For BFT-SMaRt experiments
-see example/example.yaml.
+We should test now if building, works, try out In shadow-experiments/libhotstuff:
+```
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON
+make
+```
 
-NOTE: If you are planning on using example.yaml, change the experimentsDirectory as it is pointing to my root in the VM
+To start an experiment you have to pass an experiment description file to the orchestrator. See ``src/examples/[ProtocolName].yaml``.
 
+IMPORTANT: change the experimentsDirectory as it is pointing to my directory (cb) in the VM
+```
+protocolName: hotstuff
+protocolPath: /home/<EDIT HERE>/shadow-experiments/libhotstuff/
+executionDir: /home/<EDIT HERE>/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+experimentsDirectory: /home/<EDIT HERE>/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
+```
 
-
-example:
+Once this is completed you can start the orchestrator, passing the epxeriment description file like this (from the /src/ directory):
 
 
 ```
-node orchestrator.js examples/example.yaml
+node orchestrator.js examples/hotstuffExample.yaml
 ```
 
+HINT: Use ``tmux`` to run your simulations in the background
 
 
 ### If you want to make a connector for another protocol
 
-Your connector has to have the methods `build` and `configure` (see orchestrator.js)
+Your connector has to implement the methods `build` and `configure` (see orchestrator.js)
+
 Experiment description files have to adhere to a certain format:
 
 ```
@@ -167,22 +184,3 @@ experiments: Array describing the experiments to be made
             This is for protocol-specific and replica-specific configurations, this will be passed to 
             your connector.
 ```
-
-
-
-### Outdated
-Steps : 
-
-- cd into BFT-SMaRT
-
-- Build BFT-SMaRT the usual way. 
-
-- run `shadow bftsmart.yaml` 
-
-Current configured hosts are 11.0.0.1-4 in `config/hosts.config`
-
-You can set individual ip addresses for your shadow hosts in bftsmart.yaml.
-
-Watch out for paths. Without the `experimental.use_legacy_working_dir` paths in `args` and in the source code are relative to the host's working directory which is `shadow.data/YOUR_HOSTNAME` therefore, hardcoded paths in source code will cause errors.
-
-for some reason, h3 is ALWAYS the first to boot up and h4 is the only host that does not display the TCPNODELAY and "Protocol not available" errors.
