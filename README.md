@@ -95,6 +95,12 @@ sudo apt-get install libtool autoconf
 
 ```
 
+In shadow-experiments/libhotstuff test if build works:
+```
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON
+make
+```
+
 ### Building
 
 first clone this repo then run:
