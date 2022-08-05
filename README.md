@@ -103,6 +103,13 @@ make
 
 ### Building
 
+After installing Shadow, run:
+
+```
+echo 'export PATH="${PATH}:/home/${USER}/.local/bin"' >> ~/.bashrc && source ~/.bashrc
+```
+
+
 first clone this repo then run:
 
 
@@ -115,6 +122,8 @@ to start an experiment you have to pass an experiment description file to the or
 see example/example.yaml.
 
 NOTE: If you are planning on using example.yaml, change the experimentsDirectory as it is pointing to my root in the VM
+
+
 
 example:
 
