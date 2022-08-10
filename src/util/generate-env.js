@@ -106,10 +106,12 @@ let createGraphSimple = (
       host_bandwidth_up.push(bandwidth_up);
       host_bandwidth_down.push(bandwidth_down);
     } else {
-      // idea: the last host should be reserved to place the clients!
+      // idea: the last host should be reserved to place the clients! TODO remove??
       // thus it should get unlimited bandwidth
-      host_bandwidth_up.push('100 Gbit');
-      host_bandwidth_down.push('100 Gbit');
+     // host_bandwidth_up.push('100 Gbit');
+      //host_bandwidth_down.push('100 Gbit');
+      host_bandwidth_up.push(bandwidth_up); 
+      host_bandwidth_down.push(bandwidth_down);
     }
 
     latencies.push([]);
@@ -117,7 +119,7 @@ let createGraphSimple = (
 
     // Create the edges between the hosts...
     for (let j = 0; j < hosts.length; j++) {
-      if (hosts[i].isClient || hosts[j].isClient) latencies[i].push('100 us');
+      if (hosts[i].isClient || hosts[j].isClient)  latencies[i].push('1000 us'); //latencies[i].push(latency); No case distinction?
       else latencies[i].push(latency);
       packet_losses[i].push(packet_loss);
     }
