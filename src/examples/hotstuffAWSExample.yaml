@@ -1,0 +1,127 @@
+protocolName: hotstuff
+protocolPath: /home/sadok/shadow-experiments/libhotstuff/
+executionDir: /home/sadok/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+experimentsDirectory: /home/sadok/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
+plots:
+  throughputDemo:
+    type: tps
+    details:
+      title: 'Throughput comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Throughput (ops/s)'
+    shadowPlot:
+      style:
+        label: 'Shadow'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+    predefinedPlots:
+      HotStuff:
+        values:
+          - x: '4'
+            y: '105000'
+          - x: '8'
+            y: '107000'
+          - x: '16'
+            y: '107000'
+          - x: '32'
+            y: '60000'
+          - x: '64'
+            y: '40000'
+          - x: '128'
+            y: '32000'
+        style:
+          label: 'HotStuff'
+          pointStyle: star
+          pointBorderColor: '#8e5ea2'
+          borderColor: '#8e5ea2'
+  latencyDemo:
+    type: latency
+    details:
+      title: 'Latency comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Latency (s)'
+    shadowPlot:
+      style:
+        label: 'Shadow'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+    predefinedPlots:
+      HotStuff:
+        values:
+          - x: '4'
+            y: '20'
+          - x: '8'
+            y: '20'
+          - x: '16'
+            y: '20'
+          - x: '32'
+            y: '47'
+          - x: '64'
+            y: '60'
+          - x: '128'
+            y: '105'
+        style:
+          label: 'HotStuff'
+          pointStyle: star
+          pointBorderColor: '#8e5ea2'
+          borderColor: '#8e5ea2'
+experiments:
+  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 630 us
+        duration: 5 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 8
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 4
+        - name: latencyDemo
+          metric: 'latency'
+          label: 4
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 2, 'us-east-1': 2]
+          clients: ['us-west-1': 1, 'af-south-1': 1]
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        blockSize: 400
+        replySize: 128
+      client:
+        clients: 2
+        outStandingPerClient: 2800
+        requestSize: 128
+  - 4repUniformClientDelay: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 630 us
+        duration: 5 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 8
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 4
+        - name: latencyDemo
+          metric: 'latency'
+          label: 4
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 2, 'us-east-1': 2]
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        blockSize: 400
+        replySize: 128
+      client:
+        clients: 2
+        outStandingPerClient: 2800
+        requestSize: 128

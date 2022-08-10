@@ -5,6 +5,7 @@ const monitor = require('./util/resource-monitor');
 const yaml = require('js-yaml');
 const fs = require('fs').promises;
 const path = require('path');
+const csvUtil = require('./util/csvUtil');
 const { createLogger, format, transports } = require('winston');
 const { combine, splat, timestamp, printf } = format;
 const { deleteDirectoryIfExists } = require('./util/helpers');
@@ -200,6 +201,13 @@ async function main() {
       )),
     ]);
     let resourceUsage = await monitor.unregister(logger);
+    let statsForCSV = {
+      experimentId: experimentId,
+      throughput: 0,
+      latency: 0,
+      cpu: 0,
+      mem: 0,
+    };
     if (e[experimentId].plots) {
       let perfStats = await getStats(
         protocol,
@@ -209,10 +217,12 @@ async function main() {
       for (let p of e[experimentId].plots) {
         if (p.metric == 'tps') {
           plot.pushValue(p.name, p.label, perfStats.throughput);
+          statsForCSV.throughput = perfStats.throughput;
           continue;
         }
         if (p.metric == 'latency') {
           plot.pushValue(p.name, p.label, perfStats.latency);
+          statsForCSV.latency = perfStats.latency;
           continue;
         }
         if (p.metric == 'cpu') {
@@ -221,6 +231,8 @@ async function main() {
             p.label,
             resourceUsage[shadowProcessName].medianCPU
           );
+          statsForCSV.cpu =
+            resourceUsage[shadowProcessName].medianCPU;
           continue;
         }
         if (p.metric == 'mem') {
@@ -229,10 +241,15 @@ async function main() {
             p.label,
             resourceUsage[shadowProcessName].medianMEM
           );
+          statsForCSV.mem =
+            resourceUsage[shadowProcessName].medianMEM;
           continue;
         }
       }
     }
+    csvUtil.values.push(statsForCSV);
+    console.log(statsForCSV);
+    await csvUtil.save(path.join(experimentsPath, 'results.csv'));
     await backUpArtifact(
       networkFilePath,
       path.join(
