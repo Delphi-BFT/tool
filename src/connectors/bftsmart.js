@@ -52,6 +52,9 @@ const sysconf = {
   'system.client.invokeOrderedTimeout': '40',
 };
 
+const processName = 'java';
+
+
 const throughputLatencyServerClass =
   'bftsmart.demo.microbenchmarks.ThroughputLatencyServer';
 const throughputLatencyClientClass =
@@ -62,6 +65,10 @@ const throughputLatencyClientClass =
 const javaProc = '/usr/bin/java';
 const javaArgs =
   '-Djava.security.properties=config/java.security -Dlogback.configurationFile=config/logback.xml -cp lib/*';
+
+function getProcessName() {
+  return processName;
+}
 
 async function build(workingDir, replicaSettings, clientSettings, log) {
   log.info('building BFT-SMaRt ...');
@@ -124,9 +131,12 @@ async function deleteCurrentView(workingDir) {
   }
 }
 async function configure(workingDir, replicaSettings, clientSettings, log) {
+
   log.info('deleting old view');
   await deleteCurrentView(workingDir);
   log.info('reading experiment details ...');
+
+
   //let experimentId = Object.keys(experiment)[0];
   /* Replica Settings */
   /* let replicaSettings = {
@@ -161,4 +171,4 @@ async function configure(workingDir, replicaSettings, clientSettings, log) {
   replicaIPs = await passArgs(replicaIPs, replicaSettings, clientSettings);
   return replicaIPs;
 }
-module.exports = { build, configure };
+module.exports = { build, configure,  getProcessName};
