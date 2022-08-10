@@ -205,8 +205,10 @@ async function main() {
       experimentId: experimentId,
       throughput: 0,
       latency: 0,
-      cpu: 0,
-      mem: 0,
+      cpuShadow: 0,
+      memShadow: 0,
+      cpuApp: 0,
+      memApp: 0,
     };
     if (e[experimentId].plots) {
       let perfStats = await getStats(
@@ -225,24 +227,44 @@ async function main() {
           statsForCSV.latency = perfStats.latency;
           continue;
         }
-        if (p.metric == 'cpu') {
+        if (p.metric == 'cpu-shadow') {
           plot.pushValue(
             p.name,
             p.label,
             resourceUsage[shadowProcessName].medianCPU
           );
-          statsForCSV.cpu =
+          statsForCSV.cpuShadow =
             resourceUsage[shadowProcessName].medianCPU;
           continue;
         }
-        if (p.metric == 'mem') {
+        if (p.metric == 'mem-shadow') {
           plot.pushValue(
             p.name,
             p.label,
-            resourceUsage[shadowProcessName].medianMEM
+            resourceUsage[shadowProcessName].maxMEM
           );
-          statsForCSV.mem =
-            resourceUsage[shadowProcessName].medianMEM;
+          statsForCSV.memShadow =
+            resourceUsage[shadowProcessName].maxMEM;
+          continue;
+        }
+        if (p.metric == 'cpu-app') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage[protocol.getProcessName()].medianCPU
+          );
+          statsForCSV.cpuApp =
+            resourceUsage[protocol.getProcessName()].medianCPU;
+          continue;
+        }
+        if (p.metric == 'mem-app') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage[protocol.getProcessName()].maxMEM
+          );
+          statsForCSV.memApp =
+            resourceUsage[protocol.getProcessName()].maxMEM;
           continue;
         }
       }

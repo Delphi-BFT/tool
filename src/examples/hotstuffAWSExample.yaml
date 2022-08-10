@@ -67,6 +67,54 @@ plots:
           pointStyle: star
           pointBorderColor: '#8e5ea2'
           borderColor: '#8e5ea2'
+  cpuDemo-shadow:
+    type: cpu-shadow
+    details:
+      title: 'Median CPU Usage of Shadow-HotStuff Shadow Process (8 vCPU)'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Percentage * vCPU'
+    shadowPlot:
+      style:
+        label: 'CPU Usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  memDemo-shadow:
+    type: mem-shadow
+    details:
+      title: 'Maximum Memory Usage of Shadow-HotStuff Shadow Process'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowPlot:
+      style:
+        label: 'Memory usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  cpuDemo-app:
+    type: cpu-app
+    details:
+      title: 'Median CPU Usage of Shadow-HotStuff Replica Processes (8 vCPU)'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Percentage * vCPU'
+    shadowPlot:
+      style:
+        label: 'CPU Usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  memDemo-app:
+    type: mem-app
+    details:
+      title: 'Maximum Memory Usage of Shadow-HotStuff Replica Processes'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowPlot:
+      style:
+        label: 'Memory usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
@@ -81,6 +129,18 @@ experiments:
           label: 4
         - name: latencyDemo
           metric: 'latency'
+          label: 4
+        - name: cpuDemo-shadow
+          metric: 'cpu-shadow'
+          label: 4
+        - name: memDemo-shadow
+          metric: 'mem-shadow'
+          label: 4
+        - name: cpuDemo-app
+          metric: 'cpu-app'
+          label: 4
+        - name: memDemo-shadow
+          metric: 'mem-app'
           label: 4
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -110,6 +170,18 @@ experiments:
           label: 4
         - name: latencyDemo
           metric: 'latency'
+          label: 4
+        - name: cpuDemo-shadow
+          metric: 'cpu-shadow'
+          label: 4
+        - name: memDemo-shadow
+          metric: 'mem-shadow'
+          label: 4
+        - name: cpuDemo-app
+          metric: 'cpu-app'
+          label: 4
+        - name: memDemo-shadow
+          metric: 'mem-app'
           label: 4
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
