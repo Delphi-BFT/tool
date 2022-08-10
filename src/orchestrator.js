@@ -177,7 +177,8 @@ async function main() {
     else {
       myGraph = await eg.makeAWSGraph(
         hosts,
-        e[experimentId].network.latency.hosts,
+        e[experimentId].network.latency.replicas,
+        e[experimentId].network.latency.clients,
         e[experimentId].network.bandwidthUp,
         e[experimentId].network.bandwidthDown,
         '0.0',

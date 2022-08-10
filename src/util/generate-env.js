@@ -65,14 +65,18 @@ let createGraph = (
   host_bandwidth_up,
   host_bandwidth_down,
   latencies,
-  packet_losses,
+  packet_losses
 ) => {
   let graph = 'graph [\n';
   graph += tab + 'directed 1\n';
 
   // Create all Nodes
   for (let i = 0; i < hosts.length; i++) {
-    graph += createNode(i, host_bandwidth_up[i], host_bandwidth_down[i]);
+    graph += createNode(
+      i,
+      host_bandwidth_up[i],
+      host_bandwidth_down[i]
+    );
   }
 
   // Create all Edges
@@ -93,7 +97,7 @@ let createGraphSimple = (
   bandwidth_up,
   bandwidth_down,
   latency,
-  packet_loss,
+  packet_loss
 ) => {
   let host_bandwidth_up = [];
   let host_bandwidth_down = [];
@@ -108,9 +112,9 @@ let createGraphSimple = (
     } else {
       // idea: the last host should be reserved to place the clients! TODO remove??
       // thus it should get unlimited bandwidth
-     // host_bandwidth_up.push('100 Gbit');
+      // host_bandwidth_up.push('100 Gbit');
       //host_bandwidth_down.push('100 Gbit');
-      host_bandwidth_up.push(bandwidth_up); 
+      host_bandwidth_up.push(bandwidth_up);
       host_bandwidth_down.push(bandwidth_down);
     }
 
@@ -119,7 +123,9 @@ let createGraphSimple = (
 
     // Create the edges between the hosts...
     for (let j = 0; j < hosts.length; j++) {
-      if (hosts[i].isClient || hosts[j].isClient)  latencies[i].push('1000 us'); //latencies[i].push(latency); No case distinction?
+      if (hosts[i].isClient || hosts[j].isClient)
+        latencies[i].push('1000 us');
+      //latencies[i].push(latency); No case distinction?
       else latencies[i].push(latency);
       packet_losses[i].push(packet_loss);
     }
@@ -130,12 +136,21 @@ let createGraphSimple = (
     host_bandwidth_up,
     host_bandwidth_down,
     latencies,
-    packet_losses,
+    packet_losses
   );
 };
 
 /* Author : Christian Berger */
-let createShadowHost = (prefix, name, ip, id, path, env, args, start_time) => {
+let createShadowHost = (
+  prefix,
+  name,
+  ip,
+  id,
+  path,
+  env,
+  args,
+  start_time
+) => {
   return (
     tab +
     prefix +
@@ -184,24 +199,33 @@ let createShadowHost = (prefix, name, ip, id, path, env, args, start_time) => {
 };
 async function makeAWSGraph(
   replicasIPs,
-  hosts,
+  replicaLatencies,
+  clientLatencies,
   bandwidth_up,
   bandwidth_down,
   packet_loss,
-  log,
+  log
 ) {
   let awsLatencies = await getLatencies(log);
-  let awsHosts = await transformLatencies(hosts);
+  let awsReplicas = await transformLatencies(replicaLatencies);
+  let awsClients = null;
+  if (clientLatencies)
+    awsClients = await transformLatencies(clientLatencies);
   let latencies = [];
   let packet_losses = [];
   let host_bandwidth_up = [];
   let host_bandwidth_down = [];
-  let currentIndex = 0;
+  let currentReplicaIndex = 0;
+  let currentClientIndex = 0;
   let replicaIndex = {};
+  let clientIndex = {};
 
   for (let i = 0; i < replicasIPs.length; i++) {
-    if (replicasIPs[i].isClient) continue;
-    replicaIndex[i] = currentIndex++;
+    if (replicasIPs[i].isClient)
+      if (!clientLatencies) continue;
+      else clientIndex[i] = currentClientIndex++;
+
+    replicaIndex[i] = currentReplicaIndex++;
   }
   for (let i = 0; i < replicasIPs.length; i++) {
     latencies.push([]);
@@ -210,19 +234,37 @@ async function makeAWSGraph(
       host_bandwidth_up.push(bandwidth_up);
       host_bandwidth_down.push(bandwidth_down);
     } else {
-      // idea: the last host should be reserved to place the clients!
-      // thus it should get unlimited bandwidth
-      host_bandwidth_up.push('100 Gbit');
-      host_bandwidth_down.push('100 Gbit');
+      host_bandwidth_up.push(bandwidth_up);
+      host_bandwidth_down.push(bandwidth_down);
     }
     for (let j = 0; j < replicasIPs.length; j++) {
-      if (replicasIPs[i].isClient || replicasIPs[j].isClient || i==j)
-        latencies[i].push('100 us');
-      else {
-        latencies[i].push(
-          awsLatencies[awsHosts[replicaIndex[i]]][awsHosts[replicaIndex[j]]]+' ms'
-        );
+      if (i == j) {
+        latencies[i].push('10 us');
+        packet_losses[i].push(packet_loss);
+        continue;
       }
+
+      if (replicasIPs[i].isClient || replicasIPs[j].isClient) {
+        if (!clientLatencies) latencies[i].push('1000 us');
+        else {
+          latencies[i].push(
+            awsLatencies[
+              replicasIPs[i].isClient
+                ? awsClients[clientIndex[i]]
+                : awsReplicas[replicaIndex[i]]
+            ][
+              replicasIPs[j].isClient
+                ? awsClients[clientIndex[j]]
+                : awsReplicas[replicaIndex[j]]
+            ] + ' us'
+          );
+        }
+      } else
+        latencies[i].push(
+          awsLatencies[awsReplicas[replicaIndex[i]]][
+            awsReplicas[replicaIndex[j]]
+          ] + ' us'
+        );
       packet_losses[i].push(packet_loss);
     }
   }
@@ -231,7 +273,7 @@ async function makeAWSGraph(
     host_bandwidth_up,
     host_bandwidth_down,
     latencies,
-    packet_losses,
+    packet_losses
   );
 }
 module.exports = {

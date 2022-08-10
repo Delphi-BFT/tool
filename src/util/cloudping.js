@@ -7,7 +7,7 @@ const apiUrl = 'https://api-demo.cloudping.co/averages';
 async function getLatencies(log) {
   let latencies = new Object();
   try {
-    log.info('getting latencies from cloudping ...')
+    log.info('getting latencies from cloudping ...');
     const response = await fetch(apiUrl, { method: 'GET' });
     if (response.ok) {
       log.info('got ok response from cloudping!');
@@ -17,9 +17,13 @@ async function getLatencies(log) {
         latencies[currentRegion] = new Object();
         for (let j = 0; j < json[i].averages.length; j++) {
           let destinationRegion = json[i].averages[j].regionTo;
+          let RTT = parseFloat(json[i].averages[j].average).toFixed(
+            3
+          );
           latencies[currentRegion][destinationRegion] = new Object();
-          latencies[currentRegion][destinationRegion] =
-            parseInt(json[i].averages[j].average);
+          latencies[currentRegion][destinationRegion] = Math.floor(
+            (RTT * 1000) / 2
+          );
         }
       }
       return latencies;
