@@ -139,7 +139,7 @@ experiments:
         - name: cpuDemo-app
           metric: 'cpu-app'
           label: 4
-        - name: memDemo-shadow
+        - name: memDemo-app
           metric: 'mem-app'
           label: 4
       network:
@@ -180,7 +180,7 @@ experiments:
         - name: cpuDemo-app
           metric: 'cpu-app'
           label: 4
-        - name: memDemo-shadow
+        - name: memDemo-app
           metric: 'mem-app'
           label: 4
       network:
