@@ -10,7 +10,8 @@ async function getPids(processName){
     let result = await exec(`pidof ${processName}`);
     return result.stdout.toString().split(' ').map(Number);
   } catch(error) {
-    log.error(`could not retrieve usage data for ${processName}`);
+    console.log('resource-monitor.js l13 - could not retrieve usage data');
+    //log.error(`could not retrieve usage data for ${processName}`);
     return null;
   }
 }
