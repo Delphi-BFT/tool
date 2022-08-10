@@ -12,6 +12,7 @@ async function getPids(processName){
   } catch(error) {
     console.log('resource-monitor.js l13 - could not retrieve usage data');
     //log.error(`could not retrieve usage data for ${processName}`);
+    console.log(`could not retrieve usage data for ${processName}`);
     return null;
   }
 }
@@ -26,7 +27,7 @@ async function compute(processName, log) {
     Object.keys(stats).forEach(function(key) {
       cputotal+= (stats[key] == undefined)? 0:stats[key].cpu;
       mem+= (stats[key] == undefined)? 0:stats[key].memory/1000000000;
-    });    
+    });
     log.info(`current cpu usage of ${processName} process: ${cputotal}`);
     log.info(`current mem usage of ${processName} process: ${mem}`);
     procIntervals[processName].stats.cpu.push(cputotal);
