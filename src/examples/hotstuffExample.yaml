@@ -1,8 +1,8 @@
 protocolName: hotstuff
-protocolPath: /home/sadok/shadow-experiments/libhotstuff/
-executionDir: /home/sadok/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
-experimentsDirectory: /home/sadok/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
-plots: 
+protocolPath: /home/cb/git/shadow-experiments/libhotstuff/
+executionDir: /home/cb/git/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+experimentsDirectory: /home/cb/git/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
+plots:
   throughputDemo:
     type: tps
     details:
@@ -21,13 +21,13 @@ plots:
           - x: '4'
             y: '105000'
           - x: '8'
-            y: '107000' 
+            y: '107000'
           - x: '16'
             y: '107000'
           - x: '32'
             y: '60000'
           - x: '64'
-            y: '40000' 
+            y: '40000'
           - x: '128'
             y: '32000'
         style:
@@ -53,13 +53,13 @@ plots:
           - x: '4'
             y: '20'
           - x: '8'
-            y: '20' 
+            y: '20'
           - x: '16'
             y: '20'
           - x: '32'
             y: '47'
           - x: '64'
-            y: '60' 
+            y: '60'
           - x: '128'
             y: '105'
         style:
@@ -75,9 +75,9 @@ experiments:
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 8
         useShortestPath: false
-      plots: 
+      plots:
         - name: throughputDemo
-          metric: 'tps' 
+          metric: 'tps'
           label: 4
         - name: latencyDemo
           metric: 'latency'
@@ -131,9 +131,9 @@ experiments:
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 8
         useShortestPath: false
-      plots: 
+      plots:
         - name: throughputDemo
-          metric: 'tps' 
+          metric: 'tps'
           label: 16
         - name: latencyDemo
           metric: 'latency'
@@ -187,9 +187,9 @@ experiments:
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 8
         useShortestPath: false
-      plots: 
+      plots:
         - name: throughputDemo
-          metric: 'tps' 
+          metric: 'tps'
           label: 64
         - name: latencyDemo
           metric: 'latency'
