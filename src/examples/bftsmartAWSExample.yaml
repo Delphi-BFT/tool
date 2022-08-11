@@ -3,7 +3,7 @@ protocolPath: ../library/
 executionDir: ../library/build/install/library
 experimentsDirectory: /home/sadok/myShadowExperiments/myBFTSMaRtExperiments
 experiments:
-  - 8Replicas:
+  - 4Replicas:
       misc:
         duration: 300 s
         clientDelay: 60 s
@@ -14,14 +14,10 @@ experiments:
         bandwidthDown: 10 Gbit
         latency:
           uniform: false
-          replicas:
-            [
-              'us-west-1': 4,
-              'us-east-1': 4,
-            ]
-          clients: ['us-west-1': 1]
+          replicas: ['us-west-1': 2, 'us-east-1': 2]
+          clients: ['us-west-1': 1, 'af-south-1': 1, 'ap-south-1': 1]
       replica:
-        replicas: 8
+        replicas: 4
         blockSize: 100
         replicaInterval: 100
         replySize: 0
@@ -29,7 +25,8 @@ experiments:
         context: false
         replicaSig: nosig
       client:
-        clients: 4
+        clients: 3
+        threadsPerClient: 2
         opPerClient: 10000
         requestSize: 4000
         clientInterval: 100

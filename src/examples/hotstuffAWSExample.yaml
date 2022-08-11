@@ -6,7 +6,7 @@ plots:
   throughputDemo:
     type: tps
     details:
-      title: 'Throughput comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
+      title: 'Throughput comparison of Shadow-HotStuff with increasing number of replicas'
       xAxisTitle: 'Number of Replicas'
       yAxisTitle: 'Throughput (ops/s)'
     shadowPlot:
@@ -15,30 +15,10 @@ plots:
         pointStyle: triangle
         pointBorderColor: '#c45850'
         borderColor: '#c45850'
-    predefinedPlots:
-      HotStuff:
-        values:
-          - x: '4'
-            y: '105000'
-          - x: '8'
-            y: '107000'
-          - x: '16'
-            y: '107000'
-          - x: '32'
-            y: '60000'
-          - x: '64'
-            y: '40000'
-          - x: '128'
-            y: '32000'
-        style:
-          label: 'HotStuff'
-          pointStyle: star
-          pointBorderColor: '#8e5ea2'
-          borderColor: '#8e5ea2'
   latencyDemo:
     type: latency
     details:
-      title: 'Latency comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
+      title: 'Latency comparison of Shadow-HotStuff with increasing number of replicas'
       xAxisTitle: 'Number of Replicas'
       yAxisTitle: 'Latency (s)'
     shadowPlot:
@@ -47,26 +27,6 @@ plots:
         pointStyle: triangle
         pointBorderColor: '#c45850'
         borderColor: '#c45850'
-    predefinedPlots:
-      HotStuff:
-        values:
-          - x: '4'
-            y: '20'
-          - x: '8'
-            y: '20'
-          - x: '16'
-            y: '20'
-          - x: '32'
-            y: '47'
-          - x: '64'
-            y: '60'
-          - x: '128'
-            y: '105'
-        style:
-          label: 'HotStuff'
-          pointStyle: star
-          pointBorderColor: '#8e5ea2'
-          borderColor: '#8e5ea2'
   cpuDemo-shadow:
     type: cpu-shadow
     details:
@@ -157,7 +117,7 @@ experiments:
         clients: 2
         outStandingPerClient: 2800
         requestSize: 128
-  - 4repUniformClientDelay: # this will be passed to as data_dir value in shadow.yaml
+  - 32repUniformClientDelay: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
         duration: 5 s
@@ -167,30 +127,36 @@ experiments:
       plots:
         - name: throughputDemo
           metric: 'tps'
-          label: 4
+          label: 32
         - name: latencyDemo
           metric: 'latency'
-          label: 4
+          label: 32
         - name: cpuDemo-shadow
           metric: 'cpu-shadow'
-          label: 4
+          label: 32
         - name: memDemo-shadow
           metric: 'mem-shadow'
-          label: 4
+          label: 32
         - name: cpuDemo-app
           metric: 'cpu-app'
-          label: 4
+          label: 32
         - name: memDemo-app
           metric: 'mem-app'
-          label: 4
+          label: 32
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)
         latency:
           uniform: false
-          replicas: ['us-west-1': 2, 'us-east-1': 2]
+          replicas:
+            [
+              'us-west-1': 8,
+              'us-east-1': 8,
+              'af-south-1': 8,
+              'ap-south-1': 8,
+            ]
       replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 4
+        replicas: 32
         blockSize: 400
         replySize: 128
       client:

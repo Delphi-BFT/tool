@@ -201,30 +201,31 @@ async function main() {
       )),
     ]);
     let resourceUsage = await monitor.unregister(logger);
+    let perfStats = await getStats(
+      protocol,
+      path.join(experimentsPath, experimentId),
+      workingDir
+    );
     let statsForCSV = {
       experimentId: experimentId,
-      throughput: 0,
-      latency: 0,
-      cpuShadow: 0,
-      memShadow: 0,
-      cpuApp: 0,
-      memApp: 0,
+      throughput: perfStats.throughput,
+      latency: perfStats.latency,
+      cpuShadow: resourceUsage[shadowProcessName].medianCPU,
+      memShadow: resourceUsage[shadowProcessName].maxMEM,
+      cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,
+      memApp: resourceUsage[protocol.getProcessName()].maxMEM,
     };
+    csvUtil.values.push(statsForCSV);
+    //console.log(statsForCSV);
+    await csvUtil.save(path.join(experimentsPath, 'results.csv'));
     if (e[experimentId].plots) {
-      let perfStats = await getStats(
-        protocol,
-        path.join(experimentsPath, experimentId),
-        workingDir
-      );
       for (let p of e[experimentId].plots) {
         if (p.metric == 'tps') {
           plot.pushValue(p.name, p.label, perfStats.throughput);
-          statsForCSV.throughput = perfStats.throughput;
           continue;
         }
         if (p.metric == 'latency') {
           plot.pushValue(p.name, p.label, perfStats.latency);
-          statsForCSV.latency = perfStats.latency;
           continue;
         }
         if (p.metric == 'cpu-shadow') {
@@ -233,8 +234,6 @@ async function main() {
             p.label,
             resourceUsage[shadowProcessName].medianCPU
           );
-          statsForCSV.cpuShadow =
-            resourceUsage[shadowProcessName].medianCPU;
           continue;
         }
         if (p.metric == 'mem-shadow') {
@@ -243,8 +242,6 @@ async function main() {
             p.label,
             resourceUsage[shadowProcessName].maxMEM
           );
-          statsForCSV.memShadow =
-            resourceUsage[shadowProcessName].maxMEM;
           continue;
         }
         if (p.metric == 'cpu-app') {
@@ -253,8 +250,6 @@ async function main() {
             p.label,
             resourceUsage[protocol.getProcessName()].medianCPU
           );
-          statsForCSV.cpuApp =
-            resourceUsage[protocol.getProcessName()].medianCPU;
           continue;
         }
         if (p.metric == 'mem-app') {
@@ -263,15 +258,11 @@ async function main() {
             p.label,
             resourceUsage[protocol.getProcessName()].maxMEM
           );
-          statsForCSV.memApp =
-            resourceUsage[protocol.getProcessName()].maxMEM;
           continue;
         }
       }
     }
-    csvUtil.values.push(statsForCSV);
-    console.log(statsForCSV);
-    await csvUtil.save(path.join(experimentsPath, 'results.csv'));
+
     await backUpArtifact(
       networkFilePath,
       path.join(

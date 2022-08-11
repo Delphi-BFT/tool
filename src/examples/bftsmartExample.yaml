@@ -3,37 +3,37 @@ protocolPath: ../library/
 executionDir: ../library/build/install/library # directory to put Shadow YAML file
 experimentsDirectory: /root/myShadowExperiments # USE AN ABSOLUTE PATH
 experiments:
-#  - 4repAWSSucessful: # this will be passed to as data_dir value in shadow.yaml
-#      misc:
-#        duration: 1000 s
-#        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
-#        useShortestPath: false
-#      network:
-#        bandwidthUp: 10 Gbit # does not apply to clients (for now)
-#        bandwidthDown: 10 Gbit # does not apply to clients (for now)
-#        #latency:
-#        # uniform: true
-#        # delay: 1
-#        latency:
-#          uniform: false
-#          hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
-#      replica: # should be validated by connectors (currently not done, they are passed as-is)
-#        replicas: 4
-#        blockSize: 100
-#        replicaInterval: 100
-#        replySize: 0
-#        stateSize: 0
-#        context: false
-#        replicaSig: nosig
-#      client:
-#        clients: 2
-#        opPerClient: 100
-#        requestSize: 4000
-#        clientInterval: 100
-#        readOnly: false
-#        verbose: true
-#        clientSig: nosig
+  #  - 4repAWSSucessful: # this will be passed to as data_dir value in shadow.yaml
+  #      misc:
+  #        duration: 1000 s
+  #        clientDelay: 60 s # timestamp to start CLIs
+  #        parallelism: 20
+  #        useShortestPath: false
+  #      network:
+  #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+  #        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+  #        #latency:
+  #        # uniform: true
+  #        # delay: 1
+  #        latency:
+  #          uniform: false
+  #          hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+  #      replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #        replicas: 4
+  #        blockSize: 100
+  #        replicaInterval: 100
+  #        replySize: 0
+  #        stateSize: 0
+  #        context: false
+  #        replicaSig: nosig
+  #      client:
+  #        clients: 2
+  #        opPerClient: 100
+  #        requestSize: 4000
+  #        clientInterval: 100
+  #        readOnly: false
+  #        verbose: true
+  #        clientSig: nosig
   - 6repmeetingLowRICHTIG: # this will be passed to as data_dir value in shadow.yaml
       misc:
         duration: 500 s
@@ -44,8 +44,8 @@ experiments:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)
         latency:
-         uniform: true
-         delay: 1
+          uniform: true
+          delay: 1
         #       latency:
         # uniform: false
         # hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
@@ -58,7 +58,8 @@ experiments:
         context: false
         replicaSig: nosig
       client:
-        clients: 2
+        clients: 4
+        threadsPerClient: 4
         opPerClient: 10000
         requestSize: 0
         clientInterval: 0

@@ -26,12 +26,19 @@ async function writeHosts(hotStuffDir, ips, log) {
   let replicaString = '';
   let clientString = '';
   for (let i = 0; i < ips.length; i++) {
-    if (ips[i].isClient) clientString += ips[i].ip + ' ' + ips[i].ip + '\n';
+    if (ips[i].isClient)
+      clientString += ips[i].ip + ' ' + ips[i].ip + '\n';
     else replicaString += ips[i].ip + ' ' + ips[i].ip + '\n';
   }
-  await fs.writeFile(path.join(hotStuffDir, replicasFile), replicaString);
+  await fs.writeFile(
+    path.join(hotStuffDir, replicasFile),
+    replicaString
+  );
   log.info('Wrote replicas file!');
-  await fs.writeFile(path.join(hotStuffDir, clientsFile), clientString);
+  await fs.writeFile(
+    path.join(hotStuffDir, clientsFile),
+    clientString
+  );
   log.info('Wrote clients file!');
 }
 
@@ -41,11 +48,16 @@ async function genArtifacts(hotStuffDir, blockSize, log) {
     './gen_all.sh',
     [blockSize],
     path.join(hotStuffDir, genScriptWd),
-    log,
+    log
   );
   log.info('Finished generating artifacts...');
 }
-async function passArgs(workingDir, hosts, outStandingPerClient, log) {
+async function passArgs(
+  workingDir,
+  hosts,
+  outStandingPerClient,
+  log
+) {
   let replicaIndex = 0;
   let clientIndex = 0;
   for (let i = 0; i < hosts.length; i++) {
@@ -58,7 +70,10 @@ async function passArgs(workingDir, hosts, outStandingPerClient, log) {
       clientIndex++;
       continue;
     }
-    let conf = path.join(genScriptWd, `hotstuff.gen-sec${replicaIndex}.conf`);
+    let conf = path.join(
+      genScriptWd,
+      `hotstuff.gen-sec${replicaIndex}.conf`
+    );
     hosts[i].proc = hotStuffAppExec;
     hosts[i].env = '';
     hosts[i].args = `--conf ${conf}`;
@@ -70,11 +85,14 @@ async function copyConfig(hotStuffDir, log) {
   await promisified_spawn(
     'cp',
     [
-      path.join(hotStuffDir, path.join(genScriptWd, 'hotstuff.gen.conf')),
+      path.join(
+        hotStuffDir,
+        path.join(genScriptWd, 'hotstuff.gen.conf')
+      ),
       path.join(hotStuffDir, 'hotstuff.conf'),
     ],
     hotStuffDir,
-    log,
+    log
   );
 }
 let saveExp = (hotStuffDir, shadowFile, newName) => {
@@ -82,15 +100,18 @@ let saveExp = (hotStuffDir, shadowFile, newName) => {
     'cp ' +
       path.join(hotStuffDir, 'log.txt') +
       ' ' +
-      path.join(hotStuffDir, newName),
+      path.join(hotStuffDir, newName)
   );
   console.log(saveExp.toString());
 };
 let getResults = (hotStuffDir, workDir) => {
   let grep = execSync(
     'cat ' +
-      path.join(workDir, '/hosts/*/*.stderr | python3 ./scripts/thr_hist.py'),
-    { cwd: hotStuffDir },
+      path.join(
+        workDir,
+        '/hosts/*/*.stderr | python3 ./scripts/thr_hist.py'
+      ),
+    { cwd: hotStuffDir }
   );
   let tokens = grep.toString().split('\n');
   let stripped = tokens[0].replace('[', '').replace(']', '');
@@ -101,7 +122,9 @@ let getResults = (hotStuffDir, workDir) => {
   numArr.forEach((element) => {
     max = element > max ? element : max;
   });
-  let latencyString = tokens[1].replace('lat = ', '').replace('ms', '');
+  let latencyString = tokens[1]
+    .replace('lat = ', '')
+    .replace('ms', '');
   let latency = Number(latencyString);
   let returnVal = { throughput: max, latency: latency };
   return returnVal;
@@ -118,7 +141,8 @@ const compute = async (procName, usage) => {
   let mem = 0.0;
   Object.keys(stats).forEach(function (key) {
     total += stats[key] == undefined ? 0 : stats[key].cpu;
-    mem += stats[key] == undefined ? 0 : stats[key].memory / 1000000000;
+    mem +=
+      stats[key] == undefined ? 0 : stats[key].memory / 1000000000;
   });
   usage.proc = usage.proc > total ? usage.proc : total;
   usage.mem = usage.mem > mem ? usage.mem : mem;
@@ -144,7 +168,13 @@ const interval = async (time, procName, usage) => {
 };
 var stop = false;*/
 async function getStats(experimentsPath, protocolPath) {
-  let grep = await exec(`cat ./hosts/*/*.stderr | python3 ${path.join(protocolPath,statsScript)}`, {cwd: experimentsPath});
+  let grep = await exec(
+    `cat ./hosts/*/*.stderr | python3 ${path.join(
+      protocolPath,
+      statsScript
+    )}`,
+    { cwd: experimentsPath }
+  );
   console.log(grep.stdout.toString());
   let tokens = grep.stdout.toString().split('\n');
   let stripped = tokens[0].replace('[', '').replace(']', '');
@@ -155,13 +185,19 @@ async function getStats(experimentsPath, protocolPath) {
   numArr.forEach((element) => {
     max = element > max ? element : max;
   });
-  let latencyString = tokens[1].replace('lat = ', '').replace('ms', '');
+  let latencyString = tokens[1]
+    .replace('lat = ', '')
+    .replace('ms', '');
   let latency = Number(latencyString);
   let returnVal = { throughput: max, latency: latency };
   return returnVal;
-
 }
-async function build(workingDir, replicaSettings, clientSettings, log) {
+async function build(
+  workingDir,
+  replicaSettings,
+  clientSettings,
+  log
+) {
   await promisified_spawn(
     'cmake',
     [
@@ -171,17 +207,24 @@ async function build(workingDir, replicaSettings, clientSettings, log) {
       `-DCMAKE_CXX_FLAGS=-g -DHOTSTUFF_ENABLE_BENCHMARK -DHOTSTUFF_CMD_RESPSIZE=${replicaSettings.replySize} -DHOTSTUFF_CMD_REQSIZE=${clientSettings.requestSize}`,
     ],
     workingDir,
-    log,
+    log
   );
+  await promisified_spawn('make', [], workingDir, log);
   log.info('HotStuff build terminated successfully!');
 }
-async function configure(workingDir, replicaSettings, clientSettings, log) {
+async function configure(
+  workingDir,
+  replicaSettings,
+  clientSettings,
+  log
+) {
   const hostIPs = await ipUtil.getIPs({
     [replicaPrefix]: replicaSettings.replicas,
     [clientPrefix]: clientSettings.clients,
   });
   for (let i = 0; i < hostIPs.length; i++) {
-    if (hostIPs[i].name.startsWith(replicaPrefix)) hostIPs[i].isClient = false;
+    if (hostIPs[i].name.startsWith(replicaPrefix))
+      hostIPs[i].isClient = false;
     else hostIPs[i].isClient = true;
   }
   await writeHosts(workingDir, hostIPs, log);
@@ -190,7 +233,7 @@ async function configure(workingDir, replicaSettings, clientSettings, log) {
     workingDir,
     hostIPs,
     clientSettings.outStandingPerClient,
-    log,
+    log
   );
   await copyConfig(workingDir, log);
   return hosts;
