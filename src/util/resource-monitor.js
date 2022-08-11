@@ -2,6 +2,7 @@ const pidusage = require('pidusage');
 const util = require('util');
 const { median } = require('./helpers');
 const exec = util.promisify(require('node:child_process').exec);
+const si = require('systeminformation');
 
 const procIntervals = new Map();
 
@@ -55,7 +56,9 @@ async function unregister(log) {
   for (let proc in procIntervals) {
     clearInterval(procIntervals[proc].interval);
     usage[proc] = {};
-    usage[proc].medianCPU = median(procIntervals[proc].stats.cpu);
+    usage[proc].medianCPU = null;
+    if (procIntervals[proc].stats.cpu)
+      usage[proc].medianCPU = median(procIntervals[proc].stats.cpu);
     usage[proc].maxMEM = Math.max(...procIntervals[proc].stats.mem);
     procIntervals.delete(proc);
   }
@@ -63,5 +66,18 @@ async function unregister(log) {
   log.info('intervals cleared!');
   return usage;
 }
+async function registerSI(time, log) {
+  let interval = setInterval(async function () {
+    let totalMemUsage = (await si.mem()).used / 1000000000;
+    log.info(`current total mem usage of host: ${totalMemUsage}`);
+    procIntervals['total'].stats.mem.push(totalMemUsage);
+  }, time);
+  let intervalObject = {};
+  intervalObject['interval'] = interval;
+  intervalObject['stats'] = {};
+  intervalObject.stats.cpu = null;
+  intervalObject.stats.mem = [];
+  procIntervals['total'] = intervalObject;
+}
 
-module.exports = { register, unregister };
+module.exports = { register, unregister, registerSI };
