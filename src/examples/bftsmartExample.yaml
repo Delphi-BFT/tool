@@ -7,7 +7,7 @@ experiments:
 #      misc:
 #        duration: 1000 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -34,22 +34,87 @@ experiments:
 #        readOnly: false
 #        verbose: true
 #        clientSig: nosig
-  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+#  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+  #  - 4repAWSSucessful: # this will be passed to as data_dir value in shadow.yaml
+  #      misc:
+  #        duration: 1000 s
+  #        clientDelay: 60 s # timestamp to start CLIs
+  #        parallelism: 16
+  #        useShortestPath: false
+  #      network:
+  #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+  #        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+  #        #latency:
+  #        # uniform: true
+  #        # delay: 1
+  #        latency:
+  #          uniform: false
+  #          hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+  #      replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #        replicas: 4
+  #        blockSize: 100
+  #        replicaInterval: 100
+  #        replySize: 0
+  #        stateSize: 0
+  #        context: false
+  #        replicaSig: nosig
+  #      client:
+  #        clients: 2
+  #        opPerClient: 100
+  #        requestSize: 4000
+  #        clientInterval: 100
+  #        readOnly: false
+  #        verbose: true
+  #        clientSig: nosig
+  # - 6repmeetingLowRICHTIG: # this will be passed to as data_dir value in shadow.yaml
+  #     misc:
+  #       duration: 20 s
+  #       clientDelay: 10 s # timestamp to start CLIs
+  #       parallelism: 16
+  #       useShortestPath: false
+  #     network:
+  #       bandwidthUp: 1 Gbit # does not apply to clients (for now)
+  #       bandwidthDown: 1 Gbit # does not apply to clients (for now)
+  #       latency:
+  #        uniform: true
+  #        delay: 1 ms
+  #         uniform: true
+  #         delay: 1
+  #       #       latency:
+  #       # uniform: false
+  #       # hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+  #     replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #       replicas: 4
+  #       blockSize: 100
+  #       replicaInterval: 100
+  #       replySize: 0
+  #       stateSize: 0
+  #       context: false
+  #       replicaSig: nosig
+  #     client:
+  #       clients: 1
+  #       opPerClient: 500
+  #       threadsPerClient: 4
+  #       opPerClient: 10000
+  #       requestSize: 0
+  #       clientInterval: 0
+  #       readOnly: false
+  #       verbose: true
+  #       clientSig: nosig
+  - 4replicasAWSOregon:
       misc:
-        duration: 20 s
-        clientDelay: 10 s # timestamp to start CLIs
+        duration: 1200 s
+        clientDelay: 30 s
         parallelism: 16
         useShortestPath: false
       network:
-        bandwidthUp: 1 Gbit # does not apply to clients (for now)
-        bandwidthDown: 1 Gbit # does not apply to clients (for now)
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
         latency:
-         uniform: true
-         delay: 1 ms
-        #       latency:
-        # uniform: false
-        # hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['us-west-1': 1]
+      replica:
         replicas: 4
         blockSize: 100
         replicaInterval: 100
@@ -59,28 +124,27 @@ experiments:
         replicaSig: nosig
       client:
         clients: 1
-        opPerClient: 500
+        threadsPerClient: 1
+        opPerClient: 2000
         requestSize: 0
         clientInterval: 0
         readOnly: false
         verbose: true
         clientSig: nosig
-  - 4repAWS: # this will be passed to as data_dir value in shadow.yaml
+  - 4replicasAWSIreland:
       misc:
-        duration: 600 s
-        clientDelay: 30 s # timestamp to start CLIs
+        duration: 1200 s
+        clientDelay: 30 s
         parallelism: 16
         useShortestPath: false
       network:
-        bandwidthUp: 1 Gbit # does not apply to clients (for now)
-        bandwidthDown: 1 Gbit # does not apply to clients (for now)
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
         latency:
-         uniform: false
-         #delay: 1 ms
-        #       latency:
-        # uniform: false
-         hosts: ['us-west-2': 1, 'eu-west-1': 1, 'ap-southeast-2': 1, 'sa-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['eu-west-1': 1]
+      replica:
         replicas: 4
         blockSize: 100
         replicaInterval: 100
@@ -90,7 +154,68 @@ experiments:
         replicaSig: nosig
       client:
         clients: 1
-        opPerClient: 500
+        threadsPerClient: 1
+        opPerClient: 2000
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
+  - 4replicasAWSSao:
+      misc:
+        duration: 1200 s
+        clientDelay: 30 s
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['sa-east-1': 1]
+      replica:
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        threadsPerClient: 1
+        opPerClient: 2000
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
+  - 4replicasAWSSydney:
+      misc:
+        duration: 1200 s
+        clientDelay: 30 s
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['ap-southeast-2: 1]
+      replica:
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        threadsPerClient: 1
+        opPerClient: 2000
         requestSize: 0
         clientInterval: 0
         readOnly: false
@@ -100,7 +225,7 @@ experiments:
   #     misc:
   #       duration: 500 s
   #       clientDelay: 60 s # timestamp to start CLIs
-  #       parallelism: 20
+  #       parallelism: 16
   #       useShortestPath: false
   #     network:
   #       bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -131,7 +256,7 @@ experiments:
 #      misc:
 #        duration: 500 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -162,7 +287,7 @@ experiments:
 #      misc:
 #        duration: 1000 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -193,7 +318,7 @@ experiments:
 #      misc:
 #        duration: 1000 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -224,7 +349,7 @@ experiments:
 #      misc:
 #        duration: 1000 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -255,7 +380,7 @@ experiments:
 #      misc:
 #        duration: 1000 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -286,7 +411,7 @@ experiments:
 #      misc:
 #        duration: 1000 s
 #        clientDelay: 60 s # timestamp to start CLIs
-#        parallelism: 20
+#        parallelism: 16
 #        useShortestPath: false
 #      network:
 #        bandwidthUp: 10 Gbit # does not apply to clients (for now)

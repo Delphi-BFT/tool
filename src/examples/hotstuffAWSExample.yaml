@@ -1,0 +1,165 @@
+protocolName: hotstuff
+protocolPath: /home/sadok/shadow-experiments/libhotstuff/
+executionDir: /home/sadok/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+experimentsDirectory: /home/sadok/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
+plots:
+  throughputDemo:
+    type: tps
+    details:
+      title: 'Throughput comparison of Shadow-HotStuff with increasing number of replicas'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Throughput (ops/s)'
+    shadowPlot:
+      style:
+        label: 'Shadow'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  latencyDemo:
+    type: latency
+    details:
+      title: 'Latency comparison of Shadow-HotStuff with increasing number of replicas'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Latency (s)'
+    shadowPlot:
+      style:
+        label: 'Shadow'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  cpuDemo-shadow:
+    type: cpu-shadow
+    details:
+      title: 'Median CPU Usage of Shadow-HotStuff Shadow Process (8 vCPU)'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Percentage * vCPU'
+    shadowPlot:
+      style:
+        label: 'CPU Usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  memDemo-shadow:
+    type: mem-shadow
+    details:
+      title: 'Maximum Memory Usage of Shadow-HotStuff Shadow Process'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowPlot:
+      style:
+        label: 'Memory usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  cpuDemo-app:
+    type: cpu-app
+    details:
+      title: 'Median CPU Usage of Shadow-HotStuff Replica Processes (8 vCPU)'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Percentage * vCPU'
+    shadowPlot:
+      style:
+        label: 'CPU Usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  memDemo-app:
+    type: mem-app
+    details:
+      title: 'Maximum Memory Usage of Shadow-HotStuff Replica Processes'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowPlot:
+      style:
+        label: 'Memory usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+experiments:
+  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 630 us
+        duration: 5 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 8
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 4
+        - name: latencyDemo
+          metric: 'latency'
+          label: 4
+        - name: cpuDemo-shadow
+          metric: 'cpu-shadow'
+          label: 4
+        - name: memDemo-shadow
+          metric: 'mem-shadow'
+          label: 4
+        - name: cpuDemo-app
+          metric: 'cpu-app'
+          label: 4
+        - name: memDemo-app
+          metric: 'mem-app'
+          label: 4
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 2, 'us-east-1': 2]
+          clients: ['us-west-1': 1, 'af-south-1': 1]
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        blockSize: 400
+        replySize: 128
+      client:
+        clients: 2
+        outStandingPerClient: 2800
+        requestSize: 128
+  - 32repUniformClientDelay: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 630 us
+        duration: 5 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 8
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 32
+        - name: latencyDemo
+          metric: 'latency'
+          label: 32
+        - name: cpuDemo-shadow
+          metric: 'cpu-shadow'
+          label: 32
+        - name: memDemo-shadow
+          metric: 'mem-shadow'
+          label: 32
+        - name: cpuDemo-app
+          metric: 'cpu-app'
+          label: 32
+        - name: memDemo-app
+          metric: 'mem-app'
+          label: 32
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        latency:
+          uniform: false
+          replicas:
+            [
+              'us-west-1': 8,
+              'us-east-1': 8,
+              'af-south-1': 8,
+              'ap-south-1': 8,
+            ]
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 32
+        blockSize: 400
+        replySize: 128
+      client:
+        clients: 2
+        outStandingPerClient: 2800
+        requestSize: 128

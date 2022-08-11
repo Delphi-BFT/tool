@@ -87,6 +87,9 @@ async function createConfigFile(
       "host = '" +
       hostIPs[i].ip +
       "' \n" +
+      "bind = '" +
+      hostIPs[i].ip +
+      "' \n" +
       'client_port = ' +
       clientPort +
       '\n' +

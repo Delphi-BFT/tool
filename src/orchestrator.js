@@ -5,6 +5,7 @@ const monitor = require('./util/resource-monitor');
 const yaml = require('js-yaml');
 const fs = require('fs').promises;
 const path = require('path');
+const csvUtil = require('./util/csvUtil');
 const { createLogger, format, transports } = require('winston');
 const { combine, splat, timestamp, printf } = format;
 const { deleteDirectoryIfExists } = require('./util/helpers');
@@ -177,7 +178,8 @@ async function main() {
     else {
       myGraph = await eg.makeAWSGraph(
         hosts,
-        e[experimentId].network.latency.hosts,
+        e[experimentId].network.latency.replicas,
+        e[experimentId].network.latency.clients,
         e[experimentId].network.bandwidthUp,
         e[experimentId].network.bandwidthDown,
         '0.0',
@@ -199,12 +201,24 @@ async function main() {
       )),
     ]);
     let resourceUsage = await monitor.unregister(logger);
+    let perfStats = await getStats(
+      protocol,
+      path.join(experimentsPath, experimentId),
+      workingDir
+    );
+    let statsForCSV = {
+      experimentId: experimentId,
+      throughput: perfStats.throughput,
+      latency: perfStats.latency,
+      cpuShadow: resourceUsage[shadowProcessName].medianCPU,
+      memShadow: resourceUsage[shadowProcessName].maxMEM,
+      cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,
+      memApp: resourceUsage[protocol.getProcessName()].maxMEM,
+    };
+    csvUtil.values.push(statsForCSV);
+    //console.log(statsForCSV);
+    await csvUtil.save(path.join(experimentsPath, 'results.csv'));
     if (e[experimentId].plots) {
-      let perfStats = await getStats(
-        protocol,
-        path.join(experimentsPath, experimentId),
-        workingDir
-      );
       for (let p of e[experimentId].plots) {
         if (p.metric == 'tps') {
           plot.pushValue(p.name, p.label, perfStats.throughput);
@@ -214,7 +228,7 @@ async function main() {
           plot.pushValue(p.name, p.label, perfStats.latency);
           continue;
         }
-        if (p.metric == 'cpu') {
+        if (p.metric == 'cpu-shadow') {
           plot.pushValue(
             p.name,
             p.label,
@@ -222,16 +236,33 @@ async function main() {
           );
           continue;
         }
-        if (p.metric == 'mem') {
+        if (p.metric == 'mem-shadow') {
           plot.pushValue(
             p.name,
             p.label,
-            resourceUsage[shadowProcessName].medianMEM
+            resourceUsage[shadowProcessName].maxMEM
+          );
+          continue;
+        }
+        if (p.metric == 'cpu-app') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage[protocol.getProcessName()].medianCPU
+          );
+          continue;
+        }
+        if (p.metric == 'mem-app') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage[protocol.getProcessName()].maxMEM
           );
           continue;
         }
       }
     }
+
     await backUpArtifact(
       networkFilePath,
       path.join(

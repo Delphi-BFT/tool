@@ -10,6 +10,7 @@ const hostsFile = path.join(buildDir, '/config/hosts.config');
 const viewFile = path.join(buildDir, '/config/currentView');
 const bftSmartPort = 11000;
 const bftSmartPort1 = 11001;
+const clientPort = 11100;
 const sysconf = {
   'system.communication.secretKeyAlgorithm': 'PBKDF2WithHmacSHA1',
   'system.communication.secretKeyAlgorithmProvider': 'SunJCE',
@@ -48,17 +49,19 @@ const sysconf = {
   'system.bft': 'true',
   'system.ssltls.protocol_version': 'TLSv1.2',
   'system.ssltls.key_store_file': 'EC_KeyPair_256.pkcs12',
-  'system.ssltls.enabled_ciphers': 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256',
+  'system.ssltls.enabled_ciphers':
+    'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256',
   'system.client.invokeOrderedTimeout': '40',
 };
 
 const processName = 'java';
 
-
 const throughputLatencyServerClass =
   'bftsmart.demo.microbenchmarks.ThroughputLatencyServer';
 const throughputLatencyClientClass =
   'bftsmart.demo.microbenchmarks.ThroughputLatencyClient';
+const clientPrefix = 'bftSmartClient';
+const replicaPrefix = 'bftSmartReplica';
 
 /* Java stuff */
 
@@ -70,7 +73,12 @@ function getProcessName() {
   return processName;
 }
 
-async function build(workingDir, replicaSettings, clientSettings, log) {
+async function build(
+  workingDir,
+  replicaSettings,
+  clientSettings,
+  log
+) {
   log.info('building BFT-SMaRt ...');
   let cmd = { proc: './gradlew', args: ['installDist'] };
   await promisified_spawn(cmd.proc, cmd.args, workingDir, log);
@@ -93,34 +101,44 @@ async function genSystemConfig(workingDir, replicas, batchsize) {
 
   fs.writeFileSync(path.join(workingDir, sysconfFile), sysconfString);
 }
-async function genHostsConfig(workingDir, replicas) {
-  let replicaIPs = await ipUtil.getIPs({ bftsmartReplica: replicas });
+async function genHostsConfig(workingDir, replicas, clients) {
+  let ipObject = {};
+  ipObject[replicaPrefix] = replicas;
+  ipObject[clientPrefix] = clients;
+  let replicaIPs = await ipUtil.getIPs(ipObject);
+  let clientIndex = 7000;
   let hostsString = '';
   for (let i = 0; i < replicaIPs.length; i++) {
-    hostsString += `${i} ${replicaIPs[i].ip} ${bftSmartPort} ${bftSmartPort1}\n`;
+    if (replicaIPs[i].name.startsWith(replicaPrefix)) {
+      hostsString += `${i} ${replicaIPs[i].ip} ${bftSmartPort} ${bftSmartPort1}\n`;
+      replicaIPs[i].isClient = false;
+    } else {
+      hostsString += `${clientIndex} ${replicaIPs[i].ip} ${clientPort}\n`;
+      replicaIPs[i].isClient = true;
+      replicaIPs[i].clientIndex = clientIndex;
+      clientIndex += 1000;
+    }
   }
-  hostsString += `7000 12.0.0.1 11100\n`;
   fs.writeFileSync(path.join(workingDir, hostsFile), hostsString);
   return replicaIPs;
 }
 async function passArgs(replicaIPs, replicaSettings, clientSettings) {
   for (let i = 0; i < replicaIPs.length; i++) {
-    replicaIPs[i].proc = javaProc;
-    replicaIPs[i].env = '';
-    replicaIPs[
-      i
-    ].args = `-Xmx500m ${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`;
-    replicaIPs[i].isClient = false;
+    if (replicaIPs[i].isClient) {
+      replicaIPs[i].proc = javaProc;
+      replicaIPs[i].env = '';
+      replicaIPs[
+        i
+      ].args = `-Xmx500m ${javaArgs} ${throughputLatencyClientClass} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`;
+    } else {
+      replicaIPs[i].proc = javaProc;
+      replicaIPs[i].env = '';
+      replicaIPs[
+        i
+      ].args = `-Xmx500m ${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`;
+    }
   }
-  /* add in client */
-  replicaIPs.push({
-    name: 'client',
-    ip: '12.0.0.1',
-    proc: javaProc,
-    env: '',
-    args: `-Xmx500m ${javaArgs} ${throughputLatencyClientClass} 7000 ${clientSettings.clients} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
-    isClient: true,
-  });
+
   return replicaIPs;
 }
 async function deleteCurrentView(workingDir) {
@@ -130,12 +148,15 @@ async function deleteCurrentView(workingDir) {
     console.error(err);
   }
 }
-async function configure(workingDir, replicaSettings, clientSettings, log) {
-
+async function configure(
+  workingDir,
+  replicaSettings,
+  clientSettings,
+  log
+) {
   log.info('deleting old view');
   await deleteCurrentView(workingDir);
   log.info('reading experiment details ...');
-
 
   //let experimentId = Object.keys(experiment)[0];
   /* Replica Settings */
@@ -162,13 +183,24 @@ async function configure(workingDir, replicaSettings, clientSettings, log) {
   await genSystemConfig(
     workingDir,
     replicaSettings.replicas,
-    replicaSettings.blockSize,
+    replicaSettings.blockSize
   );
   log.info('system.config generated!');
   log.info('generating hosts.config ...');
-  var replicaIPs = await genHostsConfig(workingDir, replicaSettings.replicas);
+  var replicaIPs = await genHostsConfig(
+    workingDir,
+    replicaSettings.replicas,
+    clientSettings.clients
+  );
   log.info('hosts.config generated!');
-  replicaIPs = await passArgs(replicaIPs, replicaSettings, clientSettings);
+  replicaIPs = await passArgs(
+    replicaIPs,
+    replicaSettings,
+    clientSettings
+  );
   return replicaIPs;
 }
-module.exports = { build, configure,  getProcessName};
+async function getStats(experimentsPath, protocolPath) {
+  return { throughput: -1, latency: -1 };
+}
+module.exports = { build, configure, getProcessName, getStats };

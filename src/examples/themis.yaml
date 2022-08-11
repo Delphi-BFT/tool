@@ -17,7 +17,7 @@ experiments:
           uniform: true
           delay: 630 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 4
+        replicas: 32
         minBatchSize: 100
         maxBatchSize: 100
         replySize: 100
