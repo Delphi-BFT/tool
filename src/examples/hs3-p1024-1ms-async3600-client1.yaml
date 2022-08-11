@@ -70,8 +70,8 @@ plots:
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
-        runahead: 1630 us
-        duration: 5 s
+        runahead: 630 us
+        duration: 3 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -93,13 +93,13 @@ experiments:
         blockSize: 400
         replySize: 1024
       client:
-        clients: 2
-        outStandingPerClient: 2000
+        clients: 1
+        outStandingPerClient: 3600
         requestSize: 1024
   - 8rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 3 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -121,13 +121,13 @@ experiments:
         blockSize: 400
         replySize: 1024
       client:
-        clients: 2
-        outStandingPerClient: 2000
+        clients: 1
+        outStandingPerClient: 3600
         requestSize: 1024
   - 16rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 3 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -149,13 +149,13 @@ experiments:
         blockSize: 400
         replySize: 1024
       client:
-        clients: 2
-        outStandingPerClient: 2000
+        clients: 1
+        outStandingPerClient: 3600
         requestSize: 1024
   - 32rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration:  60 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -177,13 +177,13 @@ experiments:
         blockSize: 400
         replySize: 1024
       client:
-        clients: 2
-        outStandingPerClient: 2000
+        clients: 1
+        outStandingPerClient: 3600
         requestSize: 1024
   - 64rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 60 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -205,13 +205,13 @@ experiments:
         blockSize: 400
         replySize: 1024
       client:
-        clients: 2
-        outStandingPerClient: 2000
+        clients: 1
+        outStandingPerClient: 3600
         requestSize: 1024
   - 128rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 60 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -233,8 +233,8 @@ experiments:
         blockSize: 400
         replySize: 1024
       client:
-        clients: 2
-        outStandingPerClient: 2000
+        clients: 1
+        outStandingPerClient: 3600
         requestSize: 1024
 #  - 8rep: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
@@ -296,7 +296,7 @@ experiments:
 #        blockSize: 100
 #        replySize: 1024
 #      client:
-#        clients: 2
+#        clients: 1
 #        outStandingPerClient: 1600
 #        requestSize: 1024
 #  - 4rep: # this will be passed to as data_dir value in shadow.yaml

@@ -70,7 +70,7 @@ plots:
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
-        runahead: 1630 us
+        runahead: 630 us
         duration: 5 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16

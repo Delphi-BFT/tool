@@ -1,7 +1,7 @@
 protocolName: bftsmart
 protocolPath: ../library/
 executionDir: ../library/build/install/library # directory to put Shadow YAML file
-experimentsDirectory: /root/myShadowExperiments # USE AN ABSOLUTE PATH
+experimentsDirectory: /home/cb/myShadowExperiments/myBFT-SMaRtExperiments # USE AN ABSOLUTE PATH
 experiments:
 #  - 4repAWSSucessful: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
@@ -34,23 +34,23 @@ experiments:
 #        readOnly: false
 #        verbose: true
 #        clientSig: nosig
-  - 6repmeetingLowRICHTIG: # this will be passed to as data_dir value in shadow.yaml
+  - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
-        duration: 500 s
-        clientDelay: 60 s # timestamp to start CLIs
-        parallelism: 20
+        duration: 20 s
+        clientDelay: 10 s # timestamp to start CLIs
+        parallelism: 16
         useShortestPath: false
       network:
-        bandwidthUp: 10 Gbit # does not apply to clients (for now)
-        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        bandwidthUp: 1 Gbit # does not apply to clients (for now)
+        bandwidthDown: 1 Gbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1
+         delay: 1 ms
         #       latency:
         # uniform: false
         # hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
       replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 6
+        replicas: 4
         blockSize: 100
         replicaInterval: 100
         replySize: 0
@@ -58,13 +58,75 @@ experiments:
         context: false
         replicaSig: nosig
       client:
-        clients: 2
-        opPerClient: 10000
+        clients: 1
+        opPerClient: 500
         requestSize: 0
         clientInterval: 0
         readOnly: false
         verbose: true
         clientSig: nosig
+  - 4repAWS: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        duration: 600 s
+        clientDelay: 30 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit # does not apply to clients (for now)
+        bandwidthDown: 1 Gbit # does not apply to clients (for now)
+        latency:
+         uniform: false
+         #delay: 1 ms
+        #       latency:
+        # uniform: false
+         hosts: ['us-west-2': 1, 'eu-west-1': 1, 'ap-southeast-2': 1, 'sa-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        opPerClient: 500
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
+  # - 6repmeetingLowRICHTIG: # this will be passed to as data_dir value in shadow.yaml
+  #     misc:
+  #       duration: 500 s
+  #       clientDelay: 60 s # timestamp to start CLIs
+  #       parallelism: 20
+  #       useShortestPath: false
+  #     network:
+  #       bandwidthUp: 10 Gbit # does not apply to clients (for now)
+  #       bandwidthDown: 10 Gbit # does not apply to clients (for now)
+  #       latency:
+  #        uniform: true
+  #        delay: 1
+  #       #       latency:
+  #       # uniform: false
+  #       # hosts: ['us-west-1': 1, 'eu-west-1': 2, 'us-east-1': 1] # ONLY APPLIES FOR REPLICAS, SUM OF NUMBER OF HOSTS PER REGION MUST BE EQUAL TO NUMBER OF REPLICAS
+  #     replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #       replicas: 6
+  #       blockSize: 100
+  #       replicaInterval: 100
+  #       replySize: 0
+  #       stateSize: 0
+  #       context: false
+  #       replicaSig: nosig
+  #     client:
+  #       clients: 2
+  #       opPerClient: 10000
+  #       requestSize: 0
+  #       clientInterval: 0
+  #       readOnly: false
+  #       verbose: true
+  #       clientSig: nosig
 #  - 16repAWSLow: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
 #        duration: 500 s

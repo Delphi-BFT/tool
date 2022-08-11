@@ -70,8 +70,8 @@ plots:
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
-        runahead: 1630 us
-        duration: 5 s
+        runahead: 630 us
+        duration: 30 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -87,19 +87,19 @@ experiments:
         bandwidthDown: 9600 Mbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1000 us
+         delay: 10000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 4
         blockSize: 400
-        replySize: 1024
+        replySize: 0
       client:
-        clients: 2
-        outStandingPerClient: 2000
-        requestSize: 1024
+        clients: 1
+        outStandingPerClient: 3600
+        requestSize: 0
   - 8rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 30 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -115,19 +115,19 @@ experiments:
         bandwidthDown: 9600 Mbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1000 us
+         delay: 10000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 8
         blockSize: 400
-        replySize: 1024
+        replySize: 0
       client:
-        clients: 2
-        outStandingPerClient: 2000
-        requestSize: 1024
+        clients: 1
+        outStandingPerClient: 3600
+        requestSize: 0
   - 16rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 30 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -143,19 +143,19 @@ experiments:
         bandwidthDown: 9600 Mbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1000 us
+         delay: 10000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 16
         blockSize: 400
-        replySize: 1024
+        replySize: 0
       client:
-        clients: 2
-        outStandingPerClient: 2000
-        requestSize: 1024
+        clients: 1
+        outStandingPerClient: 3600
+        requestSize: 0
   - 32rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration:  60 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -171,19 +171,19 @@ experiments:
         bandwidthDown: 9600 Mbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1000 us
+         delay: 10000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 32
         blockSize: 400
-        replySize: 1024
+        replySize: 0
       client:
-        clients: 2
-        outStandingPerClient: 2000
-        requestSize: 1024
+        clients: 1
+        outStandingPerClient: 3600
+        requestSize: 0
   - 64rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 60 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -199,19 +199,19 @@ experiments:
         bandwidthDown: 9600 Mbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1000 us
+         delay: 10000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 64
         blockSize: 400
-        replySize: 1024
+        replySize: 0
       client:
-        clients: 2
-        outStandingPerClient: 2000
-        requestSize: 1024
+        clients: 1
+        outStandingPerClient: 3600
+        requestSize: 0
   - 128rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 60 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 16
         useShortestPath: false
@@ -227,15 +227,15 @@ experiments:
         bandwidthDown: 9600 Mbit # does not apply to clients (for now)
         latency:
          uniform: true
-         delay: 1000 us
+         delay: 10000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 128
         blockSize: 400
-        replySize: 1024
+        replySize: 0
       client:
-        clients: 2
-        outStandingPerClient: 2000
-        requestSize: 1024
+        clients: 1
+        outStandingPerClient: 3600
+        requestSize: 0
 #  - 8rep: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
 #        duration: 20 s
@@ -251,11 +251,11 @@ experiments:
 #      replica: # should be validated by connectors (currently not done, they are passed as-is)
 #        replicas: 8
 #        blockSize: 400
-#        replySize: 1024
+#        replySize: 0
 #      client:
 #        clients: 10
 #        outStandingPerClient: 800
-#        requestSize: 1024
+#        requestSize: 0
 #  - 16rep: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
 #        duration: 20 s
@@ -271,11 +271,11 @@ experiments:
 #      replica: # should be validated by connectors (currently not done, they are passed as-is)
 #        replicas: 4
 #        blockSize: 400
-#        replySize: 1024
+#        replySize: 0
 #      client:
 #        clients: 10
 #        outStandingPerClient: 800
-#        requestSize: 1024
+#        requestSize: 0
 #  - 32repAWS: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
 #        duration: 20 s
@@ -294,11 +294,11 @@ experiments:
 #      replica: # should be validated by connectors (currently not done, they are passed as-is)
 #        replicas: 32
 #        blockSize: 100
-#        replySize: 1024
+#        replySize: 0
 #      client:
-#        clients: 2
+#        clients: 1
 #        outStandingPerClient: 1600
-#        requestSize: 1024
+#        requestSize: 0
 #  - 4rep: # this will be passed to as data_dir value in shadow.yaml
 #      misc:
 #        duration: 20 s
@@ -314,8 +314,8 @@ experiments:
 #      replica: # should be validated by connectors (currently not done, they are passed as-is)
 #        replicas: 4
 #        blockSize: 400
-#        replySize: 1024
+#        replySize: 0
 #      client:
 #        clients: 10
 #        outStandingPerClient: 800
-#        requestSize: 1024
+#        requestSize: 0
