@@ -206,7 +206,7 @@ async function main() {
     ]);
     let experimentEndTime = performance.now();
     let elapsedSeconds =
-      (experimentStartTime - experimentEndTime) / 1000;
+      (experimentEndTime - experimentStartTime) / 1000;
     let resourceUsage = await monitor.unregister(logger);
     let perfStats = await getStats(
       protocol,
