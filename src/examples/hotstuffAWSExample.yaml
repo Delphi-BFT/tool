@@ -1,7 +1,7 @@
 protocolName: hotstuff
-protocolPath: /home/sadok/shadow-experiments/libhotstuff/
-executionDir: /home/sadok/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
-experimentsDirectory: /home/sadok/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
+protocolPath: /root/shadow-experiments/libhotstuff/
+executionDir: /root/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+experimentsDirectory: /root/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
 plots:
   throughputDemo:
     type: tps
@@ -75,11 +75,35 @@ plots:
         pointStyle: triangle
         pointBorderColor: '#c45850'
         borderColor: '#c45850'
+  memDemo-host:
+    type: mem-host
+    details:
+      title: 'Maximum Memory Usage of Host'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowPlot:
+      style:
+        label: 'Memory usage'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+  elapsedDemo:
+    type: elapsed
+    details:
+      title: 'Experiment duration by number of Replicas'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Duration'
+    shadowPlot:
+      style:
+        label: 'Duration'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 30 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 8
         useShortestPath: false
@@ -101,6 +125,12 @@ experiments:
           label: 4
         - name: memDemo-app
           metric: 'mem-app'
+          label: 4
+        - name: memDemo-host
+          metric: 'mem-host'
+          label: 4
+        - name: elapsedDemo
+          metric: elapsed
           label: 4
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
@@ -120,7 +150,7 @@ experiments:
   - 32repUniformClientDelay: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 5 s
+        duration: 30 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 8
         useShortestPath: false
@@ -143,6 +173,12 @@ experiments:
         - name: memDemo-app
           metric: 'mem-app'
           label: 32
+        - name: memDemo-host
+          metric: 'mem-host'
+          label: 32
+        - name: elapsedDemo
+          metric: elapsed
+          label: 32
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)
@@ -157,6 +193,53 @@ experiments:
             ]
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 32
+        blockSize: 400
+        replySize: 128
+      client:
+        clients: 2
+        outStandingPerClient: 2800
+        requestSize: 128
+  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 630 us
+        duration: 30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 8
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 128
+        - name: latencyDemo
+          metric: 'latency'
+          label: 128
+        - name: cpuDemo-shadow
+          metric: 'cpu-shadow'
+          label: 128
+        - name: memDemo-shadow
+          metric: 'mem-shadow'
+          label: 128
+        - name: cpuDemo-app
+          metric: 'cpu-app'
+          label: 128
+        - name: memDemo-app
+          metric: 'mem-app'
+          label: 128
+        - name: memDemo-host
+          metric: 'mem-host'
+          label: 128
+        - name: elapsedDemo
+          metric: elapsed
+          label: 128
+      network:
+        bandwidthUp: 10 Gbit # does not apply to clients (for now)
+        bandwidthDown: 10 Gbit # does not apply to clients (for now)
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 64, 'us-east-1': 64]
+          clients: ['us-west-1': 1, 'af-south-1': 1]
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 128
         blockSize: 400
         replySize: 128
       client:

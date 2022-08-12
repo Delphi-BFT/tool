@@ -9,6 +9,8 @@ const csvUtil = require('./util/csvUtil');
 const { createLogger, format, transports } = require('winston');
 const { combine, splat, timestamp, printf } = format;
 const { deleteDirectoryIfExists } = require('./util/helpers');
+const { performance } = require('perf_hooks');
+
 /* misc */
 const networkFileName = 'network.gml';
 const shadowFileName = 'shadow.yaml';
@@ -187,6 +189,7 @@ async function main() {
       );
     }
     await fs.writeFile(networkFilePath, myGraph);
+    let experimentStartTime = performance.now();
     await Promise.all([
       run(protocol, executionDir, logger),
       (shadowInterval = monitor.register(
@@ -199,7 +202,11 @@ async function main() {
         2000,
         logger
       )),
+      (totalInterval = monitor.registerSI(2000, logger)),
     ]);
+    let experimentEndTime = performance.now();
+    let elapsedSeconds =
+      (experimentEndTime - experimentStartTime) / 1000;
     let resourceUsage = await monitor.unregister(logger);
     let perfStats = await getStats(
       protocol,
@@ -214,6 +221,8 @@ async function main() {
       memShadow: resourceUsage[shadowProcessName].maxMEM,
       cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,
       memApp: resourceUsage[protocol.getProcessName()].maxMEM,
+      totalHost: resourceUsage['total'].maxMEM,
+      elapsed: elapsedSeconds,
     };
     csvUtil.values.push(statsForCSV);
     //console.log(statsForCSV);
@@ -258,6 +267,18 @@ async function main() {
             p.label,
             resourceUsage[protocol.getProcessName()].maxMEM
           );
+          continue;
+        }
+        if (p.metric == 'mem-host') {
+          plot.pushValue(
+            p.name,
+            p.label,
+            resourceUsage['total'].maxMEM
+          );
+          continue;
+        }
+        if (p.metric == 'elapsed') {
+          plot.pushValue(p.name, p.label, elapsedSeconds);
           continue;
         }
       }
