@@ -78,7 +78,7 @@ plots:
   memDemo-host:
     type: mem-host
     details:
-      title: 'Maximum Memory Usage of app and Shadow Process'
+      title: 'Maximum Memory Usage of Host'
       xAxisTitle: 'Number of Replicas'
       yAxisTitle: 'Memory Usage (GB)'
     shadowPlot:
@@ -178,7 +178,7 @@ experiments:
           label: 32
         - name: elapsedDemo
           metric: elapsed
-          label: 4
+          label: 32
       network:
         bandwidthUp: 10 Gbit # does not apply to clients (for now)
         bandwidthDown: 10 Gbit # does not apply to clients (for now)
