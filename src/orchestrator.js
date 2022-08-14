@@ -220,7 +220,7 @@ async function main() {
       memShadow: resourceUsage[shadowProcessName].maxMEM,
       cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,
       memApp: resourceUsage[protocol.getProcessName()].maxMEM,
-      totalHost: resourceUsage['total'].maxMEM,
+      hostActive: resourceUsage['total'].maxMEM,
       elapsed: elapsedSeconds,
     };
     csvUtil.values.push(statsForCSV);

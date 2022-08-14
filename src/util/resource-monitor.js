@@ -68,7 +68,7 @@ async function unregister(log) {
 }
 async function registerSI(time, log) {
   let interval = setInterval(async function () {
-    let totalMemUsage = (await si.mem()).used / 1000000000;
+    let totalMemUsage = (await si.mem()).active / 1000000000;
     log.info(`current total mem usage of host: ${totalMemUsage}`);
     procIntervals['total'].stats.mem.push(totalMemUsage);
   }, time);
