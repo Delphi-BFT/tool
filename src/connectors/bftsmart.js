@@ -125,17 +125,19 @@ async function genHostsConfig(workingDir, replicas, clients) {
 async function passArgs(replicaIPs, replicaSettings, clientSettings) {
   for (let i = 0; i < replicaIPs.length; i++) {
     if (replicaIPs[i].isClient) {
-      replicaIPs[i].proc = javaProc;
-      replicaIPs[i].env = '';
-      replicaIPs[
-        i
-      ].args = `-Xmx500m ${javaArgs} ${throughputLatencyClientClass} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`;
+      replicaIPs[i].procs = [];
+      replicaIPs[i].procs.push({
+        path: javaProc,
+        env: '',
+        args: `-Xmx500m ${javaArgs} ${throughputLatencyClientClass} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
+      });
     } else {
-      replicaIPs[i].proc = javaProc;
-      replicaIPs[i].env = '';
-      replicaIPs[
-        i
-      ].args = `-Xmx500m ${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`;
+      replicaIPs[i].procs = [];
+      replicaIPs[i].procs.push({
+        path: javaProc,
+        env: '',
+        args: `-Xmx500m ${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
+      });
     }
   }
 

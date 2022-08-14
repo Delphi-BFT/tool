@@ -128,17 +128,21 @@ async function passArgs(workingDir, hosts, clientSettings, log) {
   let clientIndex = 0;
   for (let i = 0; i < hosts.length; i++) {
     if (hosts[i].isClient) {
-      hosts[i].proc = path.join(workingDir, themisCLI);
-      hosts[i].env = 'RUST_BACKTRACE=1';
-      hosts[
-        i
-      ].args = `-d 110 --config ${configPath} --payload ${clientSettings.payload} -c 10 --concurrent ${clientSettings.concurrent}`;
+      hosts[i].procs = [];
+      hosts[i].procs.push({
+        path: path.join(workingDir, themisCLI),
+        env: 'RUST_BACKTRACE=1',
+        args: `-d 110 --config ${configPath} --payload ${clientSettings.payload} -c 10 --concurrent ${clientSettings.concurrent}`,
+      });
       clientIndex++;
       continue;
     }
-    hosts[i].proc = path.join(workingDir, themisReplica);
-    hosts[i].env = 'RUST_BACKTRACE=1';
-    hosts[i].args = `${replicaIndex} --config ${configPath}`;
+    hosts[i].procs = [];
+    hosts[i].procs.push({
+      path: path.join(workingDir, themisReplica),
+      env: 'RUST_BACKTRACE=1',
+      args: `${replicaIndex} --config ${configPath}`,
+    });
     replicaIndex++;
   }
   return hosts;
