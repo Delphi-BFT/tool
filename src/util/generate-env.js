@@ -124,7 +124,7 @@ let createGraphSimple = (
     // Create the edges between the hosts...
     for (let j = 0; j < hosts.length; j++) {
       if (hosts[i].isClient || hosts[j].isClient)
-        latencies[i].push('1000 us');
+        latencies[i].push('500 us');
       //latencies[i].push(latency); No case distinction?
       else latencies[i].push(latency);
       packet_losses[i].push(packet_loss);
@@ -245,7 +245,7 @@ async function makeAWSGraph(
       }
 
       if (replicasIPs[i].isClient || replicasIPs[j].isClient) {
-        if (!clientLatencies) latencies[i].push('1000 us');
+        if (!clientLatencies) latencies[i].push('500 us');
         else {
           latencies[i].push(
             awsLatencies[
