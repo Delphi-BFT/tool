@@ -212,8 +212,10 @@ async function main() {
     );
     let statsForCSV = {
       experimentId: experimentId,
-      throughput: perfStats.throughput,
-      latency: perfStats.latency,
+      maxThroughput: perfStats.maxThroughput,
+      avgThroughput: perfStats.avgThroughput,
+      latencyAll: perfStats.latencyAll,
+      latencyOutlierRemoved: perfStats.latencyOutlierRemoved,
       cpuShadow: resourceUsage[shadowProcessName].medianCPU,
       memShadow: resourceUsage[shadowProcessName].maxMEM,
       cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,

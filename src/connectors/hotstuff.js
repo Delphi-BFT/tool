@@ -209,11 +209,27 @@ async function getStats(experimentsPath, protocolPath) {
   numArr.forEach((element) => {
     max = element > max ? element : max;
   });
-  let latencyString = tokens[1]
+  // Average TPS
+  let averageTPS = -1;
+  if (numArr.length > 2) {
+    for (let i = 1; i < numArr.length - 1; i++)
+      averageTPS += numArr[i];
+    averageTPS = averageTPS / (numArr.length - 2);
+  }
+  let latencyStringAll = tokens[1]
     .replace('lat = ', '')
     .replace('ms', '');
-  let latency = Number(latencyString);
-  let returnVal = { throughput: max, latency: latency };
+  let latencyStringNoOutlier = tokens[2]
+    .replace('lat = ', '')
+    .replace('ms', '');
+  let latencyAll = Number(latencyStringAll);
+  let latencyNoOutlier = Number(latencyStringNoOutlier);
+  let returnVal = {
+    maxThroughput: max,
+    avgThroughput: averageTPS,
+    latencyAll: latencyAll,
+    latencyOutlierRemoved: latencyNoOutlier,
+  };
   return returnVal;
 }
 async function build(

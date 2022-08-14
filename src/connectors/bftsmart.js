@@ -203,6 +203,11 @@ async function configure(
   return replicaIPs;
 }
 async function getStats(experimentsPath, protocolPath) {
-  return { throughput: -1, latency: -1 };
+  return {
+    maxThroughput: -1,
+    avgThroughput: 'Not Computed',
+    latencyAll: -1,
+    latencyOutlierRemoved: 'Not Computed',
+  };
 }
 module.exports = { build, configure, getProcessName, getStats };
