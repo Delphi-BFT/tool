@@ -16,16 +16,7 @@ let makeConfigTemplate = (fullPathgml, dir, misc) => {
   res.hosts = new Object();
   return res;
 };
-let makeHost = (
-  res,
-  name,
-  ip,
-  network_node_id,
-  path,
-  env,
-  args,
-  start_time,
-) => {
+let makeHost = (res, name, ip, network_node_id, procs) => {
   /* let newHost = new Object();
     newHost[name] = new Object();
     newHost[name].ip_addr = ip;
@@ -35,12 +26,14 @@ let makeHost = (
     newHost[name].args = args;
     newHost[name].start_time = start_time;*/
   let processes = [];
-  processes.push({
-    path: path,
-    environment: env,
-    args: args,
-    start_time: start_time,
-  });
+  for (let i = 0; i < procs.length; i++) {
+    processes.push({
+      path: procs[i].path,
+      environment: procs[i].env,
+      args: procs[i].args,
+      start_time: procs[i].start_time,
+    });
+  }
   res.hosts[name] = {
     ip_addr: ip,
     network_node_id: network_node_id,

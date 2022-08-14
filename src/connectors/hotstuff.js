@@ -56,27 +56,51 @@ async function passArgs(
   workingDir,
   hosts,
   outStandingPerClient,
+  numberOfClientHosts,
+  numberOfClients,
   log
 ) {
   let replicaIndex = 0;
   let clientIndex = 0;
+  let clientHostIndex = 1; // BEWARE: IT STARTS AT 1
+  let clientsPerHost = Math.floor(
+    numberOfClients / numberOfClientHosts
+  );
+  let clientsOnLastHost =
+    clientsPerHost + (numberOfClients % numberOfClientHosts); // WATCH OUT CAN BE 0
+
   for (let i = 0; i < hosts.length; i++) {
     if (hosts[i].isClient) {
-      hosts[i].proc = hotStuffCliExec;
-      hosts[i].env = '';
-      hosts[
-        i
-      ].args = `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`;
-      clientIndex++;
+      let clientsOnCurrentHost =
+        clientHostIndex < numberOfClientHosts
+          ? clientsPerHost
+          : clientsOnLastHost;
+      console.log(clientsPerHost);
+      console.log(clientHostIndex);
+      console.log(clientsOnLastHost);
+      console.log(clientsOnCurrentHost);
+      hosts[i].procs = [];
+      for (let j = 0; j < clientsOnCurrentHost; j++) {
+        hosts[i].procs.push({
+          path: hotStuffCliExec,
+          env: '',
+          args: `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`,
+        });
+        clientIndex++;
+      }
+      clientHostIndex++;
       continue;
     }
     let conf = path.join(
       genScriptWd,
       `hotstuff.gen-sec${replicaIndex}.conf`
     );
-    hosts[i].proc = hotStuffAppExec;
-    hosts[i].env = '';
-    hosts[i].args = `--conf ${conf}`;
+    hosts[i].procs = [];
+    hosts[i].procs.push({
+      path: hotStuffAppExec,
+      env: '',
+      args: `--conf ${conf}`,
+    });
     replicaIndex++;
   }
   return hosts;
@@ -220,7 +244,7 @@ async function configure(
 ) {
   const hostIPs = await ipUtil.getIPs({
     [replicaPrefix]: replicaSettings.replicas,
-    [clientPrefix]: clientSettings.clients,
+    [clientPrefix]: clientSettings.numberOfHosts,
   });
   for (let i = 0; i < hostIPs.length; i++) {
     if (hostIPs[i].name.startsWith(replicaPrefix))
@@ -229,10 +253,13 @@ async function configure(
   }
   await writeHosts(workingDir, hostIPs, log);
   await genArtifacts(workingDir, replicaSettings.blockSize, log);
+  console.log(clientSettings);
   let hosts = await passArgs(
     workingDir,
     hostIPs,
     clientSettings.outStandingPerClient,
+    clientSettings.numberOfHosts,
+    clientSettings.clients,
     log
   );
   await copyConfig(workingDir, log);

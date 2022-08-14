@@ -80,10 +80,7 @@ async function createShadowHostConfig(
       replicas[i].name,
       replicas[i].ip,
       i,
-      replicas[i].proc,
-      replicas[i].env,
-      replicas[i].args,
-      replicas[i].isClient ? clientDelay : '0s'
+      replicas[i].procs
     );
   }
   return shadowTemplate;

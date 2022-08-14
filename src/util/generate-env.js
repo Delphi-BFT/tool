@@ -197,6 +197,7 @@ let createShadowHost = (
     '\n'
   );
 };
+
 async function makeAWSGraph(
   replicasIPs,
   replicaLatencies,
