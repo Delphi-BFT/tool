@@ -8,7 +8,7 @@ const themisCLI = 'target/debug/bench-client';
 const themisReplica = 'target/debug/themis-bench-app';
 const keysDirectory = 'keys';
 const replicaPrefix = 'themisReplica';
-const clientPrefix = 'clientReplica';
+const clientPrefix = 'themisClient';
 
 const prometheusPort = 8080;
 const replicaPort = 10003;
@@ -68,7 +68,7 @@ async function createConfigFile(
   // Peers
   let hostIPs = await ipUtil.getIPs({
     [replicaPrefix]: replicaSettings.replicas,
-    [clientPrefix]: clientSettings.clients,
+    [clientPrefix]: 1, // FOR NOW?
   });
   for (let i = 0; i < hostIPs.length; i++) {
     if (hostIPs[i].name.startsWith(replicaPrefix))
@@ -132,7 +132,7 @@ async function passArgs(workingDir, hosts, clientSettings, log) {
       hosts[i].procs.push({
         path: path.join(workingDir, themisCLI),
         env: 'RUST_BACKTRACE=1',
-        args: `-d 110 --config ${configPath} --payload ${clientSettings.payload} -c 10 --concurrent ${clientSettings.concurrent}`,
+        args: `-d ${clientSettings.duration} --config ${configPath} --payload ${clientSettings.payload} -c ${clientSettings.clients} --concurrent ${clientSettings.concurrent}`,
       });
       clientIndex++;
       continue;
