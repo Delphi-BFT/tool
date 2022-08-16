@@ -60,7 +60,7 @@ async function createConfigFile(
 ) {
   log.info('generating Themis config ...');
   // Top level
-  let configString = `reply_size = ${replicaSettings.replySize}\nexecution = 'Single'\nbatching = false\n\n`;
+  let configString = `reply_size = ${replicaSettings.replySize}\nexecution = 'Single'\nbatching = ${replicaSettings.batchReplies}\n\n`;
   // Authentication
   configString += `[authentication]\npeers = "${replicaSettings.peerAuthentication}"\nclients = "${replicaSettings.clientAuthentication}"\n\n`;
   // Batch
@@ -257,4 +257,12 @@ let createConfs = (numberHosts) => {
 function getProcessName() {
   return 'themis-bench-app';
 }
-module.exports = { build, configure, getProcessName };
+async function getStats(experimentsPath, protocolPath) {
+  return {
+    maxThroughput: -1,
+    avgThroughput: 'Not Computed',
+    latencyAll: -1,
+    latencyOutlierRemoved: 'Not Computed',
+  };
+}
+module.exports = { build, configure, getProcessName, getStats };
