@@ -4,6 +4,3 @@
 [submodule "library"]
 	path = library
 	url = https://github.com/bft-smart/library.git
-[submodule "themis"]
-	path = themis
-	url = https://github.com/ibr-ds/themis.git
