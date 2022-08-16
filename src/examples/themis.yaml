@@ -6,7 +6,7 @@ experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 4 s
+        duration: 10 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 10
         useShortestPath: false
@@ -31,11 +31,11 @@ experiments:
         clients: 16
         payload: 1024
         concurrent: 175
-        duration: 3 # WATCH OUT FOR THIS VALUE (for now)
+        duration: 8 # WATCH OUT FOR THIS VALUE (for now)
   - 8rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 4 s
+        duration: 10 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 10
         useShortestPath: false
@@ -60,7 +60,7 @@ experiments:
         clients: 16
         payload: 1024
         concurrent: 175
-        duration: 3 # WATCH OUT FOR THIS VALUE (for now)
+        duration: 8 # WATCH OUT FOR THIS VALUE (for now)
   - 16rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
