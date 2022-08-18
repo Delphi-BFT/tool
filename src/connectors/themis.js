@@ -258,10 +258,47 @@ function getProcessName() {
   return 'themis-bench-app';
 }
 async function getStats(experimentsPath, protocolPath) {
+  let clientFile = await fs.readFile(
+    path.join(
+      experimentsPath,
+      path.join(
+        `hosts/${clientPrefix}0/themisClient0.bench-client.1000.stdout`
+      )
+    )
+  );
+  let clientFileLines = clientFile.toString().split('\n');
+  let RPSEntries = [];
+  let LAGEntries = [];
+  for (line in clientFileLines) {
+    if (clientFileLines[line].includes('RPS:') && !clientFileLines[line].includes('Total rps:')) {
+      let rps = parseFloat(
+        clientFileLines[line].split('RPS: ')[1].replace(/(\r\n|\n|\r)/gm, '')
+      );
+      RPSEntries.push(rps);
+    }
+    if (clientFileLines[line].includes('LAG:') && !clientFileLines[line].includes('Total lag:')) {
+      let lag = parseFloat(
+        clientFileLines[line].split('LAG: ')[1].replace(/(\r\n|\n|\r)/gm, '')
+      );
+      LAGEntries.push(lag);
+    }
+  }
+  let maxThroughput = -1;
+  let avgThroughput = 0;
+  let avgLag = 0;
+  for (x in RPSEntries) {
+    if (RPSEntries[x] > maxThroughput) maxThroughput = RPSEntries[x];
+    avgThroughput += RPSEntries[x];
+  }
+  for (x in LAGEntries) {
+    avgLag += LAGEntries[x];
+  }
+  avgThroughput /= RPSEntries.length;
+  avgLag /= LAGEntries.length;
   return {
-    maxThroughput: -1,
-    avgThroughput: 'Not Computed',
-    latencyAll: -1,
+    maxThroughput: maxThroughput,
+    avgThroughput: avgThroughput,
+    latencyAll: avgLag,
     latencyOutlierRemoved: 'Not Computed',
   };
 }
