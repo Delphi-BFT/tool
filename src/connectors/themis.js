@@ -302,15 +302,23 @@ async function getStats(experimentsPath, protocolPath) {
   let maxThroughput = -1;
   let avgThroughput = 0;
   let avgLag = 0;
+  let lenTPSNoZeroes = 0;
   for (x in RPSEntries) {
     if (RPSEntries[x] > maxThroughput) maxThroughput = RPSEntries[x];
-    avgThroughput += RPSEntries[x];
+    if(RPSEntries[x]>0) {
+    	avgThroughput += RPSEntries[x];
+    	lenTPSNoZeroes+=1;
+    }
   }
+  let lenLatNoZeroes = 0;
   for (x in LAGEntries) {
-    avgLag += LAGEntries[x];
+    if(LAGEntries[x] > 0) {
+    	avgLag += LAGEntries[x];
+    	lenLatNoZeroes +=1;
+    }
   }
-  avgThroughput /= RPSEntries.length;
-  avgLag /= LAGEntries.length;
+  avgThroughput /= lenTPSNoZeroes;
+  avgLag /= lenLatNoZeroes;
   return {
     maxThroughput: maxThroughput,
     avgThroughput: avgThroughput,
