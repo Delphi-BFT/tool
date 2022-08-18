@@ -16,7 +16,7 @@ const clientPort = 10002;
 
 const configPath = 'config/default';
 const configFilePath = 'config/default/config.toml';
-
+const pbftConfigFilePath = 'config/default/pbft.toml';
 async function build(
   workingDir,
   replicaSettings,
@@ -65,6 +65,8 @@ async function createConfigFile(
   configString += `[authentication]\npeers = "${replicaSettings.peerAuthentication}"\nclients = "${replicaSettings.clientAuthentication}"\n\n`;
   // Batch
   configString += `[batch]\nmin = ${replicaSettings.minBatchSize}\nmax = ${replicaSettings.maxBatchSize}\ntimeout = { secs = ${replicaSettings.timeout.secs}, nanos = ${replicaSettings.timeout.nano} }\n\n`;
+  let maxFaulty = Math.floor((replicaSettings.replicas - 1) / 3);
+  let pbftString = `[pbft]\nfaults = ${maxFaulty}\nfirst_primary = 0\ncheckpoint_interval = 1000\nhigh_mark_delta = 3000\nrequest_timeout = 1000\nkeep_checkpoints = 2\nprimary_forwarding = 'Full'\nbackup_forwarding = 'Full'\nreply_mode = 'All'`;
   // Peers
   let hostIPs = await ipUtil.getIPs({
     [replicaPrefix]: replicaSettings.replicas,
@@ -119,6 +121,10 @@ async function createConfigFile(
   await fs.writeFile(
     path.join(workingDir, configFilePath),
     configString
+  );
+  await fs.writeFile(
+    path.join(workingDir, pbftConfigFilePath),
+    pbftString
   );
   log.info('Config file generated!');
   return hostIPs;
@@ -270,15 +276,25 @@ async function getStats(experimentsPath, protocolPath) {
   let RPSEntries = [];
   let LAGEntries = [];
   for (line in clientFileLines) {
-    if (clientFileLines[line].includes('RPS:') && !clientFileLines[line].includes('Total rps:')) {
+    if (
+      clientFileLines[line].includes('RPS:') &&
+      !clientFileLines[line].includes('Total rps:')
+    ) {
       let rps = parseFloat(
-        clientFileLines[line].split('RPS: ')[1].replace(/(\r\n|\n|\r)/gm, '')
+        clientFileLines[line]
+          .split('RPS: ')[1]
+          .replace(/(\r\n|\n|\r)/gm, '')
       );
       RPSEntries.push(rps);
     }
-    if (clientFileLines[line].includes('LAG:') && !clientFileLines[line].includes('Total lag:')) {
+    if (
+      clientFileLines[line].includes('LAG:') &&
+      !clientFileLines[line].includes('Total lag:')
+    ) {
       let lag = parseFloat(
-        clientFileLines[line].split('LAG: ')[1].replace(/(\r\n|\n|\r)/gm, '')
+        clientFileLines[line]
+          .split('LAG: ')[1]
+          .replace(/(\r\n|\n|\r)/gm, '')
       );
       LAGEntries.push(lag);
     }
