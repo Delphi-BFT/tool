@@ -1,4 +1,5 @@
 const fs = require('fs');
+const statistics = require('simple-statistics');
 async function transformLatencies(hosts) {
   let awsHosts = [];
   for (let i = 0; i < hosts.length; i++) {
@@ -16,15 +17,37 @@ async function deleteDirectoryIfExists(path) {
 }
 
 function median(values) {
-  if(values.length ===0) 
-    throw new Error("Array for median calcuation is empty!");
+  if (values.length === 0)
+    throw new Error('Array for median calcuation is empty!');
 
-  values.sort(function(first,second){
-    return first-second;
+  values.sort(function (first, second) {
+    return first - second;
   });
 
   var mid = Math.floor(values.length / 2);
-  
-  return (values.length & 1) ? values[mid]:(values[mid - 1] + values[mid]) / 2.0;
+
+  return values.length & 1
+    ? values[mid]
+    : (values[mid - 1] + values[mid]) / 2.0;
 }
-module.exports = { transformLatencies, deleteDirectoryIfExists, median };
+
+function removeOutliers(data) {
+  let outlierConstant = 1.5;
+  let sorted = data.sort();
+  let uq = statistics.quantile(sorted, 0.75);
+  let lq = statistics.quantile(sorted, 0.25);
+  let IQR = (uq - lq) * outlierConstant;
+  quartileSet = [lq - IQR, uq - IQR];
+  let resultSet = [];
+  for (let i = 0; i < data.length; i++) {
+    if (data[i] >= quartileSet[0] && data[i] <= quartileSet[1])
+      resultSet.push(data[i]);
+  }
+  return resultSet;
+}
+module.exports = {
+  transformLatencies,
+  deleteDirectoryIfExists,
+  median,
+  removeOutliers,
+};

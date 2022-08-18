@@ -3,6 +3,7 @@ const { promisified_spawn } = require('../util/exec');
 const path = require('path');
 const ipUtil = require('../util/ipUtil');
 const { writeFile, appendFile } = require('fs');
+const { removeOutliers } = require('../util/helpers');
 
 const themisCLI = 'target/debug/bench-client';
 const themisReplica = 'target/debug/themis-bench-app';
@@ -305,25 +306,31 @@ async function getStats(experimentsPath, protocolPath) {
   let lenTPSNoZeroes = 0;
   for (x in RPSEntries) {
     if (RPSEntries[x] > maxThroughput) maxThroughput = RPSEntries[x];
-    if(RPSEntries[x]>0) {
-    	avgThroughput += RPSEntries[x];
-    	lenTPSNoZeroes+=1;
+    if (RPSEntries[x] > 0) {
+      avgThroughput += RPSEntries[x];
+      lenTPSNoZeroes += 1;
     }
   }
   let lenLatNoZeroes = 0;
   for (x in LAGEntries) {
-    if(LAGEntries[x] > 0) {
-    	avgLag += LAGEntries[x];
-    	lenLatNoZeroes +=1;
+    if (LAGEntries[x] > 0) {
+      avgLag += LAGEntries[x];
+      lenLatNoZeroes += 1;
     }
   }
   avgThroughput /= lenTPSNoZeroes;
   avgLag /= lenLatNoZeroes;
+  let latencyOutlierRemoved = removeOutliers(LAGEntries);
+  let avgLatNoOutlier = 0;
+  for (let i = 0; i < latencyOutlierRemoved.length; i++) {
+    avgLatNoOutlier += latencyOutlierRemoved[i];
+  }
+  avgLatNoOutlier /= latencyOutlierRemoved.length;
   return {
     maxThroughput: maxThroughput,
     avgThroughput: avgThroughput,
     latencyAll: avgLag,
-    latencyOutlierRemoved: 'Not Computed',
+    latencyOutlierRemoved: avgLatNoOutlier,
   };
 }
 module.exports = { build, configure, getProcessName, getStats };
