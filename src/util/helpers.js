@@ -33,15 +33,17 @@ function median(values) {
 
 function removeOutliers(data) {
   let outlierConstant = 1.5;
-  let sorted = data.sort();
+  let sorted = data.sort(function(a, b) {
+  	return a - b;
+  });
   let uq = statistics.quantile(sorted, 0.75);
   let lq = statistics.quantile(sorted, 0.25);
   let IQR = (uq - lq) * outlierConstant;
-  quartileSet = [lq - IQR, uq - IQR];
+  let quartileSet = [lq - IQR, uq + IQR];
   let resultSet = [];
-  for (let i = 0; i < data.length; i++) {
-    if (data[i] >= quartileSet[0] && data[i] <= quartileSet[1])
-      resultSet.push(data[i]);
+  for (let i = 0; i < sorted.length; i++) {
+    if (sorted[i] >= quartileSet[0] && sorted[i] <= quartileSet[1])
+      resultSet.push(sorted[i]);
   }
   return resultSet;
 }

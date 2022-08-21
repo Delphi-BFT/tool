@@ -286,7 +286,7 @@ async function getStats(experimentsPath, protocolPath) {
           .split('RPS: ')[1]
           .replace(/(\r\n|\n|\r)/gm, '')
       );
-      RPSEntries.push(rps);
+      RPSEntries.push(Number(rps));
     }
     if (
       clientFileLines[line].includes('LAG:') &&
@@ -297,7 +297,7 @@ async function getStats(experimentsPath, protocolPath) {
           .split('LAG: ')[1]
           .replace(/(\r\n|\n|\r)/gm, '')
       );
-      LAGEntries.push(lag);
+      LAGEntries.push(Number(lag));
     }
   }
   let maxThroughput = -1;
@@ -322,6 +322,7 @@ async function getStats(experimentsPath, protocolPath) {
   avgLag /= lenLatNoZeroes;
   let latencyOutlierRemoved = removeOutliers(LAGEntries);
   let avgLatNoOutlier = 0;
+  console.log(latencyOutlierRemoved)
   for (let i = 0; i < latencyOutlierRemoved.length; i++) {
     avgLatNoOutlier += latencyOutlierRemoved[i];
   }
