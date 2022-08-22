@@ -26,8 +26,9 @@
     "prettier": "2.6.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
-    "simulation": "node ./src/orchestrator.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "simulation": "node ./src/orchestrator.js",
+    "format": "prettier --write '{,!(node_modules)/**/}*.js'"
   },
   "author": "Christian Berger, Sadok Ben Toumia and Hans P. Reiser",
   "license": "ISC"
