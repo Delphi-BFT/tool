@@ -73,7 +73,7 @@ async function main() {
     return msg
   })
   const logger = createLogger({
-    level: 'info',
+    level: process.env.LOG_LEVEL,
     format: combine(format.colorize(), splat(), timestamp(), shadowLogFormat),
     transports: [
       new transports.File({

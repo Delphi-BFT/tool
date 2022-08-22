@@ -18,6 +18,12 @@ async function writeHosts(ips, log) {
     if (ips[i].isClient) clientString += ips[i].ip + ' ' + ips[i].ip + '\n'
     else replicaString += ips[i].ip + ' ' + ips[i].ip + '\n'
   }
+  log.debug(
+    `writing ${replicaString} to ${path.join(
+      process.env.HOTSTUFF_DIR,
+      process.env.HOTSTUFF_REPLICAS_FILE,
+    )}`,
+  )
   await fs.writeFile(
     path.join(process.env.HOTSTUFF_DIR, process.env.HOTSTUFF_REPLICAS_FILE),
     replicaString,
@@ -27,11 +33,18 @@ async function writeHosts(ips, log) {
     path.join(process.env.HOTSTUFF_DIR, process.env.HOTSTUFF_CLIENTS_FILE),
     clientString,
   )
+  log.debug(
+    `writing ${clientString} to ${path.join(
+      process.env.HOTSTUFF_DIR,
+      process.env.HOTSTUFF_CLIENTS_FILE,
+    )}`,
+  )
   log.info('Wrote clients file!')
 }
 
 async function genArtifacts(blockSize, log) {
   log.info('Generating artifacts...')
+  log.debug(`Launching HotStuff's gen script with block size: ${blockSize}`)
   await promisified_spawn(
     './gen_all.sh',
     [blockSize],
@@ -57,6 +70,9 @@ async function passArgs(
   let clientsOnLastHost =
     clientsPerHost + (numberOfClients % numberOfClientHosts) // WATCH OUT CAN BE 0
 
+  log.debug(
+    `clients per host: ${clientsPerHost}, last host gets: ${clientsOnLastHost}`,
+  )
   for (let i = 0; i < hosts.length; i++) {
     if (hosts[i].isClient) {
       let clientsOnCurrentHost =
@@ -70,6 +86,13 @@ async function passArgs(
           env: '',
           args: `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`,
         })
+        log.debug(
+          `client ${clientIndex} added on host: ${clientHostIndex} with path: ${
+            hosts[i].procs[hosts[i].procs.length - 1].path
+          }, env: ${hosts[i].procs[hosts[i].procs.length - 1].env} and  args:${
+            hosts[i].procs[hosts[i].procs.length - 1].args
+          }`,
+        )
         clientIndex++
       }
       clientHostIndex++
@@ -85,29 +108,35 @@ async function passArgs(
       env: '',
       args: `--conf ${conf}`,
     })
+    log.debug(
+      `replica ${replicaIndex} added on host: ${replicaIndex} with path: ${
+        hosts[i].procs[hosts[i].procs.length - 1].path
+      }, env: ${hosts[i].procs[hosts[i].procs.length - 1].env} and  args:${
+        hosts[i].procs[hosts[i].procs.length - 1].args
+      }`,
+    )
     replicaIndex++
   }
   return hosts
 }
 async function copyConfig(log) {
+  const destDir = path.join(process.env.HOTSTUFF_DIR, 'hotstuff.conf')
+  const sourceDir = path.join(
+    process.env.HOTSTUFF_GENSCRIPT_WORKING_DIR,
+    'hotstuff.gen.conf',
+  )
+  log.debug(`copying HotStuff config from ${sourceDir} to ${destDir}`)
   await promisified_spawn(
     'cp',
-    [
-      path.join(
-        process.env.HOTSTUFF_DIR,
-        path.join(
-          process.env.HOTSTUFF_GENSCRIPT_WORKING_DIR,
-          'hotstuff.gen.conf',
-        ),
-      ),
-      path.join(process.env.HOTSTUFF_DIR, 'hotstuff.conf'),
-    ],
+    [path.join(process.env.HOTSTUFF_DIR, sourceDir), destDir],
     process.env.HOTSTUFF_DIR,
     log,
   )
+  log.debug(`copied config!`)
 }
 
 async function getStats(experimentId, log) {
+  log.info('extracting HotStuff stats ...')
   let grep = await exec(
     `cat ./hosts/*/*.stderr | python3 ${path.join(
       process.env.HOTSTUFF_DIR,
@@ -142,9 +171,15 @@ async function getStats(experimentId, log) {
     latencyAll: latencyAll,
     latencyOutlierRemoved: latencyNoOutlier,
   }
+  log.info(`got: ${JSON.stringify(returnVal)}`)
   return returnVal
 }
 async function build(replicaSettings, clientSettings, log) {
+  log.info('initating HotStuff build...')
+  log.debug(
+    `build initiated on ${process.env.HOTSTUFF_DIR} with CXX_FLAGS: -g -DHOTSTUFF_ENABLE_BENCHMARK -DHOTSTUFF_CMD_RESPSIZE=${replicaSettings.replySize} -DHOTSTUFF_CMD_REQSIZE=${clientSettings.requestSize}`,
+  )
+
   await promisified_spawn(
     'cmake',
     [
@@ -160,6 +195,9 @@ async function build(replicaSettings, clientSettings, log) {
   log.info('HotStuff build terminated successfully!')
 }
 async function configure(replicaSettings, clientSettings, log) {
+  log.debug(
+    `generating ${replicaSettings.replicas} ips for replicas and ${clientSettings.numberOfHosts} for clients`,
+  )
   const hostIPs = await ipUtil.getIPs({
     [process.env.HOTSTUFF_REPLICA_HOST_PREFIX]: replicaSettings.replicas,
     [process.env.HOTSTUFF_CLIENT_HOST_PREFIX]: clientSettings.numberOfHosts,
