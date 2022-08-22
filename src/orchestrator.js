@@ -1,21 +1,16 @@
+require('dotenv').config();
 const eg = require('./util/generate-env');
-const yg = require('./util/yamlUtilities');
+const yg = require('./util/yaml-util');
 const plot = require('./util/plot');
 const monitor = require('./util/resource-monitor');
 const yaml = require('js-yaml');
 const fs = require('fs').promises;
 const path = require('path');
-const csvUtil = require('./util/csvUtil');
+const csvUtil = require('./util/csv-util');
 const { createLogger, format, transports } = require('winston');
 const { combine, splat, timestamp, printf } = format;
 const { deleteDirectoryIfExists } = require('./util/helpers');
 const { performance } = require('perf_hooks');
-
-/* misc */
-const networkFileName = 'network.gml';
-const shadowFileName = 'shadow.yaml';
-const shadowProcessName = 'shadow';
-//const experimentDirectoryPrefix = 'experiments';
 
 /* Connectors */
 const hotstuff = require('./connectors/hotstuff');
@@ -23,40 +18,27 @@ const bftsmart = require('./connectors/bftsmart');
 const themis = require('./connectors/themis');
 const { promisified_spawn } = require('./util/exec');
 
-async function getStats(protocol, experimentsPath, protocolPath) {
-  return protocol.getStats(experimentsPath, protocolPath);
+async function getStats(protocol, experimentId, log) {
+  return protocol.getStats(experimentId, log);
 }
-async function build(
-  protocol,
-  workingDir,
-  replicaSettings,
-  clientSettings,
-  log
-) {
+async function build(protocol, replicaSettings, clientSettings, log) {
   log.info('Calling protocol build function ...');
-  await protocol.build(
-    workingDir,
-    replicaSettings,
-    clientSettings,
-    log
-  );
+  await protocol.build(replicaSettings, clientSettings, log);
 }
 async function configure(
   protocol,
-  workingDir,
   replicaSettings,
   clientSettings,
   log
 ) {
   log.info('Calling protocol configure function ...');
   return await protocol.configure(
-    workingDir,
     replicaSettings,
     clientSettings,
     log
   );
 }
-async function run(protocol, executionDir, log) {
+async function run(executionDir, log) {
   try {
     await promisified_spawn(
       'shadow',
@@ -100,9 +82,8 @@ async function main() {
     await fs.readFile(args[2], 'utf8')
   );
   let protocol = getProtocolObject(experimentDetails.protocolName);
-  let workingDir = experimentDetails.protocolPath;
-  let executionDir = experimentDetails.executionDir;
-  let experimentsPath = experimentDetails.experimentsDirectory;
+  let executionDir = protocol.getExecutionDir();
+  let experimentsPath = protocol.getExperimentsOutputDirectory();
   if (experimentDetails.plots) {
     await plot.createPlots(experimentDetails.plots);
   }
@@ -126,6 +107,7 @@ async function main() {
       new transports.Console(),
     ],
   });
+  logger.info(process.env);
   /* start*/
   logger.info('initiating orchestrator...');
   for (e of experimentDetails.experiments) {
@@ -133,27 +115,26 @@ async function main() {
     let experimentId = Object.keys(e)[0];
     let replicaSettings = e[experimentId].replica;
     let clientSettings = e[experimentId].client;
-    let shadowFilePath = path.join(executionDir, shadowFileName);
-    let networkFilePath = path.join(executionDir, networkFileName);
+    let shadowFilePath = path.join(
+      executionDir,
+      process.env.SHADOW_FILE
+    );
+    let networkFilePath = path.join(
+      executionDir,
+      process.env.NETWORK_FILE
+    );
     logger.info('deleting clashing directories ...');
     await deleteDirectoryIfExists(
       path.join(experimentsPath, experimentId)
     );
     let shadowTemplate = yg.makeConfigTemplate(
-      networkFileName,
+      process.env.NETWORK_FILE,
       path.join(experimentsPath, experimentId),
       e[experimentId].misc
     );
-    await build(
-      protocol,
-      workingDir,
-      replicaSettings,
-      clientSettings,
-      logger
-    );
+    await build(protocol, replicaSettings, clientSettings, logger);
     let hosts = await configure(
       protocol,
-      workingDir,
       replicaSettings,
       clientSettings,
       logger
@@ -188,9 +169,9 @@ async function main() {
     await fs.writeFile(networkFilePath, myGraph);
     let experimentStartTime = performance.now();
     await Promise.all([
-      run(protocol, executionDir, logger),
+      run(executionDir, logger),
       (shadowInterval = monitor.register(
-        shadowProcessName,
+        process.env.SHADOW_PROCESS,
         2000,
         logger
       )),
@@ -205,42 +186,43 @@ async function main() {
     let elapsedSeconds =
       (experimentEndTime - experimentStartTime) / 1000;
     let resourceUsage = await monitor.unregister(logger);
-    let perfStats = await getStats(
-      protocol,
-      path.join(experimentsPath, experimentId),
-      workingDir
-    );
+    let perfStats = await getStats(protocol, experimentId, logger);
     let statsForCSV = {
       experimentId: experimentId,
       maxThroughput: perfStats.maxThroughput,
       avgThroughput: perfStats.avgThroughput,
       latencyAll: perfStats.latencyAll,
       latencyOutlierRemoved: perfStats.latencyOutlierRemoved,
-      cpuShadow: resourceUsage[shadowProcessName].medianCPU,
-      memShadow: resourceUsage[shadowProcessName].maxMEM,
+      cpuShadow: resourceUsage[process.env.SHADOW_PROCESS].medianCPU,
+      memShadow: resourceUsage[process.env.SHADOW_PROCESS].maxMEM,
       cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,
       memApp: resourceUsage[protocol.getProcessName()].maxMEM,
       hostActive: resourceUsage['total'].maxMEM,
       elapsed: elapsedSeconds,
     };
     csvUtil.values.push(statsForCSV);
-    //console.log(statsForCSV);
-    await csvUtil.save(path.join(experimentsPath, 'results.csv'));
+    await csvUtil.save(
+      path.join(experimentsPath, process.env.STATS_FILE)
+    );
     if (e[experimentId].plots) {
       for (let p of e[experimentId].plots) {
         if (p.metric == 'tps') {
-          plot.pushValue(p.name, p.label, perfStats.throughput);
+          plot.pushValue(p.name, p.label, perfStats.maxThroughput);
           continue;
         }
         if (p.metric == 'latency') {
-          plot.pushValue(p.name, p.label, perfStats.latency);
+          plot.pushValue(
+            p.name,
+            p.label,
+            perfStats.latencyOutlierRemoved
+          );
           continue;
         }
         if (p.metric == 'cpu-shadow') {
           plot.pushValue(
             p.name,
             p.label,
-            resourceUsage[shadowProcessName].medianCPU
+            resourceUsage[process.env.SHADOW_PROCESS].medianCPU
           );
           continue;
         }
@@ -248,7 +230,7 @@ async function main() {
           plot.pushValue(
             p.name,
             p.label,
-            resourceUsage[shadowProcessName].maxMEM
+            resourceUsage[process.env.SHADOW_PROCESS].maxMEM
           );
           continue;
         }
@@ -287,14 +269,14 @@ async function main() {
       networkFilePath,
       path.join(
         experimentsPath,
-        path.join(experimentId, networkFileName)
+        path.join(experimentId, process.env.NETWORK_FILE)
       )
     );
     await backUpArtifact(
       shadowFilePath,
       path.join(
         experimentsPath,
-        path.join(experimentId, shadowFileName)
+        path.join(experimentId, process.env.SHADOW_FILE)
       )
     );
   }

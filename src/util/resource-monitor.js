@@ -6,22 +6,18 @@ const si = require('systeminformation');
 
 const procIntervals = new Map();
 
-async function getPids(processName) {
+async function getPids(processName, log) {
   try {
     let result = await exec(`pidof ${processName}`);
     return result.stdout.toString().split(' ').map(Number);
   } catch (error) {
-    console.log(
-      'resource-monitor.js l13 - could not retrieve usage data'
-    );
-    //log.error(`could not retrieve usage data for ${processName}`);
-    console.log(`could not retrieve usage data for ${processName}`);
+    log.error(`could not retrieve usage data for ${processName}`);
     return null;
   }
 }
 
 async function compute(processName, log) {
-  let pids = await getPids(processName);
+  let pids = await getPids(processName, log);
   if (pids == null) return;
   pidusage(pids, function (err, stats) {
     let cputotal = 0.0;
@@ -62,7 +58,6 @@ async function unregister(log) {
     usage[proc].maxMEM = Math.max(...procIntervals[proc].stats.mem);
     procIntervals.delete(proc);
   }
-  console.log(usage);
   log.info('intervals cleared!');
   return usage;
 }

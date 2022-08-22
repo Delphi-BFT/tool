@@ -1,16 +1,9 @@
 const fs = require('fs');
 const { promisified_spawn } = require('../util/exec');
 const path = require('path');
-const ipUtil = require('../util/ipUtil');
+const ipUtil = require('../util/ip-util');
 
 /* BFT-SMaRt settings*/
-const buildDir = 'build/install/library';
-const sysconfFile = path.join(buildDir, '/config/system.config');
-const hostsFile = path.join(buildDir, '/config/hosts.config');
-const viewFile = path.join(buildDir, '/config/currentView');
-const bftSmartPort = 11000;
-const bftSmartPort1 = 11001;
-const clientPort = 11100;
 const sysconf = {
   'system.communication.secretKeyAlgorithm': 'PBKDF2WithHmacSHA1',
   'system.communication.secretKeyAlgorithmProvider': 'SunJCE',
@@ -56,35 +49,31 @@ const sysconf = {
 
 const processName = 'java';
 
-const throughputLatencyServerClass =
-  'bftsmart.demo.microbenchmarks.ThroughputLatencyServer';
-const throughputLatencyClientClass =
-  'bftsmart.demo.microbenchmarks.ThroughputLatencyClient';
-const clientPrefix = 'bftSmartClient';
-const replicaPrefix = 'bftSmartReplica';
-
 /* Java stuff */
 
 const javaProc = '/usr/bin/java';
-const javaArgs =
-  '-Djava.security.properties=config/java.security -Dlogback.configurationFile=config/logback.xml -cp lib/*';
 
 function getProcessName() {
   return processName;
 }
-
-async function build(
-  workingDir,
-  replicaSettings,
-  clientSettings,
-  log
-) {
+function getExecutionDir() {
+  return process.env.BFTSMART_EXECUTION_DIR;
+}
+function getExperimentsOutputDirectory() {
+  return process.env.BFTSMART_EXPERIMENTS_OUTPUT_DIR;
+}
+async function build(replicaSettings, clientSettings, log) {
   log.info('building BFT-SMaRt ...');
   let cmd = { proc: './gradlew', args: ['installDist'] };
-  await promisified_spawn(cmd.proc, cmd.args, workingDir, log);
+  await promisified_spawn(
+    cmd.proc,
+    cmd.args,
+    process.env.BFTSMART_DIR,
+    log
+  );
   log.info('BFT-SMaRt build terminated sucessfully!');
 }
-async function genSystemConfig(workingDir, replicas, batchsize) {
+async function genSystemConfig(replicas, batchsize) {
   let viewString = '';
 
   for (let i = 0; i < replicas; i++)
@@ -99,27 +88,43 @@ async function genSystemConfig(workingDir, replicas, batchsize) {
     sysconfString += key + ' = ' + value + '\n';
   }
 
-  fs.writeFileSync(path.join(workingDir, sysconfFile), sysconfString);
+  fs.writeFileSync(
+    path.join(
+      process.env.BFTSMART_DIR,
+      process.env.BFTSMART_SYSTEM_CONFIG_FILE
+    ),
+    sysconfString
+  );
 }
-async function genHostsConfig(workingDir, replicas, clients) {
+async function genHostsConfig(replicas, clients) {
   let ipObject = {};
-  ipObject[replicaPrefix] = replicas;
-  ipObject[clientPrefix] = clients;
+  ipObject[process.env.BFTSMART_REPLICA_HOST_PREFIX] = replicas;
+  ipObject[process.env.BFTSMART_CLIENT_HOST_PREFIX] = clients;
   let replicaIPs = await ipUtil.getIPs(ipObject);
   let clientIndex = 7000;
   let hostsString = '';
   for (let i = 0; i < replicaIPs.length; i++) {
-    if (replicaIPs[i].name.startsWith(replicaPrefix)) {
-      hostsString += `${i} ${replicaIPs[i].ip} ${bftSmartPort} ${bftSmartPort1}\n`;
+    if (
+      replicaIPs[i].name.startsWith(
+        process.env.BFTSMART_REPLICA_HOST_PREFIX
+      )
+    ) {
+      hostsString += `${i} ${replicaIPs[i].ip} ${process.env.BFTSMART_REPLICA_PORT} ${process.env.BFTSMART_REPLICA_SECONDARY_PORT}\n`;
       replicaIPs[i].isClient = false;
     } else {
-      hostsString += `${clientIndex} ${replicaIPs[i].ip} ${clientPort}\n`;
+      hostsString += `${clientIndex} ${replicaIPs[i].ip} ${process.env.BFTSMART_CLIENT_PORT}\n`;
       replicaIPs[i].isClient = true;
       replicaIPs[i].clientIndex = clientIndex;
       clientIndex += 1000;
     }
   }
-  fs.writeFileSync(path.join(workingDir, hostsFile), hostsString);
+  fs.writeFileSync(
+    path.join(
+      process.env.BFTSMART_DIR,
+      process.env.BFTSMART_HOSTS_FILE
+    ),
+    hostsString
+  );
   return replicaIPs;
 }
 async function passArgs(replicaIPs, replicaSettings, clientSettings) {
@@ -129,68 +134,43 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
       replicaIPs[i].procs.push({
         path: javaProc,
         env: '',
-        args: `-Xmx500m ${javaArgs} ${throughputLatencyClientClass} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
+        args: `-Xmx500m ${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_CLIENT_CLASS} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
       });
     } else {
       replicaIPs[i].procs = [];
       replicaIPs[i].procs.push({
         path: javaProc,
         env: '',
-        args: `-Xmx500m ${javaArgs} ${throughputLatencyServerClass} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
+        args: `-Xmx500m ${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_REPLICA_CLASS} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
       });
     }
   }
 
   return replicaIPs;
 }
-async function deleteCurrentView(workingDir) {
+async function deleteCurrentView() {
   try {
-    fs.unlinkSync(path.join(workingDir, viewFile));
+    fs.unlinkSync(
+      path.join(
+        process.env.BFTSMART_DIR,
+        process.env.BFTSMART_VIEW_FILE
+      )
+    );
   } catch (err) {
     console.error(err);
   }
 }
-async function configure(
-  workingDir,
-  replicaSettings,
-  clientSettings,
-  log
-) {
+async function configure(replicaSettings, clientSettings, log) {
   log.info('deleting old view');
-  await deleteCurrentView(workingDir);
-  log.info('reading experiment details ...');
-
-  //let experimentId = Object.keys(experiment)[0];
-  /* Replica Settings */
-  /* let replicaSettings = {
-    replicas: experiment[experimentId].replica.replicas,
-    blockSize: experiment[experimentId].replica.blocksize,
-    replicaInterval: experiment[experimentId].replica.replicaInterval,
-    replySize: experiment[experimentId].replica.replysize,
-    stateSize: experiment[experimentId].replica.statesize,
-    context: experiment[experimentId].replica.context,
-    replicaSig: experiment[experimentId].replica.replicaSig,
-  };*/
-  /* Client Settings */
-  /*let clientSettings = {
-    clients: experiment[experimentId].client.clients,
-    opPerClient: experiment[experimentId].client.opPerClient,
-    reqSize: experiment[experimentId].client.requestsize,
-    clientInterval: experiment[experimentId].client.clientInterval,
-    readOnly: experiment[experimentId].client.readOnly,
-    verbose: experiment[experimentId].client.verbose,
-    clientSig: experiment[experimentId].client.clientSig,
-  };*/
+  await deleteCurrentView();
   log.info('generating system.config ...');
   await genSystemConfig(
-    workingDir,
     replicaSettings.replicas,
     replicaSettings.blockSize
   );
   log.info('system.config generated!');
   log.info('generating hosts.config ...');
   var replicaIPs = await genHostsConfig(
-    workingDir,
     replicaSettings.replicas,
     clientSettings.clients
   );
@@ -202,7 +182,7 @@ async function configure(
   );
   return replicaIPs;
 }
-async function getStats(experimentsPath, protocolPath) {
+async function getStats(experimentId, log) {
   return {
     maxThroughput: -1,
     avgThroughput: 'Not Computed',
@@ -210,4 +190,11 @@ async function getStats(experimentsPath, protocolPath) {
     latencyOutlierRemoved: 'Not Computed',
   };
 }
-module.exports = { build, configure, getProcessName, getStats };
+module.exports = {
+  build,
+  configure,
+  getProcessName,
+  getStats,
+  getExecutionDir,
+  getExperimentsOutputDirectory,
+};
