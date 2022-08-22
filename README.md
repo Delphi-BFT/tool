@@ -120,7 +120,7 @@ Now it is time, to clone this repository:
 
 
 ```
-cd shadow-experiments && git submodule update --init --recursive && cd src && npm install
+cd shadow-experiments && git submodule update --init --recursive && npm install
 
 ```
 
@@ -130,21 +130,15 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON
 make
 ```
 
-To start an experiment you have to pass an experiment description file to the orchestrator. See ``src/examples/[ProtocolName].yaml``.
+To start an experiment you have to pass an experiment description file to the orchestrator. See ``examples/[ProtocolName].yaml``.
 
-IMPORTANT: change the experimentsDirectory as it is pointing to my directory (cb) in the VM
-```
-protocolName: hotstuff
-protocolPath: /home/<EDIT HERE>/shadow-experiments/libhotstuff/
-executionDir: /home/<EDIT HERE>/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
-experimentsDirectory: /home/<EDIT HERE>/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
-```
+IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories.
 
-Once this is completed you can start the orchestrator, passing the epxeriment description file like this (from the /src/ directory):
+Once this is completed you can start the simulation, passing the experiment description file like this :
 
 
 ```
-node orchestrator.js examples/hotstuffExample.yaml
+npm run simulation -- examples/hs3-aws.yaml
 ```
 
 HINT: Use ``tmux`` to run your simulations in the background
