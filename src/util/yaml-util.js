@@ -1,13 +1,15 @@
 const yaml = require('js-yaml')
 const fs = require('fs').promises
-let makeConfigTemplate = (fullPathgml, dir, misc) => {
-  let res = new Object()
-  res.general = {
-    stop_time: misc.duration,
-    data_directory: dir,
-    parallelism: misc.parallelism,
-  }
-  res.experimental = new Object()
+let makeConfigTemplate = async (shadowTemplate, fullPathgml, dir, misc) => {
+  let res = yaml.load(await fs.readFile(shadowTemplate, 'utf8'))
+  // handle an undefined res here?
+  if (!res.general) res.general = new Object()
+  res.general.stop_time = misc.duration ? misc.duration : res.general.stop_time
+  res.general.data_directory = dir ? dir : res.general.data_directory
+  res.general.parallelism = misc.parallelism
+    ? misc.parallelism
+    : res.general.parallelism
+  if (!res.experimental) res.experimental = new Object()
   res.experimental.use_legacy_working_dir = true
   res.experimental.runahead = misc.runahead
   res.network = new Object()
@@ -17,14 +19,6 @@ let makeConfigTemplate = (fullPathgml, dir, misc) => {
   return res
 }
 let makeHost = (res, name, ip, network_node_id, procs) => {
-  /* let newHost = new Object();
-    newHost[name] = new Object();
-    newHost[name].ip_addr = ip;
-    newHost[name].network_node_id = network_node_id;
-    newHost[name].path = path;
-    newHost[name].env = env;
-    newHost[name].args = args;
-    newHost[name].start_time = start_time;*/
   let processes = []
   for (let i = 0; i < procs.length; i++) {
     processes.push({

@@ -31,7 +31,12 @@ async function configure(protocol, replicaSettings, clientSettings, log) {
 }
 async function run(executionDir, log) {
   try {
-    await promisified_spawn('shadow', ['shadow.yaml'], executionDir, log)
+    await promisified_spawn(
+      process.env.SHADOW_PROCESS,
+      [process.env.SHADOW_FILE],
+      executionDir,
+      log,
+    )
   } catch (e) {
     log.error('simulation exited with non-zero code!')
   }
@@ -53,7 +58,8 @@ async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
 function getProtocolObject(name) {
   if (name == 'bftsmart') return bftsmart
   if (name == 'hotstuff') return hotstuff
-  return themis
+  if (name == 'themis') return themis
+  throw new Error('No such protocol!')
 }
 async function backUpArtifact(source, dest) {
   await fs.copyFile(source, dest)
@@ -61,6 +67,10 @@ async function backUpArtifact(source, dest) {
 async function main() {
   let args = process.argv.slice()
   let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'))
+  /*
+   * this[procotolName] => lookup
+   *
+   */
   let protocol = getProtocolObject(experimentDetails.protocolName)
   let executionDir = protocol.getExecutionDir()
   let experimentsPath = protocol.getExperimentsOutputDirectory()
@@ -94,7 +104,8 @@ async function main() {
     let networkFilePath = path.join(executionDir, process.env.NETWORK_FILE)
     logger.info('deleting clashing directories ...')
     await deleteDirectoryIfExists(path.join(experimentsPath, experimentId))
-    let shadowTemplate = yg.makeConfigTemplate(
+    let shadowTemplate = await yg.makeConfigTemplate(
+      process.env.SHADOW_TEMPLATE,
       process.env.NETWORK_FILE,
       path.join(experimentsPath, experimentId),
       e[experimentId].misc,

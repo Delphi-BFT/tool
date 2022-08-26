@@ -1,5 +1,8 @@
 const { spawn, exec } = require('child_process')
 function promisified_spawn(cmd, args, workingDir, log) {
+  log.info(
+    `launching ${cmd} with args: ${args} with working Directory: ${workingDir}`,
+  )
   return new Promise((resolve, reject) => {
     const process = spawn(cmd, args, { cwd: workingDir })
     process.on('exit', function (code) {
