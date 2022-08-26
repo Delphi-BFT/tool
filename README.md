@@ -1,28 +1,51 @@
-# Shadow Experiments
+# Delphi-BFT
 
-We recommend Ubuntu 20.04 LTS and Shadow v2.2 (newest version as of time of writing)
+
+Delphi-BFT is a toolchain for simplifying and automating large-scale simulations of real BFT protocol implementations on top of the existing [Phantom (alias Shadow v2)](https://github.com/shadow/shadow) simulator. We currently tested simulations for the protocol implementations of PBFT, BFT-SMaRt and Hot-Stuff. Using Phantom simulations, we can predict system metrics like throughput and latency of real, unmodified BFT protocol implementations.
+
+This simulation method is resource-friendly and preserves application-realism since existing BFT frameworks can be simply plugged into the simulation engine without requiring code modifications or re-implementation. Further, the approach is useful to understand the performance of BFT protocols if they are network-bound.
+
+
+
+### Features and Design Goals of Delphi-BFT
+
+* Usability
+* Configurability
+* Bulk Experimentation
+* WAN Topology Generation
+* Automated Protocol Bootstrapping
+* Resource Monitoring
+* Plotting
+* Modularity / Extensibility
+
+### Architecture of Delphi-BFT
+
+
+##### Orchestrator
+The toolchain is administered by an orchestrator, that manages all tools,
+i.e., for preparing an environment, configuring runtime artifacts for a BFT protocol, and initializing a resource monitor. The orchestrator invokes protocol connectors to setup a BFT protocol and loads ``experiments description files`` which contain a set of experiments to be conducted for the specified BFT protocol. Finally, it starts Phantom, once an experiment is ready for its execution. 
+
+##### Environment Generator
+The environment generator creates network topologies as complete graph for any  system size. The network topologies  resemble realistic deployment scenarios for a LAN or WAN setting. To create network graphs with network links reflecting a realistic geographic dispersion of nodes, the environment generator employs a cloudping component which retrieves real round-trip latencies between all AWS regions from Cloudping\footnote{See \url{https://www.cloudping.co/grid}.}. This allows the tool to create network topologies which resemble real BFT protocol deployments on the AWS cloud infrastructure.
+
+
+##### Protocol Connectors
+For each BFT protocol implementation that we want to simulate, it is necessary to create protocol configuration files and necessary keys. Since protocol options and cryptographic primitives vary depending on the concrete BFT protocol, we implement the protocol-specific setup routine as a tool called protocol connector, which is invoked by the orchestrator.
+A connector must implement the methods ``build()`` and ``configure()`` 
+This way, it is simple to extend our toolchain and support  new BFT protocols, as it only requires writing a new protocol connector (in our experience this means writing between 100 and 200 LoC).
+
+##### Resource Monitor
+The orchestrator initializes a resource monitor to collect information on resource consumption (like allocated memory and CPU time) during simulation runs and also the total simulation time.
+
+##### Plotter
+Results are stored to the file system by Phantom. They can be aggregated and mapped to specific diagrams for specifiable metrics like latency of throughput. For instance, it can create diagrams that display the performance of a BFT protocol for increasing system scale which aggregate several simulation runs for an increasing $n$ (or any other variable).
+
+
+
 
 ### Compatibility (tested but no gurantees are given)
 
-**HotStuff**:
-
-- **Arch with Kernel 5.18.5-arch1-1 with GLIBC 2.35:** Working :rocket:
-- **Ubuntu 22.04:** Working but not throughly tested :rocket:
-- **Ubuntu 20.10:** Working (albeit the Shadow 2.0 does not) :anguished:
-- **Ubuntu 18.04:** NOT working (due to GLIBC 2.27) :anguished:
-- **Debian 10:** NOT Working  :anguished:
-- **Debian 11:** Shadow does NOT pass determinism tests :anguished:
-
-**BFT-SMaRt**:
-- **Arch with Kernel 5.18.5-arch1-1 with GLIBC 2.35:** ONLY basic simulations working :rocket:
-- **Ubuntu 20.10:** Working (albeit the Shadow 2.0 does not)  :anguished:
-- **Ubuntu 18.04:** ONLY basic simulations working :rocket:
-- **Debian 10:** NOT Working :anguished:
-- **Debian 11:** Shadow does NOT pass determinism tests :anguished:
-
-**Themis**:
-
-- **Arch with Kernel 5.18.5-arch1-1 with GLIBC 2.35:** NOT working (Shadow v2.0 issues other Shadow versions have rseq error) :anguished:
+We recommend Ubuntu 20.04 LTS and Shadow v2.2 (newest version as of time of writing).
 
 ### Dependencies
 
