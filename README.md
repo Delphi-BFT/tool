@@ -149,7 +149,7 @@ After installing Shadow, it is imporant for the orchestrator to add it to your P
 echo 'export PATH="${PATH}:/home/${USER}/.local/bin"' >> ~/.bashrc && source ~/.bashrc
 ```
 
-Now it is time, to clone this repository:
+Now it is time, to clone this repository and install the tool:
 
 
 ```
