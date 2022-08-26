@@ -6,6 +6,16 @@ Delphi-BFT is a toolchain for simplifying and automating large-scale simulations
 This simulation method is resource-friendly and preserves application-realism since existing BFT frameworks can be simply plugged into the simulation engine without requiring code modifications or re-implementation. Further, the approach is useful to understand the performance of BFT protocols if they are network-bound.
 
 
+### Showcase: Reproducing results from HotStuff evaluations
+
+We try to mimic the evaluation setup of the HotStuff paper (https://arxiv.org/abs/1803.05069) to compare their measurements with our simulation results. Their setup consists of more than hundred virtual machines deployed in an AWS data center; each machine has up to 1.2 GB/s bandwidth and  there is less than 1 ms latency between each pair of machines (we use 1 ms in the simulation). The employed batch size is 400. We compare against two measurement series: "p1024" where the payload size of request and responses is 1024 bytes and  
+"10ms" with empty payload but the latency of all communication links is set to 10 ms.
+
+<img src="assets/img/hotstuff-reproduce.svg" width="600">
+
+
+We display our results in the Figure above. The simulation results for the payload experiment indicate a similar trend as the real measurements, where performance starts to drop for n >= 32. For a small sized replica group, the network simulation predicts higher performance: 200k tx/s. This equals the theoretical maximum limited only through the 1 ms link latency which leads to pipelined HotStuff committing a batch of 400 requests every 2 ms.
+The difference in throughput decreases once the performance of HotStuff becomes more bandwith-throttled (at n >= 32). We also achieve close results in the "10ms" setting: 80 ms in the simulation vs 84.1 ms real, and 20k tx/s in the simulation vs. 19.2k tx/s real for$n=4; but with an increasing difference for higher n, i.e., 84 ms vs. 106 ms and 19k.2 tx/s vs. 15.1k tx/s for n=128.
 
 ### Features and Design Goals of Delphi-BFT
 
@@ -26,7 +36,7 @@ The toolchain is administered by an orchestrator, that manages all tools,
 i.e., for preparing an environment, configuring runtime artifacts for a BFT protocol, and initializing a resource monitor. The orchestrator invokes protocol connectors to setup a BFT protocol and loads ``experiments description files`` which contain a set of experiments to be conducted for the specified BFT protocol. Finally, it starts Phantom, once an experiment is ready for its execution. 
 
 ##### Environment Generator
-The environment generator creates network topologies as complete graph for any  system size. The network topologies  resemble realistic deployment scenarios for a LAN or WAN setting. To create network graphs with network links reflecting a realistic geographic dispersion of nodes, the environment generator employs a cloudping component which retrieves real round-trip latencies between all AWS regions from Cloudping\footnote{See \url{https://www.cloudping.co/grid}.}. This allows the tool to create network topologies which resemble real BFT protocol deployments on the AWS cloud infrastructure.
+The environment generator creates network topologies as complete graph for any  system size. The network topologies  resemble realistic deployment scenarios for a LAN or WAN setting. To create network graphs with network links reflecting a realistic geographic dispersion of nodes, the environment generator employs a cloudping component which retrieves real round-trip latencies between all AWS regions from Cloudping (https://www.cloudping.co/grid). This allows the tool to create network topologies which resemble real BFT protocol deployments on the AWS cloud infrastructure.
 
 
 ##### Protocol Connectors
@@ -38,7 +48,7 @@ This way, it is simple to extend our toolchain and support  new BFT protocols, a
 The orchestrator initializes a resource monitor to collect information on resource consumption (like allocated memory and CPU time) during simulation runs and also the total simulation time.
 
 ##### Plotter
-Results are stored to the file system by Phantom. They can be aggregated and mapped to specific diagrams for specifiable metrics like latency of throughput. For instance, it can create diagrams that display the performance of a BFT protocol for increasing system scale which aggregate several simulation runs for an increasing $n$ (or any other variable).
+Results are stored to the file system by Phantom. They can be aggregated and mapped to specific diagrams for specifiable metrics like latency of throughput. For instance, it can create diagrams that display the performance of a BFT protocol for increasing system scale which aggregate several simulation runs for an increasing n (or any other variable).
 
 
 
@@ -143,11 +153,11 @@ Now it is time, to clone this repository:
 
 
 ```
-cd shadow-experiments && git submodule update --init --recursive && cd src && npm install
+cd tool && git submodule update --init --recursive && cd src && npm install
 
 ```
 
-We should test now if building, works, try out In shadow-experiments/libhotstuff:
+We should test now if building, works, try out In tool/libhotstuff:
 ```
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON
 make
@@ -158,8 +168,8 @@ To start an experiment you have to pass an experiment description file to the or
 IMPORTANT: change the experimentsDirectory as it is pointing to my directory (cb) in the VM
 ```
 protocolName: hotstuff
-protocolPath: /home/<EDIT HERE>/shadow-experiments/libhotstuff/
-executionDir: /home/<EDIT HERE>/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+protocolPath: /home/<EDIT HERE>/tool/libhotstuff/
+executionDir: /home/<EDIT HERE>/tool/libhotstuff/ # directory to put Shadow YAML file
 experimentsDirectory: /home/<EDIT HERE>/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
 ```
 
