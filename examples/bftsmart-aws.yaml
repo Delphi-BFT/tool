@@ -1,7 +1,4 @@
 protocolName: bftsmart
-protocolPath: ../library/
-executionDir: ../library/build/install/library
-experimentsDirectory: /home/sadok/myShadowExperiments/myBFTSMaRtExperiments
 experiments:
   - 4Replicas:
       misc:

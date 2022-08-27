@@ -1,5 +1,7 @@
+.env
 *.pcap
 *.log
 *.gml
 #*.yaml
 *shadow.data/*
+node_modules

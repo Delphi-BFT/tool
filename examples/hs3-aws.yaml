@@ -1,7 +1,4 @@
 protocolName: hotstuff
-protocolPath: /home/sadok/shadow-experiments/libhotstuff/
-executionDir: /home/sadok/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
-experimentsDirectory: /home/sadok/myShadowExperiments/myHotStuffExperiments # USE AN ABSOLUTE PATH
 plots:
   throughputDemo:
     type: tps
@@ -103,7 +100,6 @@ experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 30 s
         clientDelay: 0 s # timestamp to start CLIs
         parallelism: 8
         useShortestPath: false
