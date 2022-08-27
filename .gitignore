@@ -4,3 +4,4 @@
 *.gml
 #*.yaml
 *shadow.data/*
+node_modules
