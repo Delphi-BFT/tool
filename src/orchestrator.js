@@ -11,11 +11,6 @@ const { createLogger, format, transports } = require('winston')
 const { combine, splat, timestamp, printf } = format
 const { deleteDirectoryIfExists } = require('./util/helpers')
 const { performance } = require('perf_hooks')
-
-/* Connectors */
-const hotstuff = require('./connectors/hotstuff')
-const bftsmart = require('./connectors/bftsmart')
-const themis = require('./connectors/themis')
 const { promisified_spawn } = require('./util/exec')
 
 async function getStats(protocol, experimentId, log) {
@@ -42,7 +37,7 @@ async function run(executionDir, log) {
   }
 }
 
-async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
+async function createShadowHostConfig(shadowTemplate, replicas) {
   for (let i = 0; i < replicas.length; i++) {
     shadowTemplate = yg.makeHost(
       shadowTemplate,
@@ -55,23 +50,13 @@ async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
   return shadowTemplate
 }
 
-function getProtocolObject(name) {
-  if (name == 'bftsmart') return bftsmart
-  if (name == 'hotstuff') return hotstuff
-  if (name == 'themis') return themis
-  throw new Error('No such protocol!')
-}
 async function backUpArtifact(source, dest) {
   await fs.copyFile(source, dest)
 }
 async function main() {
   let args = process.argv.slice()
   let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'))
-  /*
-   * this[procotolName] => lookup
-   *
-   */
-  let protocol = getProtocolObject(experimentDetails.protocolName)
+  let protocol = require(experimentDetails.protocolConnectorPath)
   let executionDir = protocol.getExecutionDir()
   let experimentsPath = protocol.getExperimentsOutputDirectory()
   if (experimentDetails.plots) {
@@ -117,11 +102,7 @@ async function main() {
       clientSettings,
       logger,
     )
-    shadowTemplate = await createShadowHostConfig(
-      shadowTemplate,
-      hosts,
-      e[experimentId].misc.clientDelay,
-    )
+    shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
     // Generate Shadow File
     await yg.out(shadowFilePath, shadowTemplate)
     let myGraph = ''
@@ -130,7 +111,8 @@ async function main() {
         hosts,
         e[experimentId].network.bandwidthUp,
         e[experimentId].network.bandwidthDown,
-        e[experimentId].network.latency.delay,
+        e[experimentId].network.latency.replicas,
+        e[experimentId].network.latency.clients,
         '0.0',
       )
     else {

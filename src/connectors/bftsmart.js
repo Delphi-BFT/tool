@@ -124,6 +124,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
         path: javaProc,
         env: '',
         args: `-Xmx500m ${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_CLIENT_CLASS} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
+        startTime: clientSettings.startTime ? clientSettings.startTime : 0,
       })
     } else {
       replicaIPs[i].procs = []
@@ -131,6 +132,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
         path: javaProc,
         env: '',
         args: `-Xmx500m ${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_REPLICA_CLASS} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
+        startTime: 0,
       })
     }
   }

@@ -1,6 +1,7 @@
 const fs = require('fs')
 const { getLatencies } = require('./cloudping')
 const { transformLatencies } = require('./helpers')
+const SELF_LOOP_LATENCY = '10 us'
 const tab = '  '
 
 /* Author : Christian Berger */
@@ -92,7 +93,8 @@ let createGraphSimple = (
   hosts,
   bandwidth_up,
   bandwidth_down,
-  latency,
+  replicaDelay,
+  clientDelay,
   packet_loss,
 ) => {
   let host_bandwidth_up = []
@@ -119,9 +121,14 @@ let createGraphSimple = (
 
     // Create the edges between the hosts...
     for (let j = 0; j < hosts.length; j++) {
-      if (hosts[i].isClient || hosts[j].isClient) latencies[i].push('1000 us')
+      if (i == j) {
+        latencies[i].push(SELF_LOOP_LATENCY)
+        packet_losses[i].push(packet_loss)
+        continue
+      }
+      if (hosts[i].isClient || hosts[j].isClient) latencies[i].push(clientDelay)
       //latencies[i].push(latency); No case distinction?
-      else latencies[i].push(latency)
+      else latencies[i].push(replicaDelay)
       packet_losses[i].push(packet_loss)
     }
   }
@@ -196,7 +203,8 @@ async function makeAWSGraph(
   let awsLatencies = await getLatencies(log)
   let awsReplicas = await transformLatencies(replicaLatencies)
   let awsClients = null
-  if (clientLatencies) awsClients = await transformLatencies(clientLatencies)
+  if (clientLatencies && Array.isArray(clientLatencies))
+    awsClients = await transformLatencies(clientLatencies)
   let latencies = []
   let packet_losses = []
   let host_bandwidth_up = []
@@ -225,13 +233,14 @@ async function makeAWSGraph(
     }
     for (let j = 0; j < replicasIPs.length; j++) {
       if (i == j) {
-        latencies[i].push('10 us')
+        latencies[i].push(SELF_LOOP_LATENCY)
         packet_losses[i].push(packet_loss)
         continue
       }
 
       if (replicasIPs[i].isClient || replicasIPs[j].isClient) {
-        if (!clientLatencies) latencies[i].push('1000 us')
+        if (clientLatencies && !Array.isArray(clientLatencies))
+          latencies[i].push(clientLatencies)
         else {
           latencies[i].push(
             awsLatencies[

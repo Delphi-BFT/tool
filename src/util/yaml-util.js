@@ -25,7 +25,7 @@ let makeHost = (res, name, ip, network_node_id, procs) => {
       path: procs[i].path,
       environment: procs[i].env,
       args: procs[i].args,
-      start_time: procs[i].start_time,
+      start_time: procs[i].startTime,
     })
   }
   res.hosts[name] = {
