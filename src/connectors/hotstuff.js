@@ -61,6 +61,7 @@ async function passArgs(
   outStandingPerClient,
   numberOfClientHosts,
   numberOfClients,
+  clientStartTime,
   log,
 ) {
   let replicaIndex = 0
@@ -85,6 +86,7 @@ async function passArgs(
           path: process.env.HOTSTUFF_CLIENT_BIN,
           env: '',
           args: `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`,
+          startTime: clientStartTime,
         })
         log.debug(
           `client ${clientIndex} added on host: ${clientHostIndex} with path: ${
@@ -107,6 +109,7 @@ async function passArgs(
       path: process.env.HOTSTUFF_REPLICA_BIN,
       env: '',
       args: `--conf ${conf}`,
+      startTime: 0,
     })
     log.debug(
       `replica ${replicaIndex} added on host: ${replicaIndex} with path: ${
@@ -214,6 +217,7 @@ async function configure(replicaSettings, clientSettings, log) {
     clientSettings.outStandingPerClient,
     clientSettings.numberOfHosts,
     clientSettings.clients,
+    clientSettings.startTime ? clientSettings.startTime : 0,
     log,
   )
   await copyConfig(log)

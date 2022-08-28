@@ -37,7 +37,7 @@ async function run(executionDir, log) {
   }
 }
 
-async function createShadowHostConfig(shadowTemplate, replicas, clientDelay) {
+async function createShadowHostConfig(shadowTemplate, replicas) {
   for (let i = 0; i < replicas.length; i++) {
     shadowTemplate = yg.makeHost(
       shadowTemplate,
@@ -102,11 +102,7 @@ async function main() {
       clientSettings,
       logger,
     )
-    shadowTemplate = await createShadowHostConfig(
-      shadowTemplate,
-      hosts,
-      e[experimentId].misc.clientDelay,
-    )
+    shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
     // Generate Shadow File
     await yg.out(shadowFilePath, shadowTemplate)
     let myGraph = ''
@@ -115,7 +111,8 @@ async function main() {
         hosts,
         e[experimentId].network.bandwidthUp,
         e[experimentId].network.bandwidthDown,
-        e[experimentId].network.latency.delay,
+        e[experimentId].network.latency.replicas,
+        e[experimentId].network.latency.clients,
         '0.0',
       )
     else {

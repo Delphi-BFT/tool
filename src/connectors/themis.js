@@ -119,6 +119,7 @@ async function passArgs(hosts, clientSettings, log) {
         path: path.join(process.env.THEMIS_DIR, process.env.THEMIS_CLIENT_BIN),
         env: 'RUST_BACKTRACE=1',
         args: `-d ${clientSettings.duration} --config ${process.env.THEMIS_CONFIG_PATH} --payload ${clientSettings.payload} -c ${clientSettings.clients} --concurrent ${clientSettings.concurrent}`,
+        startTime: clientSettings.startTime ? clientSettings.startTime : 0,
       })
       clientIndex++
       continue
@@ -128,6 +129,7 @@ async function passArgs(hosts, clientSettings, log) {
       path: path.join(process.env.THEMIS_DIR, process.env.THEMIS_REPLICA_BIN),
       env: 'RUST_BACKTRACE=1',
       args: `${replicaIndex} --config ${process.env.THEMIS_CONFIG_PATH}`,
+      start_time: 0,
     })
     replicaIndex++
   }
