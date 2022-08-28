@@ -6,8 +6,9 @@ const apiUrl = 'https://api-demo.cloudping.co/averages'
 
 async function getLatencies(log) {
   let latencies = new Object()
+
+  log.info('getting latencies from cloudping ...')
   try {
-    log.info('getting latencies from cloudping ...')
     const response = await fetch(apiUrl, { method: 'GET' })
     if (response.ok) {
       log.info('got ok response from cloudping!')
@@ -26,11 +27,10 @@ async function getLatencies(log) {
       }
       return latencies
     } else {
-      log.error('error retrieving latencies from cloudping')
-      throw Error()
+      throw Error('could not retrieve latencies from cloudping')
     }
   } catch (e) {
-    throw Error('exception occurred while retrieving AWS latencies')
+    throw Error('could not retrieve latencies from cloudping')
   }
 }
 module.exports = { getLatencies }
