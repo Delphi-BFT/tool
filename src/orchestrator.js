@@ -14,7 +14,14 @@ const { performance } = require('perf_hooks')
 const { promisified_spawn } = require('./util/exec')
 
 async function getStats(protocol, experimentId, log) {
-  return protocol.getStats(experimentId, log)
+  if (protocol.getStats) return protocol.getStats(experimentId, log)
+  else
+    return {
+      maxThroughput: -1,
+      avgThroughput: -1,
+      latencyAll: -1,
+      latencyOutlierRemoved: -1,
+    }
 }
 async function build(protocol, replicaSettings, clientSettings, log) {
   log.info('Calling protocol build function ...')
