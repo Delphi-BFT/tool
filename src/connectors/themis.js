@@ -18,7 +18,7 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error('replicas property of replica object must be an Integer')
   if (
     isNullOrEmpty(replicaSettings.minBatchSize) ||
-    isNullOrEmpty(maxBatchSize)
+    isNullOrEmpty(replicaSettings.maxBatchSize)
   )
     throw new Error(
       'minBatchSize and maxBatchSize properties of replica object of current experiment was not defined',
@@ -40,7 +40,7 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'batchReplies property of replica object of current experiment was not defined',
     )
-  if (isBoolean(replicaSettings.batchReplies))
+  if (!math.isBoolean(replicaSettings.batchReplies))
     throw new Error(
       'batchReplies property of replica object must be an Integer',
     )
@@ -54,7 +54,7 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'concurrent property of client object of current experiment was not defined',
     )
-  if (!Number.isInteger(clientSettings.outStandingPerClient))
+  if (!Number.isInteger(clientSettings.concurrent))
     throw new Error('concurrent property of client object must be an Integer')
   if (isNullOrEmpty(clientSettings.payload))
     throw new Error(
@@ -207,6 +207,9 @@ function getExperimentsOutputDirectory() {
   return process.env.THEMIS_EXPERIMENTS_OUTPUT_DIR
 }
 async function configure(replicaSettings, clientSettings, log) {
+  log.info('parsing replica and client objects')
+  _parse(replicaSettings, clientSettings)
+  log.info('objects parsed!')
   await generateKeys(
     replicaSettings.peerAuthentication,
     replicaSettings.replicas,
