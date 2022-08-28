@@ -161,7 +161,7 @@ IMPORTANT: rename .env.example to .env and change the placeholders with the appr
 Once this is completed you can start the simulation, passing the experiment description file like this :
 
 ```
-npm run simulation -- examples/hs3-aws.yaml
+npm run simulation -- examples/hotstuff/hs3-aws.yaml
 ```
 
 HINT: Use `tmux` to run your simulations in the background
