@@ -2,6 +2,8 @@ const fs = require('fs')
 const { promisified_spawn } = require('../util/exec')
 const path = require('path')
 const ipUtil = require('../util/ip-util')
+const { isNullOrEmpty } = require('../util/helpers')
+const { isBoolean } = require('mathjs')
 
 /* BFT-SMaRt settings*/
 const sysconf = {
@@ -51,6 +53,123 @@ const processName = 'java'
 /* Java stuff */
 
 const javaProc = '/usr/bin/java'
+
+function _parse(replicaSettings, clientSettings) {
+  if (isNullOrEmpty(replicaSettings))
+    throw new Error('replica object of current experiment was not defined')
+  if (isNullOrEmpty(clientSettings))
+    throw new Error('client object of current experiment was not defined')
+  if (isNullOrEmpty(replicaSettings.replicas))
+    throw new Error(
+      'replicas property of replicas object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replicas))
+    throw new Error('replicas property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.blockSize))
+    throw new Error(
+      'blockSize property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.blockSize))
+    throw new Error('blockSize property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.replicaInterval))
+    throw new Error(
+      'replicaInterval property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replicaInterval))
+    throw new Error(
+      'replicaInterval property of replica object must be an Integer',
+    )
+  if (isNullOrEmpty(replicaSettings.replySize))
+    throw new Error(
+      'replySize property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replySize))
+    throw new Error('replySize property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.stateSize))
+    throw new Error(
+      'stateSize property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.stateSize))
+    throw new Error('stateSize property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.context))
+    throw new Error(
+      'context property of replica object of current experiment was not defined',
+    )
+  if (!isBoolean(replicaSettings.context))
+    throw new Error(
+      'context property of replica object must have a boolean value',
+    )
+  if (isNullOrEmpty(replicaSettings.replicaSig))
+    throw new Error(
+      'replicaSig property of replica object of current experiment was not defined',
+    )
+  if (
+    replicaSettings.replicaSig != 'nosig' &&
+    replicaSettings.replicaSig != 'ecdsa' &&
+    replicaSettings.replicaSig != 'default'
+  )
+    throw new Error(
+      'replicaSig property of replica object must have <nosig | default | ecdsa> as value',
+    )
+  if (isNullOrEmpty(clientSettings.clients))
+    throw new Error(
+      'clients property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.clients))
+    throw new Error('clients property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.threadsPerClient))
+    throw new Error(
+      'threadsPerClient property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.threadsPerClient))
+    throw new Error(
+      'threadsPerClient property of client object must be an Integer',
+    )
+  if (isNullOrEmpty(clientSettings.opPerClient))
+    throw new Error(
+      'opPerClient property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.opPerClient))
+    throw new Error('opPerClient property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.clientInterval))
+    throw new Error(
+      'clientInterval property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.clientInterval))
+    throw new Error(
+      'clientInterval property of client object must be an Integer',
+    )
+  if (isNullOrEmpty(clientSettings.requestSize))
+    throw new Error(
+      'requestSize property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.requestSize))
+    throw new Error('requestSize property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.readOnly))
+    throw new Error(
+      'readOnly property of client object of current experiment was not defined',
+    )
+  if (!isBoolean(clientSettings.readOnly))
+    throw new Error(
+      'readOnly property of client object must have a boolean value',
+    )
+  if (isNullOrEmpty(clientSettings.clientSig))
+    throw new Error(
+      'clientSig property of client object of current experiment was not defined',
+    )
+  if (
+    clientSettings.clientSig != 'nosig' &&
+    clientSettings.clientSig != 'ecdsa' &&
+    clientSettings.clientSig != 'default'
+  )
+    throw new Error(
+      'clientSig property of client object must have <nosig | default | ecdsa> as value',
+    )
+  if (!isBoolean(clientSettings.verbose))
+    throw new Error(
+      'verbose property of client object must have a boolean value',
+    )
+}
 
 function getProcessName() {
   return processName
@@ -123,7 +242,15 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
       replicaIPs[i].procs.push({
         path: javaProc,
         env: '',
-        args: `-Xmx500m ${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_CLIENT_CLASS} ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${clientSettings.opPerClient} ${clientSettings.requestSize} ${clientSettings.clientInterval} ${clientSettings.readOnly} ${clientSettings.verbose} ${clientSettings.clientSig}`,
+        args: `-Xmx500m ${process.env.BFTSMART_JAVA_ARGS} ${
+          process.env.BFTSMART_CLIENT_CLASS
+        } ${replicaIPs[i].clientIndex} ${clientSettings.threadsPerClient} ${
+          clientSettings.opPerClient
+        } ${clientSettings.requestSize} ${clientSettings.clientInterval} ${
+          clientSettings.readOnly
+        } ${
+          !isNullOrEmpty(clientSettings.verbose) ? clientSettings.verbose : true
+        } ${clientSettings.clientSig}`,
         startTime: clientSettings.startTime ? clientSettings.startTime : 0,
       })
     } else {
@@ -149,6 +276,9 @@ async function deleteCurrentView() {
   }
 }
 async function configure(replicaSettings, clientSettings, log) {
+  log.info('parsing replica and client objects')
+  _parse(replicaSettings, clientSettings)
+  log.info('objects parsed!')
   log.info('deleting old view')
   await deleteCurrentView()
   log.info('generating system.config ...')
@@ -171,6 +301,7 @@ async function getStats(experimentId, log) {
     latencyOutlierRemoved: 'Not Computed',
   }
 }
+
 module.exports = {
   build,
   configure,

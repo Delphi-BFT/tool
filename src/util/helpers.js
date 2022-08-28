@@ -45,9 +45,13 @@ function removeOutliers(data) {
   }
   return resultSet
 }
+function isNullOrEmpty(obj) {
+  return obj === null || obj === undefined || obj === ''
+}
 module.exports = {
   transformLatencies,
   deleteDirectoryIfExists,
   median,
   removeOutliers,
+  isNullOrEmpty,
 }

@@ -3,7 +3,72 @@ const { promisified_spawn } = require('../util/exec')
 const path = require('path')
 const ipUtil = require('../util/ip-util')
 const math = require('mathjs')
-const { removeOutliers } = require('../util/helpers')
+const { removeOutliers, isNullOrEmpty } = require('../util/helpers')
+
+function _parse(replicaSettings, clientSettings) {
+  if (isNullOrEmpty(replicaSettings))
+    throw new Error('replica object of current experiment was not defined')
+  if (isNullOrEmpty(clientSettings))
+    throw new Error('client object of current experiment was not defined')
+  if (isNullOrEmpty(replicaSettings.replicas))
+    throw new Error(
+      'replicas property of replicas object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replicas))
+    throw new Error('replicas property of replica object must be an Integer')
+  if (
+    isNullOrEmpty(replicaSettings.minBatchSize) ||
+    isNullOrEmpty(maxBatchSize)
+  )
+    throw new Error(
+      'minBatchSize and maxBatchSize properties of replica object of current experiment was not defined',
+    )
+  if (
+    !Number.isInteger(replicaSettings.minBatchSize) ||
+    !Number.isInteger(replicaSettings.maxBatchSize)
+  )
+    throw new Error(
+      'minBatchSize and maxBatchSize properties of replica object must be an Integer',
+    )
+  if (isNullOrEmpty(replicaSettings.replySize))
+    throw new Error(
+      'replySize property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replySize))
+    throw new Error('replySize property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.batchReplies))
+    throw new Error(
+      'batchReplies property of replica object of current experiment was not defined',
+    )
+  if (isBoolean(replicaSettings.batchReplies))
+    throw new Error(
+      'batchReplies property of replica object must be an Integer',
+    )
+  if (isNullOrEmpty(clientSettings.clients))
+    throw new Error(
+      'clients property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.clients))
+    throw new Error('clients property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.concurrent))
+    throw new Error(
+      'concurrent property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.outStandingPerClient))
+    throw new Error('concurrent property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.payload))
+    throw new Error(
+      'payload property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.payload))
+    throw new Error('payload property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.duration))
+    throw new Error(
+      'duration property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.duration))
+    throw new Error('duration property of client object must be an Integer')
+}
 
 async function build(replicaSettings, clientSettings, log) {
   log.info('building Themis ...')
@@ -11,7 +76,7 @@ async function build(replicaSettings, clientSettings, log) {
   await promisified_spawn(cmd.proc, cmd.args, process.env.THEMIS_DIR, log)
   log.info('Themis build terminated sucessfully!')
 }
-async function generateKeys(numKeys, log) {
+async function generateKeys(auth, numKeys, log) {
   log.info(`generating keys for ${numKeys} replicas...`)
   try {
     await fs.mkdir(
@@ -27,7 +92,7 @@ async function generateKeys(numKeys, log) {
       '--bin',
       'keygen',
       '--',
-      'Ed25519',
+      auth,
       '0',
       numKeys,
       '--out-dir',
@@ -142,7 +207,11 @@ function getExperimentsOutputDirectory() {
   return process.env.THEMIS_EXPERIMENTS_OUTPUT_DIR
 }
 async function configure(replicaSettings, clientSettings, log) {
-  await generateKeys(replicaSettings.replicas, log)
+  await generateKeys(
+    replicaSettings.peerAuthentication,
+    replicaSettings.replicas,
+    log,
+  )
   let hosts = await createConfigFile(replicaSettings, log)
   hosts = await passArgs(hosts, clientSettings, log)
   return hosts

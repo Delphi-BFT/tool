@@ -4,8 +4,52 @@ const ipUtil = require('../util/ip-util')
 const { promisified_spawn } = require('../util/exec')
 const util = require('util')
 const exec = util.promisify(require('node:child_process').exec)
-
+const { isNullOrEmpty } = require('../util/helpers')
 const processName = 'hotstuff-app'
+function _parse(replicaSettings, clientSettings) {
+  if (isNullOrEmpty(replicaSettings))
+    throw new Error('replica object of current experiment was not defined')
+  if (isNullOrEmpty(clientSettings))
+    throw new Error('client object of current experiment was not defined')
+  if (isNullOrEmpty(replicaSettings.replicas))
+    throw new Error(
+      'replicas property of replicas object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replicas))
+    throw new Error('replicas property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.blockSize))
+    throw new Error(
+      'blockSize property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.blockSize))
+    throw new Error('blockSize property of replica object must be an Integer')
+  if (isNullOrEmpty(replicaSettings.replySize))
+    throw new Error(
+      'replySize property of replica object of current experiment was not defined',
+    )
+  if (!Number.isInteger(replicaSettings.replySize))
+    throw new Error('replySize property of replica object must be an Integer')
+  if (isNullOrEmpty(clientSettings.clients))
+    throw new Error(
+      'clients property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.clients))
+    throw new Error('clients property of client object must be an Integer')
+  if (isNullOrEmpty(clientSettings.outStandingPerClient))
+    throw new Error(
+      'outStandingPerClient property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.outStandingPerClient))
+    throw new Error(
+      'outStandingPerClient property of client object must be an Integer',
+    )
+  if (isNullOrEmpty(clientSettings.requestSize))
+    throw new Error(
+      'requestSize property of client object of current experiment was not defined',
+    )
+  if (!Number.isInteger(clientSettings.requestSize))
+    throw new Error('requestSize property of client object must be an Integer')
+}
 
 function getProcessName() {
   return processName
@@ -198,6 +242,9 @@ async function build(replicaSettings, clientSettings, log) {
   log.info('HotStuff build terminated successfully!')
 }
 async function configure(replicaSettings, clientSettings, log) {
+  log.info('parsing replica and client objects')
+  _parse(replicaSettings, clientSettings)
+  log.info('objects parsed!')
   log.debug(
     `generating ${replicaSettings.replicas} ips for replicas and ${clientSettings.numberOfHosts} for clients`,
   )
