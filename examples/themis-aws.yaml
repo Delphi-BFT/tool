@@ -1,4 +1,5 @@
 protocolName: themis
+protocolConnectorPath: ./connectors/themis.js
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:

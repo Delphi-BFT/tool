@@ -1,4 +1,5 @@
 protocolName: bftsmart
+protocolConnectorPath: ./connectors/bftsmart.js
 experiments:
   - 4Replicas:
       misc:

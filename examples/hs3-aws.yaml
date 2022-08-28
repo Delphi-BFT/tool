@@ -1,4 +1,5 @@
 protocolName: hotstuff
+protocolConnectorPath: ./connectors/hotstuff.js
 plots:
   throughputDemo:
     type: tps
