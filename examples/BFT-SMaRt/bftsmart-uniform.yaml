@@ -1,21 +1,18 @@
 protocolName: bftsmart
-protocolPath: ../library/
-executionDir: ../library/build/install/library
-experimentsDirectory: /home/sadok/myShadowExperiments/myBFTSMaRtExperiments
+protocolConnectorPath: ./connectors/bftsmart.js
 experiments:
   - 4Replicas:
       misc:
         duration: 300 s
-        clientDelay: 60 s
         parallelism: 20
         useShortestPath: false
       network:
         bandwidthUp: 10 Gbit
         bandwidthDown: 10 Gbit
         latency:
-          uniform: false
-          replicas: ['us-west-1': 2, 'us-east-1': 2]
-          clients: ['us-west-1': 1, 'af-south-1': 1, 'ap-south-1': 1]
+          uniform: true
+          replicas: 10000 us
+          clients: 700 us
       replica:
         replicas: 4
         blockSize: 100
@@ -26,6 +23,7 @@ experiments:
         replicaSig: nosig
       client:
         clients: 3
+        startTime: 60 s
         threadsPerClient: 2
         opPerClient: 10000
         requestSize: 4000

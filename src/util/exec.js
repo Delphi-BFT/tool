@@ -1,26 +1,29 @@
-const { spawn, exec } = require('child_process');
+const { spawn, exec } = require('child_process')
 function promisified_spawn(cmd, args, workingDir, log) {
+  log.info(
+    `launching ${cmd} with args: ${args} with working Directory: ${workingDir}`,
+  )
   return new Promise((resolve, reject) => {
-    const process = spawn(cmd, args, { cwd: workingDir });
+    const process = spawn(cmd, args, { cwd: workingDir })
     process.on('exit', function (code) {
       if (code) {
-        log.error('child proess terminated with code: ' + code);
-        reject(code);
-        throw new Error('child process exited with non-zero code!');
+        log.error('child proess terminated with code: ' + code)
+        reject(code)
+        throw new Error('child process exited with non-zero code!')
       }
-      log.info('child proess terminated with code: ' + code);
-      resolve(code);
-    });
+      log.info('child proess terminated with code: ' + code)
+      resolve(code)
+    })
     process.on('close', function (code) {
-      resolve(code);
-    });
+      resolve(code)
+    })
     process.stdout.on('data', function (data) {
-      log.info('childprocess: ' + data.toString());
-    });
+      log.info('childprocess: ' + data.toString())
+    })
     process.stderr.on('data', function (data) {
-      log.error('childprocess: ' + data.toString());
-    });
-  });
+      log.error('childprocess: ' + data.toString())
+    })
+  })
 }
 
-module.exports = { promisified_spawn };
+module.exports = { promisified_spawn }

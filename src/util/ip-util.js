@@ -1,5 +1,5 @@
 async function getIPs(hosts) {
-  let ipList = [];
+  let ipList = []
   for (const [key, value] of Object.entries(hosts)) {
     for (let i = 0; i < value; i++) {
       let hostIP =
@@ -9,12 +9,12 @@ async function getIPs(hosts) {
         '.' +
         Math.floor(Math.random() * 255) +
         '.' +
-        Math.floor(Math.random() * 255);
-      let hostName = key + i;
-      ipList.push({ name: hostName, ip: hostIP });
+        Math.floor(Math.random() * 255)
+      let hostName = key + i
+      ipList.push({ name: hostName, ip: hostIP })
     }
   }
-  return ipList;
+  return ipList
 }
 
-module.exports = { getIPs };
+module.exports = { getIPs }
