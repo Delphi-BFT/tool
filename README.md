@@ -168,20 +168,17 @@ HINT: Use `tmux` to run your simulations in the background
 
 ### If you want to make a connector for another protocol
 
-Your connector has to implement the methods `build` and `configure` (see orchestrator.js)
+Your connector has to implement the methods `build`, `configure`, `getProcessName`, `getExecutionDir` and `getExperimentsOutputDirectory`
 
 Experiment description files have to adhere to a certain format:
 
 ```
 protocolName: name of your protocol
-protocolPath: path to your protocol (will be used to run build commands)
-executionDir: path to put in your shadow files
-experimentsDirectory: path to save in your experiments
+protocolConnectorPath: path to your protocol connector
 experiments: Array describing the experiments to be made
     exp1: description of an experiment
         misc: miscelleanous settings
             duration: duration of the experiment
-            clientDelay: timeport to start client
             useShortestPath: whether to Dijkstra
             parallelism: you know :)
         network:
@@ -190,9 +187,11 @@ experiments: Array describing the experiments to be made
             latency:
                 uniform: (true|false)
                 if true:
-                    delay: ...
+                  replicas: inter-replica latency ex: 1000 us
+                  clients: client-replica latency ex 1000 us
                 else:
-                    hosts: Array  describing AWS hosts format region: host
+                  replicas: Array describing AWS hosts format region: host
+                  clients: Array describingAWS hosts format region: host OR a uniform client-replica latency
         replica:
             This is for protocol-specific and replica-specific configurations, this will be passed to
             your connector.
@@ -200,3 +199,4 @@ experiments: Array describing the experiments to be made
             This is for protocol-specific and replica-specific configurations, this will be passed to
             your connector.
 ```
+you may also use the .env file to define protocol-specific settings
