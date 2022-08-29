@@ -1,0 +1,125 @@
+protocolName: bftsmart
+protocolPath: ../library/
+executionDir: ../library/build/install/library # directory to put Shadow YAML file
+experimentsDirectory: /home/cb/myShadowExperiments/myBFT-SMaRtExperiments # USE AN ABSOLUTE PATH
+experiments:
+  - 4replicasAWSOregon:
+      misc:
+        duration: 1200 s
+        clientDelay: 30 s
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['us-west-1': 1]
+      replica:
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        threadsPerClient: 1
+        opPerClient: 2000
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
+  - 4replicasAWSIreland:
+      misc:
+        duration: 1200 s
+        clientDelay: 30 s
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['eu-west-1': 1]
+      replica:
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        threadsPerClient: 1
+        opPerClient: 2000
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
+  - 4replicasAWSSao:
+      misc:
+        duration: 1200 s
+        clientDelay: 30 s
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['sa-east-1': 1]
+      replica:
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        threadsPerClient: 1
+        opPerClient: 2000
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
+  - 4replicasAWSSydney:
+      misc:
+        duration: 1200 s
+        clientDelay: 30 s
+        parallelism: 16
+        useShortestPath: false
+      network:
+        bandwidthUp: 1 Gbit
+        bandwidthDown: 1 Gbit
+        latency:
+          uniform: false
+          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+          clients: ['ap-southeast-2': 1]
+      replica:
+        replicas: 4
+        blockSize: 100
+        replicaInterval: 100
+        replySize: 0
+        stateSize: 0
+        context: false
+        replicaSig: nosig
+      client:
+        clients: 1
+        threadsPerClient: 1
+        opPerClient: 2000
+        requestSize: 0
+        clientInterval: 0
+        readOnly: false
+        verbose: true
+        clientSig: nosig
