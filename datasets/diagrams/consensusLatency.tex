@@ -1,0 +1,48 @@
+\begin{tikzpicture} 
+    \begin{axis}[ 
+    font= \footnotesize,
+     ylabel={Latency [ms]}, 
+     xticklabels from table={data/consensus-latencies.txt}{region},   
+        x tick label style={rotate=30,anchor=east,  xshift=15pt, yshift=-14pt,   font= \footnotesize},
+     ybar=2pt,  %configures bar shift 
+     bar width=6pt,
+      % width=0.6\columnwidth, 
+    height=3.67cm,
+       xtick=data, 
+       ytick = {100,200,300,400,500,600},
+        ymin=0,
+        ymax=600,
+        xmin=0.5,
+        xmax=1.5,
+    ymajorgrids=true,
+    yminorgrids=true,
+    minor grid style={dashed,gray!10},
+    minor tick num=1,
+    %legend pos= north west,% Legende oben links in Abb. 
+    legend style={at={(1, 1.08)},
+    legend columns = 1,
+    legend cell align=left% Rechtsbündige Ausrichtung der Legende 
+    }
+    ] 
+      \addplot
+      [draw = Blue,
+        fill = Blue!30!white]   
+        table[ 
+          x=regionNr, 
+          y=real   
+          ] 
+      {data/consensus-latencies.txt}; 
+     \addlegendentry{real }; 
+   
+            \addplot 
+      [draw = SkyBlue, 
+        fill = SkyBlue!30!white ]
+        table[ 
+          x=regionNr, 
+          y=simulated 
+          ] 
+      {data/consensus-latencies.txt}; 
+      \addlegendentry{sim.}; 
+    \end{axis}
+\end{tikzpicture} 
+\vskip -0.1 cm

@@ -1,0 +1,32 @@
+ \begin{tikzpicture}
+    \begin{axis}[
+width= 4.5cm,
+height=3.2cm,
+font= \footnotesize,
+    %title={Title},
+    xlabel={Replicas},
+    ylabel={Time [m]},
+    xmin=0, xmax=128,
+    ymin=0, ymax=65,
+    xtick={4, 16, 32, 64, 128},
+    ytick={0, 15, 30, 45, 60},
+    legend pos=south east,
+    legend columns = 2,
+    legend style={at={(0.98, 0.05)}},
+    legend cell align={left},
+    ymajorgrids=true,
+    xmajorgrids=true,
+    grid style=dashed,
+  %  legend style={font=\footnotesize},
+]
+
+\addplot[
+    color=OrangeRed,
+     mark=diamond,
+     ]
+    table [x=replicas,y=libhotstuff] {data/resource-consumption-time.txt};
+   
+ %  \legend{libhotstuff}
+\end{axis}
+\end{tikzpicture} % - avoid white space
+\vskip -0.1 cm

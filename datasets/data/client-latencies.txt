@@ -1,0 +1,5 @@
+region  regionNr  real    simulated
+Oregon  1   353.938  358.690
+Ireland 2   415.892  428.015
+{São Paulo}  3   414.534  429.1850
+Sydney 4   437.612  449.175

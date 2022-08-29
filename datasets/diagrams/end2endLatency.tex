@@ -1,0 +1,49 @@
+\begin{tikzpicture} 
+    \begin{axis}[ 
+    font= \footnotesize,
+     ylabel={Latency [ms]}, 
+     xticklabels from table={data/client-latencies.txt}{region},   
+        x tick label style={rotate=30,anchor=east,  xshift=10pt, yshift=-4pt,   font= \footnotesize},
+     ybar=2pt,  %configures bar shift 
+     bar width=6pt,
+      % width=0.6\columnwidth, 
+    height=3.67cm,
+       xtick=data, 
+       ytick = {100,200,300,400,500,600},
+        ymin=0,
+        ymax=600,
+        xmin=0.5,
+        xmax=4.5,
+    ymajorgrids=true,
+    yminorgrids=true,
+    minor grid style={dashed,gray!10},
+    minor tick num=1,
+    %legend pos= north west,% Legende oben links in Abb. 
+    legend style={at={(1, 1.08)},
+    legend columns = 5,
+    legend cell align=left% Rechtsbündige Ausrichtung der Legende 
+    }
+    ] 
+      \addplot 
+      [draw = OrangeRed,
+        fill = OrangeRed!30!white]   
+        table[ 
+          x=regionNr, 
+          y=real   
+          ] 
+      {data/client-latencies.txt}; 
+     \addlegendentry{real AWS \  }; 
+   
+            \addplot 
+      [draw = Peach, 
+        fill = Peach!30!white,
+        postaction={pattern=north east lines,pattern color=Peach!30!white}]   
+        table[ 
+          x=regionNr, 
+          y=simulated 
+          ] 
+      {data/client-latencies.txt}; 
+      \addlegendentry{simulation}; 
+    \end{axis}
+\end{tikzpicture} 
+\vskip -0.1 cm

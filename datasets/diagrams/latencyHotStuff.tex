@@ -1,0 +1,54 @@
+ \begin{tikzpicture}
+    \begin{axis}[
+%width= 8cm,
+%height=5cm,
+%font= \footnotesize,
+width= 4.5cm,
+height=4cm,
+font= \footnotesize,
+    %title={Title},
+    xlabel={Replicas},
+    ylabel={Latency [ms]},
+    xmin=0, xmax=128,
+    ymin=0, ymax=150,
+    xtick={4, 16, 32, 64, 128},
+    ytick={0, 25, 50, 75, 100, 125, 150},
+    %legend pos=north east,
+    legend columns = 3,
+    %legend style={at={(0.98, 1.05)}},
+   legend style={at={(0.33,1.12)},anchor=west, legend columns=3},
+    legend cell align={left},
+    ymajorgrids=true,
+    xmajorgrids=true,
+    grid style=dashed,
+    %legend style={font=\footnotesize},
+]
+
+\addplot[
+    color=NavyBlue,
+    mark=square,
+    ]
+    table [x=replicas,y=latency] {data/latency-HS3-p1024.txt};
+    
+        \addplot[
+    color=ProcessBlue,
+    mark=o,
+    ]
+    table [x=replicas,y=latency] {data/phantom-lat-hs3-p1024-1ms.txt};
+    \addplot[
+   color=BrickRed,
+    mark=triangle,
+    ]
+    table [x=replicas,y=latency] {data/latency-HS3-L10.txt};
+    
+
+     \addplot[
+    color=OrangeRed,
+    mark=diamond,
+    ]
+     table [x=replicas,y=latency] {data/phantom-lat-hs3-p0-10ms.txt};
+    
+% \legend{HS3-p1024, HS3-10ms, P}
+\end{axis}
+\end{tikzpicture} % - avoid white space
+\vskip -0.1 cm

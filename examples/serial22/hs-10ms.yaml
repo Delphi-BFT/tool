@@ -1,0 +1,244 @@
+protocolName: hotstuff
+protocolPath: /home/cb/shadow-experiments/libhotstuff/
+executionDir: /home/cb/shadow-experiments/libhotstuff/ # directory to put Shadow YAML file
+experimentsDirectory: /home/cb/myShadowExperiments/10ms # USE AN ABSOLUTE PATH
+plots:
+  throughputDemo:
+    type: tps
+    details:
+      title: 'Throughput comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Throughput (ops/s)'
+    shadowPlot:
+      style:
+        label: 'Shadow'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+    predefinedPlots:
+      HotStuff:
+        values:
+          - x: '4'
+            y: '105000'
+          - x: '8'
+            y: '107000'
+          - x: '16'
+            y: '107000'
+          - x: '32'
+            y: '60000'
+          - x: '64'
+            y: '40000'
+          - x: '128'
+            y: '32000'
+        style:
+          label: 'HotStuff'
+          pointStyle: star
+          pointBorderColor: '#8e5ea2'
+          borderColor: '#8e5ea2'
+  latencyDemo:
+    type: latency
+    details:
+      title: 'Latency comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Latency (s)'
+    shadowPlot:
+      style:
+        label: 'Shadow'
+        pointStyle: triangle
+        pointBorderColor: '#c45850'
+        borderColor: '#c45850'
+    predefinedPlots:
+      HotStuff:
+        values:
+          - x: '4'
+            y: '20'
+          - x: '8'
+            y: '20'
+          - x: '16'
+            y: '20'
+          - x: '32'
+            y: '47'
+          - x: '64'
+            y: '60'
+          - x: '128'
+            y: '105'
+        style:
+          label: 'HotStuff'
+          pointStyle: star
+          pointBorderColor: '#8e5ea2'
+          borderColor: '#8e5ea2'
+experiments:
+  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 1000 us
+        duration: 30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 4
+        - name: latencyDemo
+          metric: 'latency'
+          label: 4
+      network:
+        bandwidthUp: 10 Gibits # does not apply to clients (for now)
+        bandwidthDown: 10 Gibits # does not apply to clients (for now)
+        latency:
+         uniform: true
+         delay: 10000 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 4
+        blockSize: 400
+        replySize: 0
+      client:
+        clients: 2
+        numberOfHosts: 2
+        outStandingPerClient: 800
+        requestSize: 0
+  - 8rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 1000 us
+        duration: 30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 8
+        - name: latencyDemo
+          metric: 'latency'
+          label: 8
+      network:
+        bandwidthUp: 10 Gibits # does not apply to clients (for now)
+        bandwidthDown: 10 Gibits # does not apply to clients (for now)
+        latency:
+         uniform: true
+         delay: 10000 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 8
+        blockSize: 400
+        replySize: 0
+      client:
+        clients: 2
+        numberOfHosts: 2
+        outStandingPerClient: 800
+        requestSize: 0
+  - 16rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 1000 us
+        duration: 30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 16
+        - name: latencyDemo
+          metric: 'latency'
+          label: 16
+      network:
+        bandwidthUp: 10 Gibits # does not apply to clients (for now)
+        bandwidthDown: 10 Gibits # does not apply to clients (for now)
+        latency:
+         uniform: true
+         delay: 10000 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 16
+        blockSize: 400
+        replySize: 0
+      client:
+        clients: 16
+        numberOfHosts: 2
+        outStandingPerClient: 100
+        requestSize: 0
+  - 32rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 1000 us
+        duration:  30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 32
+        - name: latencyDemo
+          metric: 'latency'
+          label: 32
+      network:
+        bandwidthUp: 10 Gibits # does not apply to clients (for now)
+        bandwidthDown: 10 Gibits # does not apply to clients (for now)
+        latency:
+         uniform: true
+         delay: 10000 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 32
+        blockSize: 400
+        replySize: 0
+      client:
+        clients: 16
+        numberOfHosts: 2
+        outStandingPerClient: 100
+        requestSize: 0
+  - 64rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 1000 us
+        duration: 30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 64
+        - name: latencyDemo
+          metric: 'latency'
+          label: 64
+      network:
+        bandwidthUp: 10 Gibits # does not apply to clients (for now)
+        bandwidthDown: 10 Gibits # does not apply to clients (for now)
+        latency:
+         uniform: true
+         delay: 10000 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 64
+        blockSize: 400
+        replySize: 0
+      client:
+        clients: 16
+        numberOfHosts: 2
+        outStandingPerClient: 100
+        requestSize: 0
+  - 128rep: # this will be passed to as data_dir value in shadow.yaml
+      misc:
+        runahead: 1000 us
+        duration: 30 s
+        clientDelay: 0 s # timestamp to start CLIs
+        parallelism: 16
+        useShortestPath: false
+      plots:
+        - name: throughputDemo
+          metric: 'tps'
+          label: 128
+        - name: latencyDemo
+          metric: 'latency'
+          label: 128
+      network:
+        bandwidthUp: 10 Gibits # does not apply to clients (for now)
+        bandwidthDown: 10 Gibits # does not apply to clients (for now)
+        latency:
+         uniform: true
+         delay: 10000 us
+      replica: # should be validated by connectors (currently not done, they are passed as-is)
+        replicas: 128
+        blockSize: 400
+        replySize: 0
+      client:
+        clients: 16
+        numberOfHosts: 2
+        outStandingPerClient: 100
+        requestSize: 0
