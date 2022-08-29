@@ -56,6 +56,13 @@ We recommend Ubuntu 20.04 LTS and Shadow v2.2 (newest version as of time of writ
 
 ### Dependencies
 
+**Installing dependencies with Ansible (Ubuntu 20.04 and Debian 10)**:
+
+change ansible/group_vars/all.yml to your desired values, add your hosts to ansible/inventory.yml then run:
+```
+ansible-playbook ansible/setup.yml -i ansible/inventory.yml -u <YOUR_USERNAME>
+```
+
 **Node version (16.3.0):**
 
 ```
