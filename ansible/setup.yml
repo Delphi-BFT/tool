@@ -50,8 +50,8 @@
           command: bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
         - name: Cloning the Phantom repository and checking out tag v2.2.0
           ansible.builtin.git:
-            repo: https://github.com/phantom/phantom.git
-            dest: "{{phantom_clone_dir}}"
+            repo: "{{ phantom_repo }}"
+            dest: "{{ phantom_clone_dir }}"
             version: tags/"{{ phantom_version }}"
           become: no
         - name: Building Phantom
@@ -102,13 +102,13 @@
     - name: Cloning Delphi-BFT
       ansible.builtin.git:
         repo: "{{ delphi_bft_repo }}"
-        dest: "{{ delphi_clone_dir }}"
+        dest: "{{ delphi_bft_clone_dir }}"
         version: main
       become: no
     - name: Running npm install
       ansible.builtin.command: npm install
       args:
-        chdir: "{{ delphi_clone_dir }}"
+        chdir: "{{ delphi_bft_clone_dir }}"
       become: no
       
 
