@@ -1,7 +1,8 @@
 const yaml = require('js-yaml')
 const fs = require('fs').promises
 let makeConfigTemplate = async (shadowTemplate, fullPathgml, dir, misc) => {
-  let res = yaml.load(await fs.readFile(shadowTemplate, 'utf8'))
+  let res = new Object()
+  if (shadowTemplate) res = yaml.load(await fs.readFile(shadowTemplate, 'utf8'))
   // handle an undefined res here?
   if (!res.general) res.general = new Object()
   res.general.stop_time = misc.duration ? misc.duration : res.general.stop_time

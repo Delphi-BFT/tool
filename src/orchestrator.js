@@ -12,6 +12,7 @@ const { combine, splat, timestamp, printf } = format
 const { deleteDirectoryIfExists } = require('./util/helpers')
 const { performance } = require('perf_hooks')
 const { promisified_spawn } = require('./util/exec')
+const { isNullOrEmpty } = require('./util/helpers')
 
 async function getStats(protocol, experimentId, log) {
   if (protocol.getStats) return protocol.getStats(experimentId, log)
@@ -97,7 +98,9 @@ async function main() {
     logger.info('deleting clashing directories ...')
     await deleteDirectoryIfExists(path.join(experimentsPath, experimentId))
     let shadowTemplate = await yg.makeConfigTemplate(
-      process.env.SHADOW_TEMPLATE,
+      isNullOrEmpty(process.env.SHADOW_TEMPLATE)
+        ? null
+        : process.env.SHADOW_TEMPLATE,
       process.env.NETWORK_FILE,
       path.join(experimentsPath, experimentId),
       e[experimentId].misc,

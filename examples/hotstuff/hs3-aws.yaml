@@ -100,6 +100,7 @@ plots:
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
+        duration: 10 s
         runahead: 630 us
         parallelism: 8
         useShortestPath: false
@@ -142,6 +143,6 @@ experiments:
       client:
         numberOfHosts: 2
         clients: 4
-        startTime: 60 s
+        startTime: 0 s
         outStandingPerClient: 1400
         requestSize: 128

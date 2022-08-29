@@ -27,6 +27,6 @@ experiments:
       client:
         clients: 16
         payload: 0
-        startTime: 60 s
+        startTime: 5 s
         concurrent: 100
         duration: 43 # WATCH OUT FOR THIS VALUE (for now)
