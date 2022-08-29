@@ -1,0 +1,14 @@
+---
+
+ansible_ssh_private_key_file: ~/.ssh/id_rsa #CHANGE ME
+ansible_connection: ssh
+ansible_user: root #CHANGE ME
+
+node_version: 16.3.0
+
+delphi_bft_repo: https://github.com/Delphi-BFT/tool.git
+delphi_bft_clone_dir: $HOME/delphi-bft
+
+phantom_repo: https://github.com/shadow/shadow.git
+phantom_version: v2.2.0
+phantom_clone_dir: $HOME/shadow

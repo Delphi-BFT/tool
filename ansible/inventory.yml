@@ -1,0 +1,4 @@
+opennebula:
+  hosts:
+    debian_10_1:
+      ansible_host: 192.168.12.214 # CHANGE ME

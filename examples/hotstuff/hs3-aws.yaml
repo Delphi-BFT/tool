@@ -134,6 +134,7 @@ experiments:
         latency:
           uniform: false
           replicas: ['us-west-1': 2, 'af-south-1': 2]
+          clients: 1000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 4
         blockSize: 400
