@@ -60,7 +60,7 @@ We recommend Ubuntu 20.04 LTS and Shadow v2.2 (newest version as of time of writ
 
 change ansible/group_vars/all.yml to your desired values, add your hosts to ansible/inventory.yml then run:
 ```
-ansible-playbook ansible/setup.yml -i ansible/inventory.yml -u <YOUR_USERNAME>
+ansible-playbook ansible/setup.yml -i ansible/inventory.yml -u <YOUR_USERNAME> --ask-become-pass
 ```
 
 **Node version (16.3.0):**
