@@ -150,7 +150,7 @@ echo 'export PATH="${PATH}:/home/${USER}/.local/bin"' >> ~/.bashrc && source ~/.
 Now it is time, to clone this repository and install the tool:
 
 ```
-cd shadow-experiments && git submodule update --init --recursive && npm install
+cd tool && git submodule update --init --recursive && npm install
 
 ```
 
