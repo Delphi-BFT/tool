@@ -164,6 +164,11 @@ make
 To start an experiment you have to pass an experiment description file to the orchestrator. See `examples/[ProtocolName].yaml`.
 
 IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories.
+```
+nano .env.example
+mv .env.example .env
+source .env
+```
 
 Once this is completed you can start the simulation, passing the experiment description file like this :
 
