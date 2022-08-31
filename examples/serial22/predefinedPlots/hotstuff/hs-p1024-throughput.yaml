@@ -1,4 +1,4 @@
-HotStuff:
+HotStuff-p1024:
   values:
     - x: '4'
       y: '105000'
@@ -13,7 +13,6 @@ HotStuff:
     - x: '128'
       y: '32000'
   style:
-    label: 'HotStuff'
     pointStyle: star
     pointBorderColor: '#8e5ea2'
     borderColor: '#8e5ea2'

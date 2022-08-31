@@ -55,15 +55,15 @@ async function readAndMergeEDF(EDFPath) {
   if (!EDF.plots) return EDF
   for (let plot of Object.entries(EDF.plots)) {
     let currentPlotObj = plot[1]
-    if (isNullOrEmpty(currentPlotObj.predefinedPlots)) continue
+    if (isNullOrEmpty(currentPlotObj.predefinedDatasets)) continue
     if (
-      typeof currentPlotObj.predefinedPlots === 'string' ||
-      currentPlotObj.predefinedPlots instanceof String
+      typeof currentPlotObj.predefinedDatasets === 'string' ||
+      currentPlotObj.predefinedDatasets instanceof String
     ) {
       // its is a path
-      currentPlotObj.predefinedPlots = await yaml.load(
+      currentPlotObj.predefinedDatasets = await yaml.load(
         await fs.readFile(
-          path.join(EDFPath, '../' + currentPlotObj.predefinedPlots),
+          path.join(EDFPath, `../${currentPlotObj.predefinedDatasets}`),
           'utf-8',
         ),
       )

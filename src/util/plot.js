@@ -10,9 +10,7 @@ const renderer = new ChartJSNodeCanvas({
 
 const plotsMap = new Map()
 async function createPlots(plots) {
-  for (let p of Object.entries(plots)) {
-    let plotId = p[0]
-    let plotObj = p[1]
+  for (const [plotId, plotObj] of Object.entries(plots)) {
     plotsMap[plotId] = {
       type: 'line',
       options: {
@@ -38,44 +36,50 @@ async function createPlots(plots) {
         },
       },
       data: {
-        datasets: [
-          {
-            label: plotObj.shadowPlot.style.label,
-            data: [],
-            borderWidth: 1,
-            borderColor: plotObj.shadowPlot.style.borderColor,
-            fill: false,
-            pointStyle: plotObj.shadowPlot.style.pointStyle,
-            pointRadius: 5,
-            pointBorderColor: plotObj.shadowPlot.style.pointBorderColor,
-          },
-        ],
+        datasets: [],
       },
     }
-    if (plotObj.predefinedPlots) {
-      for (let predefinedPlot of Object.entries(plotObj.predefinedPlots)) {
-        let predefinedPlotObj = predefinedPlot[1]
-        let plotDetails = {}
-        plotDetails.label = predefinedPlotObj.style.label
-        plotDetails.borderColor = predefinedPlotObj.style.borderColor
-        plotDetails.borderWidth = 1
-        ;(plotDetails.fill = false),
-          (plotDetails.pointStyle = predefinedPlotObj.style.pointStyle),
-          (plotDetails.pointRadius = 5),
-          (plotDetails.pointBorderColor =
-            predefinedPlotObj.style.pointBorderColor)
-        plotDetails.data = predefinedPlotObj.values
-        plotsMap[plotId].data.datasets.push(plotDetails)
+    for (const [shadowDatasetId, shadowDatasetObj] of Object.entries(
+      plotObj.shadowDatasets,
+    )) {
+      plotsMap[plotId].data.datasets.push({
+        label: shadowDatasetId,
+        data: [],
+        borderWidth: 1,
+        borderColor: shadowDatasetObj.style.borderColor,
+        fill: false,
+        pointStyle: shadowDatasetObj.style.pointStyle,
+        pointRadius: 5,
+        pointBorderColor: shadowDatasetObj.style.pointBorderColor,
+      })
+    }
+    if (plotObj.predefinedDatasets) {
+      for (const [predefinedDatasetId, predefinedDatasetObj] of Object.entries(
+        plotObj.predefinedDatasets,
+      )) {
+        console.log(predefinedDatasetObj)
+        plotsMap[plotId].data.datasets.push({
+          label: predefinedDatasetId,
+          borderColor: predefinedDatasetObj.style.borderColor,
+          borderWidth: 1,
+          fill: false,
+          pointStyle: predefinedDatasetObj.style.pointStyle,
+          pointRadius: 5,
+          pointBorderColor: predefinedDatasetObj.style.pointBorderColor,
+          data: predefinedDatasetObj.values,
+        })
       }
     }
   }
 }
 
-async function pushValue(plotId, label, value) {
+async function pushValue(plotId, datasetId, label, value) {
   let objectToPush = {}
-  objectToPush.x = String(label)
-  objectToPush.y = String(value)
-  plotsMap[plotId].data.datasets[0].data.push(objectToPush)
+  objectToPush.x = label
+  objectToPush.y = value
+  for (let dataset of plotsMap[plotId].data.datasets) {
+    if (dataset.label == datasetId) dataset.data.push(objectToPush)
+  }
 }
 async function generatePlots(experimentsPath) {
   let savePath = path.join(experimentsPath, 'plots')

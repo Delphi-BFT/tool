@@ -174,16 +174,22 @@ async function main() {
     if (e[experimentId].plots) {
       for (let p of e[experimentId].plots) {
         if (p.metric == 'tps') {
-          plot.pushValue(p.name, p.label, perfStats.maxThroughput)
+          plot.pushValue(p.name, p.datasetId, p.label, perfStats.maxThroughput)
           continue
         }
         if (p.metric == 'latency') {
-          plot.pushValue(p.name, p.label, perfStats.latencyOutlierRemoved)
+          plot.pushValue(
+            p.name,
+            p.datasetId,
+            p.label,
+            perfStats.latencyOutlierRemoved,
+          )
           continue
         }
         if (p.metric == 'cpu-shadow') {
           plot.pushValue(
             p.name,
+            p.datasetId,
             p.label,
             resourceUsage[process.env.SHADOW_PROCESS].medianCPU,
           )
@@ -192,6 +198,7 @@ async function main() {
         if (p.metric == 'mem-shadow') {
           plot.pushValue(
             p.name,
+            p.datasetId,
             p.label,
             resourceUsage[process.env.SHADOW_PROCESS].maxMEM,
           )
@@ -200,6 +207,7 @@ async function main() {
         if (p.metric == 'cpu-app') {
           plot.pushValue(
             p.name,
+            p.datasetId,
             p.label,
             resourceUsage[protocol.getProcessName()].medianCPU,
           )
@@ -208,17 +216,23 @@ async function main() {
         if (p.metric == 'mem-app') {
           plot.pushValue(
             p.name,
+            p.datasetId,
             p.label,
             resourceUsage[protocol.getProcessName()].maxMEM,
           )
           continue
         }
         if (p.metric == 'mem-host') {
-          plot.pushValue(p.name, p.label, resourceUsage['total'].maxMEM)
+          plot.pushValue(
+            p.name,
+            p.datasetId,
+            p.label,
+            resourceUsage['total'].maxMEM,
+          )
           continue
         }
         if (p.metric == 'elapsed') {
-          plot.pushValue(p.name, p.label, elapsedSeconds)
+          plot.pushValue(p.name, p.datasetId, p.label, elapsedSeconds)
           continue
         }
       }
