@@ -1,9 +1,7 @@
 require('dotenv').config()
-const eg = require('./util/generate-env')
-const yg = require('./util/yaml-util')
+const eg = require('./util/environment-generator')
 const plot = require('./util/plot')
 const monitor = require('./util/resource-monitor')
-const yaml = require('js-yaml')
 const fs = require('fs').promises
 const path = require('path')
 const csvUtil = require('./util/csv-util')
@@ -47,7 +45,7 @@ async function run(executionDir, log) {
 
 async function createShadowHostConfig(shadowTemplate, replicas) {
   for (let i = 0; i < replicas.length; i++) {
-    shadowTemplate = yg.makeHost(
+    shadowTemplate = eg.makeHost(
       shadowTemplate,
       replicas[i].name,
       replicas[i].ip,
@@ -98,7 +96,7 @@ async function main() {
     try {
       logger.info('deleting clashing directories ...')
       await deleteDirectoryIfExists(path.join(experimentsPath, experimentId))
-      let shadowTemplate = await yg.makeConfigTemplate(
+      let shadowTemplate = await eg.makeConfigTemplate(
         isNullOrEmpty(process.env.SHADOW_TEMPLATE)
           ? null
           : process.env.SHADOW_TEMPLATE,
@@ -115,7 +113,7 @@ async function main() {
       )
       shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
       // Generate Shadow File
-      await yg.out(shadowFilePath, shadowTemplate)
+      await eg.out(shadowFilePath, shadowTemplate)
       let myGraph = ''
       if (e[experimentId].network.latency.uniform)
         myGraph = eg.createGraphSimple(
