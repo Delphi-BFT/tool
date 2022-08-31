@@ -1,5 +1,7 @@
-const fs = require('fs')
+const fs = require('fs').promises
+const yaml = require('js-yaml')
 const statistics = require('simple-statistics')
+const path = require('path')
 async function transformLatencies(hosts) {
   let awsHosts = []
   for (let i = 0; i < hosts.length; i++) {
@@ -13,7 +15,7 @@ async function transformLatencies(hosts) {
 }
 
 async function deleteDirectoryIfExists(path) {
-  fs.rmSync(path, { recursive: true, force: true })
+  await fs.rm(path, { recursive: true, force: true })
 }
 
 function median(values) {
@@ -48,10 +50,34 @@ function removeOutliers(data) {
 function isNullOrEmpty(obj) {
   return obj === null || obj === undefined || obj === ''
 }
+async function readAndMergeEDF(EDFPath) {
+  let EDF = await yaml.load(await fs.readFile(EDFPath, 'utf8'))
+  if (!EDF.plots) return EDF
+  for (let plot of Object.entries(EDF.plots)) {
+    let currentPlotObj = plot[1]
+    if (isNullOrEmpty(currentPlotObj.predefinedPlots)) continue
+    if (
+      typeof currentPlotObj.predefinedPlots === 'string' ||
+      currentPlotObj.predefinedPlots instanceof String
+    ) {
+      // its is a path
+      currentPlotObj.predefinedPlots = await yaml.load(
+        await fs.readFile(
+          path.join(EDFPath, '../' + currentPlotObj.predefinedPlots),
+          'utf-8',
+        ),
+      )
+    }
+
+    // else: predefinedPlots are embedded in current File
+  }
+  return EDF
+}
 module.exports = {
   transformLatencies,
   deleteDirectoryIfExists,
   median,
   removeOutliers,
   isNullOrEmpty,
+  readAndMergeEDF,
 }

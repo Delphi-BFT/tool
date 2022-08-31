@@ -9,7 +9,7 @@ const path = require('path')
 const csvUtil = require('./util/csv-util')
 const { createLogger, format, transports } = require('winston')
 const { combine, splat, timestamp, printf } = format
-const { deleteDirectoryIfExists } = require('./util/helpers')
+const { deleteDirectoryIfExists, readAndMergeEDF } = require('./util/helpers')
 const { performance } = require('perf_hooks')
 const { promisified_spawn } = require('./util/exec')
 const { isNullOrEmpty } = require('./util/helpers')
@@ -63,12 +63,12 @@ async function backUpArtifact(source, dest) {
 }
 async function main() {
   let args = process.argv.slice()
-  let experimentDetails = yaml.load(await fs.readFile(args[2], 'utf8'))
-  let protocol = require(experimentDetails.protocolConnectorPath)
+  let EDF = await readAndMergeEDF(args[2])
+  let protocol = require(EDF.protocolConnectorPath)
   let executionDir = protocol.getExecutionDir()
   let experimentsPath = protocol.getExperimentsOutputDirectory()
-  if (experimentDetails.plots) {
-    await plot.createPlots(experimentDetails.plots)
+  if (EDF.plots) {
+    await plot.createPlots(EDF.plots)
   }
   /* winston logger settings */
   const shadowLogFormat = printf(({ level, message, timestamp }) => {
@@ -88,7 +88,7 @@ async function main() {
   logger.info(process.env)
   /* start*/
   logger.info('initiating orchestrator...')
-  for (e of experimentDetails.experiments) {
+  for (e of EDF.experiments) {
     logger.info('starting new experiment ...')
     let experimentId = Object.keys(e)[0]
     let replicaSettings = e[experimentId].replica
