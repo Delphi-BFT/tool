@@ -150,7 +150,7 @@ echo 'export PATH="${PATH}:/home/${USER}/.local/bin"' >> ~/.bashrc && source ~/.
 Now it is time, to clone this repository and install the tool:
 
 ```
-cd shadow-experiments && git submodule update --init --recursive && npm install
+cd tool && git submodule update --init --recursive && npm install
 
 ```
 
@@ -164,6 +164,11 @@ make
 To start an experiment you have to pass an experiment description file to the orchestrator. See `examples/[ProtocolName].yaml`.
 
 IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories.
+```
+nano .env.example
+mv .env.example .env
+source .env
+```
 
 Once this is completed you can start the simulation, passing the experiment description file like this :
 
