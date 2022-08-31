@@ -1,10 +1,70 @@
 const { getLatencies } = require('./cloudping')
-const { transformLatencies } = require('./helpers')
+const { transformLatencies, isNullOrEmpty } = require('./helpers')
 const yaml = require('js-yaml')
+const { isNull } = require('mathjs')
 const fs = require('fs').promises
 const SELF_LOOP_LATENCY = '10 us'
 const tab = '  '
-
+function parseEDF(EDF) {
+  /* TODO: parse misc object of experiments?
+   * check if latency specification for non-AWS latencies is conform to Shadow's expectations?
+   */
+  if (isNullOrEmpty(EDF.protocolConnectorPath))
+    throw Error('please specify a protocol connector')
+  if (isNullOrEmpty(EDF.experiments))
+    throw Error('No experiments were specified')
+  for (let experiment of EDF.experiments) {
+    let experimentId = Object.keys(experiment)[0]
+    let experimentObj = experiment[experimentId]
+    if (isNullOrEmpty(experimentObj.network))
+      throw Error(`network Object for ${experimentId} cannot be empty`)
+    if (isNullOrEmpty(experimentObj.network.latency))
+      throw Error(`latency Object for ${experimentId}.network cannot be empty`)
+    if (isNullOrEmpty(experimentObj.replica))
+      throw Error(`replica Object for ${experimentId} cannot be empty`)
+    if (isNullOrEmpty(experimentObj.client))
+      throw Error(`client Object for ${experimentId} cannot be empty`)
+    if (isNullOrEmpty(experimentObj.network.latency.uniform))
+      throw Error(`please specify a latency type for ${experimentId}`)
+    if (
+      isNullOrEmpty(experimentObj.network.latency.clients) ||
+      isNullOrEmpty(experimentObj.network.latency.replicas)
+    )
+      throw Error(
+        `please inter-replica latency and client-replica latency for ${experimentId}`,
+      )
+    if (isNullOrEmpty(experimentObj.replica.replicas)) {
+      throw Error(`number of replicas for ${experimentId} was not defined`)
+    }
+    if (isNullOrEmpty(experimentObj.client.numberOfHosts)) {
+      throw Error(`number of client hosts for ${experimentId} was not defined`)
+    }
+    if (!experimentObj.network.latency.uniform) {
+      if (!Array.isArray(experimentObj.network.latency.replicas))
+        throw Error(
+          `please specify an array in the form of [region1: numberOfReplicas, region2: numberOfReplicas] for ${experimentId}`,
+        )
+      let totalNumberOfReplicas = 0
+      for (let region of experimentObj.network.latency.replicas) {
+        totalNumberOfReplicas += Object.values(region)[0]
+      }
+      if (totalNumberOfReplicas != experimentObj.replica.replicas)
+        throw Error(
+          `sum of replica hosts accross all regions is different than experiment.replica.replicas for ${experimentId}`,
+        )
+      if (Array.isArray(experimentObj.network.latency.clients)) {
+        let totalNumberOfClients = 0
+        for (let region of experimentObj.network.latency.clients) {
+          totalNumberOfClients += Object.values(region)[0]
+        }
+        if (totalNumberOfClients != experimentObj.client.numberOfHosts)
+          throw Error(
+            `sum of client hosts accross all regions is different than experiment.client.clients for ${experimentId}`,
+          )
+      }
+    }
+  }
+}
 /* Author : Christian Berger */
 let createNode = (id, up, down) => {
   return (
@@ -318,4 +378,5 @@ module.exports = {
   makeHost,
   out,
   makeConfigTemplate,
+  parseEDF,
 }

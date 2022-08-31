@@ -25,6 +25,7 @@ experiments:
           secs: 0
           nano: 50_000_000
       client:
+        numberOfHosts: 1
         clients: 16
         payload: 0
         startTime: 5 s

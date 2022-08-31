@@ -111,11 +111,11 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'replicaSig property of replica object must have <nosig | default | ecdsa> as value',
     )
-  if (isNullOrEmpty(clientSettings.clients))
+  if (isNullOrEmpty(clientSettings.numberOfHosts))
     throw new Error(
       'clients property of client object of current experiment was not defined',
     )
-  if (!Number.isInteger(clientSettings.clients))
+  if (!Number.isInteger(clientSettings.numberOfHosts))
     throw new Error('clients property of client object must be an Integer')
   if (isNullOrEmpty(clientSettings.threadsPerClient))
     throw new Error(
@@ -287,7 +287,7 @@ async function configure(replicaSettings, clientSettings, log) {
   log.info('generating hosts.config ...')
   var replicaIPs = await genHostsConfig(
     replicaSettings.replicas,
-    clientSettings.clients,
+    clientSettings.numberOfHosts,
   )
   log.info('hosts.config generated!')
   replicaIPs = await passArgs(replicaIPs, replicaSettings, clientSettings)

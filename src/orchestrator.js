@@ -62,6 +62,7 @@ async function backUpArtifact(source, dest) {
 async function main() {
   let args = process.argv.slice()
   let EDF = await readAndMergeEDF(args[2])
+  eg.parseEDF(EDF)
   let protocol = require(EDF.protocolConnectorPath)
   let executionDir = protocol.getExecutionDir()
   let experimentsPath = protocol.getExperimentsOutputDirectory()

@@ -23,7 +23,7 @@ experiments:
         context: false
         replicaSig: nosig
       client:
-        clients: 3
+        numberOfHosts: 1
         startTime: 60 s
         threadsPerClient: 2
         opPerClient: 10000
