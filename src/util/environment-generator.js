@@ -8,6 +8,7 @@ const tab = '  '
 function parseEDF(EDF) {
   /* TODO: parse misc object of experiments?
    * check if latency specification for non-AWS latencies is conform to Shadow's expectations?
+   * check if AWS Region is valid
    */
   if (isNullOrEmpty(EDF.protocolConnectorPath))
     throw Error('please specify a protocol connector')

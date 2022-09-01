@@ -4,7 +4,12 @@ const path = require('path')
 const ipUtil = require('../util/ip-util')
 const { isNullOrEmpty } = require('../util/helpers')
 const { isBoolean } = require('mathjs')
-
+/*
+ *    'system.totalordermulticast.timeout': '2000',
+ *    'system.bft': 'true',
+ *    'system.client.invokeOrderedTimeout': '40',
+ *   in EDF.
+ */
 /* BFT-SMaRt settings*/
 const sysconf = {
   'system.communication.secretKeyAlgorithm': 'PBKDF2WithHmacSHA1',
