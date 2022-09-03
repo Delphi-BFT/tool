@@ -255,7 +255,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
           clientSettings.readOnly
         } ${
           !isNullOrEmpty(clientSettings.verbose) ? clientSettings.verbose : true
-        } ${clientSettings.clientSig}`,
+        } ${clientSettings.clientSig} ${clientSettings.maxInFlight}`,
         startTime: clientSettings.startTime ? clientSettings.startTime : 0,
       })
     } else {

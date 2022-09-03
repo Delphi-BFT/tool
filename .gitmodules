@@ -3,7 +3,7 @@
 	url = https://github.com/bentoumia/libhotstuff.git
 [submodule "library"]
 	path = library
-	url = https://github.com/bft-smart/library.git
+	url = https://github.com/bentoumia/library
 [submodule "themis"]
 	path = themis
 	url = https://github.com/ibr-ds/themis.git
