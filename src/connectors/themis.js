@@ -4,6 +4,7 @@ const path = require('path')
 const ipUtil = require('../util/ip-util')
 const math = require('mathjs')
 const { removeOutliers, isNullOrEmpty } = require('../util/helpers')
+const TOML = require('@iarna/toml')
 
 function _parse(replicaSettings, clientSettings) {
   if (isNullOrEmpty(replicaSettings))
@@ -105,13 +106,31 @@ async function generateKeys(auth, numKeys, log) {
 async function createConfigFile(replicaSettings, log) {
   log.info('generating Themis config ...')
   // Top level
-  let configString = `reply_size = ${replicaSettings.replySize}\nexecution = 'Single'\nbatching = ${replicaSettings.batchReplies}\n\n`
+  /* let configString = `reply_size = ${replicaSettings.replySize}\nexecution = 'Single'\nbatching = ${replicaSettings.batchReplies}\n\n`
   // Authentication
   configString += `[authentication]\npeers = "${replicaSettings.peerAuthentication}"\nclients = "${replicaSettings.clientAuthentication}"\n\n`
   // Batch
   configString += `[batch]\nmin = ${replicaSettings.minBatchSize}\nmax = ${replicaSettings.maxBatchSize}\ntimeout = { secs = ${replicaSettings.timeout.secs}, nanos = ${replicaSettings.timeout.nano} }\n\n`
   let maxFaulty = Math.floor((replicaSettings.replicas - 1) / 3)
-  let pbftString = `[pbft]\nfaults = ${maxFaulty}\nfirst_primary = 0\ncheckpoint_interval = 1000\nhigh_mark_delta = 3000\nrequest_timeout = 1000\nkeep_checkpoints = 2\nprimary_forwarding = 'Full'\nbackup_forwarding = 'Full'\nreply_mode = 'All'`
+  let pbftString = `[pbft]\nfaults = ${maxFaulty}\nfirst_primary = 0\ncheckpoint_interval = 1000\nhigh_mark_delta = 3000\nrequest_timeout = 1000\nkeep_checkpoints = 2\nprimary_forwarding = 'Full'\nbackup_forwarding = 'Full'\nreply_mode = 'All'`*/
+  let config = {
+    reply_size: replicaSettings.replySize,
+    execution: 'Single',
+    batching: replicaSettings.batchReplies,
+    authentication: {
+      peers: replicaSettings.peerAuthentication,
+      clients: replicaSettings.clientAuthentication,
+    },
+    batch: {
+      timeout: {
+        secs: Number(replicaSettings.timeout.secs),
+        nanos: Number(replicaSettings.timeout.nano),
+      },
+      nmin: Number(replicaSettings.minBatchSize),
+      nmax: Number(replicaSettings.maxBatchSize),
+    },
+  }
+
   // Peers
   let hostIPs = await ipUtil.getIPs({
     [process.env.THEMIS_REPLICA_HOST_PREFIX]: replicaSettings.replicas,
@@ -122,46 +141,29 @@ async function createConfigFile(replicaSettings, log) {
       hostIPs[i].isClient = false
     else hostIPs[i].isClient = true
   }
-  let peerString = ''
+  config.peers = []
   let replicaId = 0
   for (let i = 0; i < hostIPs.length; i++) {
     if (hostIPs[i].isClient) continue
-    peerString +=
-      '[[peers]]\n' +
-      'id = ' +
-      replicaId +
-      '\n' +
-      "host = '" +
-      hostIPs[i].ip +
-      "' \n" +
-      "bind = '" +
-      hostIPs[i].ip +
-      "' \n" +
-      'client_port = ' +
-      process.env.THEMIS_CLIENT_PORT +
-      '\n' +
-      'peer_port = ' +
-      process.env.THEMIS_REPLICA_PORT +
-      '\n' +
-      'private_key = ' +
-      '"keys/ed-25519-private-' +
-      replicaId +
-      '"\n' +
-      'public_key = ' +
-      '"keys/ed-25519-public-' +
-      replicaId +
-      '"\n' +
-      'certificate = ' +
-      '"keys/ed-25519-cert-' +
-      replicaId +
-      '"\n' +
-      'prometheus_port = ' +
-      process.env.THEMIS_PROMETHEUS_PORT +
-      '\n' +
-      '\n'
+    config.peers.push({
+      id: replicaId,
+      host: hostIPs[i].ip,
+      bind: hostIPs[i].ip,
+      client_port: Number(process.env.THEMIS_CLIENT_PORT),
+      peer_port: Number(process.env.THEMIS_REPLICA_PORT),
+      private_key: `keys/ed-25519-private-${replicaId}`,
+      public_key: `keys/ed-25519-public-${replicaId}`,
+      certificate: `keys/ed-25519-cert-${replicaId}`,
+      prometheus_port: Number(process.env.THEMIS_PROMETHEUS_PORT),
+    })
     replicaId++
   }
-  configString += peerString
+  let pbft = TOML.parse(
+    await fs.readFile('./src/connectors/assets/themis/pbft.toml'),
+  )
+  pbft.pbft.nfaults = Math.floor((replicaSettings.replicas - 1) / 3)
+  let configString = TOML.stringify(config)
+  let pbftString = TOML.stringify(pbft)
   /* Execution Dir??? */
   await fs.writeFile(
     path.join(process.env.THEMIS_DIR, process.env.THEMIS_CONFIG_FILE_PATH),
