@@ -21,6 +21,8 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
         numberOfHosts: 1
         threadsPerClient: 1
@@ -31,6 +33,7 @@ experiments:
         verbose: true
         startTime: 30 s
         clientSig: nosig
+        invokeOrderedTimeout: 40
   - 4replicasAWSIreland:
       misc:
         duration: 1200 s 
@@ -51,6 +54,8 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
         numberOfHosts: 1
         clients: 1
@@ -62,6 +67,7 @@ experiments:
         startTime: 30 s
         verbose: true
         clientSig: nosig
+        invokeOrderedTimeout: 40
   - 4replicasAWSSao:
       misc:
         duration: 1200 s 
@@ -82,6 +88,8 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
         numberOfHosts: 1
         threadsPerClient: 1
@@ -92,6 +100,7 @@ experiments:
         verbose: true
         startTime: 30 s
         clientSig: nosig
+        invokeOrderedTimeout: 40
   - 4replicasAWSSydney:
       misc:
         duration: 1200 s
@@ -112,6 +121,8 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
         numberOfHosts: 1
         threadsPerClient: 1
@@ -122,3 +133,4 @@ experiments:
         verbose: true
         startTime: 30 s
         clientSig: nosig
+        invokeOrderedTimeout: 40

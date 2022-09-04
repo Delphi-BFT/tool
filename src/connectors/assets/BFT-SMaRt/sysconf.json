@@ -16,7 +16,6 @@
       "useSignatures": "0"
     },
     "totalordermulticast": {
-      "timeout": "2000",
       "batchtimeout": "-1",
       "fairbatch": "false",
       "nonces": "10",
@@ -42,10 +41,6 @@
     "ttp": {
       "id": "7002"
     },
-    "client": {
-      "invokeOrderedTimeout": "40"
-    },
-    "bft": "true",
     "shutdownhook": "true",
     "samebatchsize": "false",
     "numrepliers": "16"

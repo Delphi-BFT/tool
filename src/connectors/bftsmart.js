@@ -3,7 +3,7 @@ const { promisified_spawn } = require('../util/exec')
 const path = require('path')
 const ipUtil = require('../util/ip-util')
 const { isNullOrEmpty, JSONtoDot } = require('../util/helpers')
-const { isBoolean } = require('mathjs')
+const { isBoolean, isInteger } = require('mathjs')
 const bftsmartSysConf = require('./assets/BFT-SMaRt/sysconf.json')
 /*
  *    'system.totalordermulticast.timeout': '2000',
@@ -63,6 +63,17 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'context property of replica object must have a boolean value',
     )
+  if (isNullOrEmpty(replicaSettings.bft))
+    throw new Error('please specify if BFT-SMaRt should use BFT mode')
+  if (!isBoolean(replicaSettings.bft))
+    throw new Error('experiment.replica.bft must have a boolean value')
+  if (isNullOrEmpty(replicaSettings.timeout))
+    throw new Error('please specify a timeout value')
+  if (
+    !Number.isInteger(replicaSettings.timeout) ||
+    !(replicaSettings.timeout > 0)
+  )
+    throw new Error('experiment.replica.timeout must be a positive Integer')
   if (isNullOrEmpty(replicaSettings.replicaSig))
     throw new Error(
       'replicaSig property of replica object of current experiment was not defined',
@@ -99,9 +110,12 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'clientInterval property of client object of current experiment was not defined',
     )
-  if (!Number.isInteger(clientSettings.clientInterval))
+  if (
+    !Number.isInteger(clientSettings.clientInterval) &&
+    Number(clientSettings.clientInterval) > 0
+  )
     throw new Error(
-      'clientInterval property of client object must be an Integer',
+      'clientInterval property of client object must be a positive integer',
     )
   if (isNullOrEmpty(clientSettings.requestSize))
     throw new Error(
@@ -133,6 +147,21 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'verbose property of client object must have a boolean value',
     )
+  if (
+    !isNullOrEmpty(clientSettings.maxInFlight) &&
+    !Number.isInteger(clientSettings.maxInFlight) &&
+    !Number(clientSettings.maxInFlight) > 0
+  )
+    throw new Error('maxInFlight must be a positive integer')
+  if (isNullOrEmpty(clientSettings.invokeOrderedTimeout))
+    throw new Error('experiment.client.invokeOrderedTimeout must be specified')
+  if (
+    !Number.isInteger(clientSettings.invokeOrderedTimeout) ||
+    !(clientSettings.invokeOrderedTimeout > 0)
+  )
+    throw new Error(
+      'experiment.client.invokeOrderedTimeout must be a positive Integer',
+    )
 }
 
 function getProcessName() {
@@ -150,20 +179,29 @@ async function build(replicaSettings, clientSettings, log) {
   await promisified_spawn(cmd.proc, cmd.args, process.env.BFTSMART_DIR, log)
   log.info('BFT-SMaRt build terminated sucessfully!')
 }
-async function genSystemConfig(replicas, batchsize) {
+async function genSystemConfig(replicaSettings, clientSettings) {
   let viewString = ''
 
-  for (let i = 0; i < replicas; i++)
-    viewString += i + (i < replicas - 1 ? ',' : '')
+  for (let i = 0; i < replicaSettings.replicas; i++)
+    viewString += i + (i < replicaSettings.replicas - 1 ? ',' : '')
+
+  bftsmartSysConf.system.bft = replicaSettings.bft
   bftsmartSysConf.system.initial = new Object()
   bftsmartSysConf.system.initial.view = viewString
   bftsmartSysConf.system.servers = new Object()
-  bftsmartSysConf.system.servers.num = replicas
-  bftsmartSysConf.system.servers.f = Math.floor((replicas - 1) / 3)
-  console.log(bftsmartSysConf)
-  bftsmartSysConf.system.totalordermulticast.maxbatchsize = batchsize
+  bftsmartSysConf.system.servers.num = replicaSettings.replicas
+  bftsmartSysConf.system.servers.f = Math.floor(
+    (replicaSettings.replicas - 1) / 3,
+  )
+  bftsmartSysConf.system.totalordermulticast.maxbatchsize =
+    replicaSettings.blockSize
+  bftsmartSysConf.system.totalordermulticast.timeout = replicaSettings.timeout
+  bftsmartSysConf.system.client = new Object()
+  bftsmartSysConf.system.client.invokeOrderedTimeout =
+    clientSettings.invokeOrderedTimeout
+
   let sysconfString = JSONtoDot('', bftsmartSysConf)
-  console.log(sysconfString)
+
   await fs.writeFile(
     path.join(
       process.env.BFTSMART_DIR,
@@ -245,7 +283,7 @@ async function configure(replicaSettings, clientSettings, log) {
   log.info('deleting old view')
   await deleteCurrentView()
   log.info('generating system.config ...')
-  await genSystemConfig(replicaSettings.replicas, replicaSettings.blockSize)
+  await genSystemConfig(replicaSettings, clientSettings)
   log.info('system.config generated!')
   log.info('generating hosts.config ...')
   var replicaIPs = await genHostsConfig(

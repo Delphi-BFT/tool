@@ -22,6 +22,8 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
         numberOfHosts: 1
         startTime: 60 s
@@ -32,3 +34,4 @@ experiments:
         readOnly: false
         verbose: true
         clientSig: nosig
+        invokeOrderedTimeout: 40
