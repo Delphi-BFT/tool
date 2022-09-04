@@ -1,0 +1,53 @@
+{
+  "system": {
+    "communication": {
+      "secretKeyAlgorithm": "PBKDF2WithHmacSHA1",
+      "secretKeyAlgorithmProvider": "SunJCE",
+      "hashAlgorithm": "SHA-256",
+      "hashAlgorithmProvider": "SUN",
+      "signatureAlgorithm": "SHA256withECDSA",
+      "signatureAlgorithmProvider": "BC",
+      "defaultKeyLoader": "ECDSA",
+      "useSenderThread": "true",
+      "defaultkeys": "true",
+      "bindaddress": "auto",
+      "inQueueSize": "500000",
+      "outQueueSize": "500000",
+      "useSignatures": "0"
+    },
+    "totalordermulticast": {
+      "timeout": "2000",
+      "batchtimeout": "-1",
+      "fairbatch": "false",
+      "nonces": "10",
+      "verifyTimestamps": "false",
+      "state_transfer": "true",
+      "highMark": "10000",
+      "revival_highMark": "10",
+      "timeout_highMark": "200",
+      "log": "true",
+      "log_parallel": "false",
+      "log_to_disk": "false",
+      "sync_log": "false",
+      "checkpoint_period": "1024",
+      "global_checkpoint_period": "120000",
+      "checkpoint_to_disk": "false",
+      "sync_ckp": "false"
+    },
+    "ssltls": {
+      "protocol_version": "TLSv1.2",
+      "key_store_file": "EC_KeyPair_256.pkcs12",
+      "enabled_ciphers": "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+    },
+    "ttp": {
+      "id": "7002"
+    },
+    "client": {
+      "invokeOrderedTimeout": "40"
+    },
+    "bft": "true",
+    "shutdownhook": "true",
+    "samebatchsize": "false",
+    "numrepliers": "16"
+  }
+}

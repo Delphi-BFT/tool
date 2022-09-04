@@ -1,57 +1,16 @@
-const fs = require('fs')
+const fs = require('fs').promises
 const { promisified_spawn } = require('../util/exec')
 const path = require('path')
 const ipUtil = require('../util/ip-util')
-const { isNullOrEmpty } = require('../util/helpers')
+const { isNullOrEmpty, JSONtoDot } = require('../util/helpers')
 const { isBoolean } = require('mathjs')
+const bftsmartSysConf = require('./assets/BFT-SMaRt/sysconf.json')
 /*
  *    'system.totalordermulticast.timeout': '2000',
  *    'system.bft': 'true',
  *    'system.client.invokeOrderedTimeout': '40',
  *   in EDF.
  */
-/* BFT-SMaRt settings*/
-const sysconf = {
-  'system.communication.secretKeyAlgorithm': 'PBKDF2WithHmacSHA1',
-  'system.communication.secretKeyAlgorithmProvider': 'SunJCE',
-  'system.communication.hashAlgorithm': 'SHA-256',
-  'system.communication.hashAlgorithmProvider': 'SUN',
-  'system.communication.signatureAlgorithm': 'SHA256withECDSA',
-  'system.communication.signatureAlgorithmProvider': 'BC',
-  'system.communication.defaultKeyLoader': 'ECDSA',
-  'system.communication.useSenderThread': 'true',
-  'system.communication.defaultkeys': 'true',
-  'system.communication.bindaddress': 'auto',
-  'system.totalordermulticast.timeout': '2000',
-  'system.totalordermulticast.batchtimeout': '-1',
-  'system.totalordermulticast.fairbatch': 'false',
-  'system.totalordermulticast.nonces': '10',
-  'system.totalordermulticast.verifyTimestamps': 'false',
-  'system.communication.inQueueSize': '500000',
-  'system.communication.outQueueSize': '500000',
-  'system.communication.useSignatures': '0',
-  'system.shutdownhook': 'true',
-  'system.samebatchsize': 'false',
-  'system.numrepliers': '16',
-  'system.totalordermulticast.state_transfer': 'true',
-  'system.totalordermulticast.highMark': '10000',
-  'system.totalordermulticast.revival_highMark': '10',
-  'system.totalordermulticast.timeout_highMark': '200',
-  'system.totalordermulticast.log': 'true',
-  'system.totalordermulticast.log_parallel': 'false',
-  'system.totalordermulticast.log_to_disk': 'false',
-  'system.totalordermulticast.sync_log': 'false',
-  'system.totalordermulticast.checkpoint_period': '1024',
-  'system.totalordermulticast.global_checkpoint_period': '120000',
-  'system.totalordermulticast.checkpoint_to_disk': 'false',
-  'system.totalordermulticast.sync_ckp': 'false',
-  'system.ttp.id': '7002',
-  'system.bft': 'true',
-  'system.ssltls.protocol_version': 'TLSv1.2',
-  'system.ssltls.key_store_file': 'EC_KeyPair_256.pkcs12',
-  'system.ssltls.enabled_ciphers': 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256',
-  'system.client.invokeOrderedTimeout': '40',
-}
 
 const processName = 'java'
 
@@ -196,17 +155,16 @@ async function genSystemConfig(replicas, batchsize) {
 
   for (let i = 0; i < replicas; i++)
     viewString += i + (i < replicas - 1 ? ',' : '')
-  sysconf['system.initial.view'] = viewString
-  sysconf['system.servers.num'] = replicas
-  sysconf['system.servers.f'] = Math.floor((replicas - 1) / 3)
-  sysconf['system.totalordermulticast.maxbatchsize'] = batchsize
-  let sysconfString = ''
-
-  for (const [key, value] of Object.entries(sysconf)) {
-    sysconfString += key + ' = ' + value + '\n'
-  }
-
-  fs.writeFileSync(
+  bftsmartSysConf.system.initial = new Object()
+  bftsmartSysConf.system.initial.view = viewString
+  bftsmartSysConf.system.servers = new Object()
+  bftsmartSysConf.system.servers.num = replicas
+  bftsmartSysConf.system.servers.f = Math.floor((replicas - 1) / 3)
+  console.log(bftsmartSysConf)
+  bftsmartSysConf.system.totalordermulticast.maxbatchsize = batchsize
+  let sysconfString = JSONtoDot('', bftsmartSysConf)
+  console.log(sysconfString)
+  await fs.writeFile(
     path.join(
       process.env.BFTSMART_DIR,
       process.env.BFTSMART_SYSTEM_CONFIG_FILE,
@@ -234,7 +192,7 @@ async function genHostsConfig(replicas, clients) {
       clientIndex += 1000
     }
   }
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(process.env.BFTSMART_DIR, process.env.BFTSMART_HOSTS_FILE),
     hostsString,
   )
@@ -273,7 +231,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
 }
 async function deleteCurrentView() {
   try {
-    fs.unlinkSync(
+    await fs.unlink(
       path.join(process.env.BFTSMART_DIR, process.env.BFTSMART_VIEW_FILE),
     )
   } catch (err) {

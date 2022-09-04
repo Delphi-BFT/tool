@@ -50,6 +50,19 @@ function removeOutliers(data) {
 function isNullOrEmpty(obj) {
   return obj === null || obj === undefined || obj === ''
 }
+function JSONtoDot(topLevelPrefix, json) {
+  let res = ''
+  if (typeof json !== 'object') {
+    return topLevelPrefix + ' = ' + json
+  }
+  for (const [key, value] of Object.entries(json)) {
+    const currentLevelPrefix =
+      topLevelPrefix !== '' ? topLevelPrefix + '.' + key : key
+    res += JSONtoDot(currentLevelPrefix, value) + '\n'
+    continue
+  }
+  return res
+}
 async function readAndMergeEDF(EDFPath) {
   let EDF = await yaml.load(await fs.readFile(EDFPath, 'utf8'))
   if (!EDF.plots) return EDF
@@ -80,4 +93,5 @@ module.exports = {
   removeOutliers,
   isNullOrEmpty,
   readAndMergeEDF,
+  JSONtoDot,
 }
