@@ -3,7 +3,7 @@
 	url = https://github.com/bentoumia/libhotstuff.git
 [submodule "library"]
 	path = library
-	url = https://github.com/bentoumia/library
+	url = https://gitlab.sec.uni-passau.de/cb/library.git
 [submodule "themis"]
 	path = themis
 	url = https://github.com/ibr-ds/themis.git
