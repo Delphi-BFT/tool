@@ -14,6 +14,7 @@ experiments:
          uniform: true
          replicas: 10000 us
          clients: 1000 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 4
         blockSize: 400

@@ -123,7 +123,7 @@ async function main() {
           e[experimentId].network.bandwidthDown,
           e[experimentId].network.latency.replicas,
           e[experimentId].network.latency.clients,
-          '0.0',
+          parseFloat(e[experimentId].network.packetLoss).toFixed(1),
         )
       else {
         myGraph = await eg.makeAWSGraph(
@@ -132,7 +132,7 @@ async function main() {
           e[experimentId].network.latency.clients,
           e[experimentId].network.bandwidthUp,
           e[experimentId].network.bandwidthDown,
-          '0.0',
+          parseFloat(e[experimentId].network.packetLoss).toFixed(1.0),
           logger,
         )
       }

@@ -14,6 +14,7 @@ experiments:
           uniform: true
           replicas: 10000 us
           clients: 700 us
+        packetLoss: 0.0
       replica:
         replicas: 4
         blockSize: 100
