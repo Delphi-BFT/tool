@@ -5,6 +5,7 @@ const ipUtil = require('../util/ip-util')
 const { isNullOrEmpty, JSONtoDot } = require('../util/helpers')
 const { isBoolean, isInteger } = require('mathjs')
 const bftsmartSysConf = require('./assets/BFT-SMaRt/sysconf.json')
+const { after, secondsAsString } = require('../util/timestamp')
 /*
  *    'system.totalordermulticast.timeout': '2000',
  *    'system.bft': 'true',
@@ -237,6 +238,7 @@ async function genHostsConfig(replicas, clients) {
   return replicaIPs
 }
 async function passArgs(replicaIPs, replicaSettings, clientSettings) {
+  let currentReplicaStartTime = 0
   for (let i = 0; i < replicaIPs.length; i++) {
     if (replicaIPs[i].isClient) {
       replicaIPs[i].procs = []
@@ -252,7 +254,10 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
         } ${
           !isNullOrEmpty(clientSettings.verbose) ? clientSettings.verbose : true
         } ${clientSettings.clientSig} ${clientSettings.maxInFlight}`,
-        startTime: clientSettings.startTime ? clientSettings.startTime : 0,
+        startTime: after(
+          after('0 s', secondsAsString(replicaSettings.replicas)),
+          clientSettings.startTime ? clientSettings.startTime : '0 s',
+        ),
       })
     } else {
       replicaIPs[i].procs = []
@@ -260,7 +265,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
         path: javaProc,
         env: '',
         args: `${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_REPLICA_CLASS} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
-        startTime: 0,
+        startTime: after('0 s', secondsAsString(currentReplicaStartTime++)),
       })
     }
   }

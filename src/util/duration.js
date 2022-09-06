@@ -1,3 +1,6 @@
+/* NOT USED
+ *  SHOULD BE USED FOR VALIDATING LATENCY INPUTS
+ */
 const unitToDuration = {
   s: 1000000000,
   ms: 1000000,
@@ -5,7 +8,7 @@ const unitToDuration = {
   ns: 1,
 }
 function parseDuration(durationString) {
-  let durationString = durationString.trim().replace(/ +(?= )/g, '')
+  durationString = durationString.trim().replace(/ +(?= )/g, '')
   const [duration, unit] = durationString.split(' ')
   if (Object.keys(unitToDuration).indexOf(unit) == -1) {
     throw Error(
@@ -18,7 +21,7 @@ function parseDuration(durationString) {
 }
 
 function durationInNanoNumber(durationString) {
-  let durationString = durationString.trim().replace(/ +(?= )/g, '')
+  durationString = durationString.trim().replace(/ +(?= )/g, '')
   const [duration, unit] = durationString.split(' ')
   return duration * unitToDuration[unit]
 }
@@ -31,8 +34,8 @@ function nanoAsString(nanoNumber) {
 }
 
 function after(currentString, delayString) {
-  let currentString = currentString.trim().replace(/ +(?= )/g, '')
-  let delayString = delayString.trim().replace(/ +(?= )/g, '')
+  currentString = currentString.trim().replace(/ +(?= )/g, '')
+  delayString = delayString.trim().replace(/ +(?= )/g, '')
   const currentNano = durationInNanoNumber(currentString)
   const delayNano = durationInNanoNumber(delayString)
   return nanoAsString(currentNano + delayNano)
