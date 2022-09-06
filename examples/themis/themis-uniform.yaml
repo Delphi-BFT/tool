@@ -21,8 +21,6 @@ experiments:
         maxBatchSize: 400
         replySize: 1024
         batchReplies: true
-        peerAuthentication: Ed25519
-        clientAuthentication: Hmac
         timeout:
           secs: 0
           nano: 10_000_000
@@ -52,8 +50,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -81,8 +77,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -110,8 +104,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -139,8 +131,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -168,8 +158,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000

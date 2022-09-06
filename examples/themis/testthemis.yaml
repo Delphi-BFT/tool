@@ -20,8 +20,6 @@ experiments:
         maxBatchSize: 400
         replySize: 0
         batchReplies: true
-        peerAuthentication: Ed25519
-        clientAuthentication: Hmac
         timeout:
           secs: 0
           nano: 50_000_000

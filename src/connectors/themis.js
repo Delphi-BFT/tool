@@ -5,6 +5,17 @@ const ipUtil = require('../util/ip-util')
 const math = require('mathjs')
 const { removeOutliers, isNullOrEmpty } = require('../util/helpers')
 const TOML = require('@iarna/toml')
+const auth = {
+  peers: {
+    scheme: 'Ed25519',
+    pubKeyPrefix: 'ed-25519-public-',
+    pvKeyPrefix: 'ed-25519-private-',
+    certPrefix: 'ed-25519-cert-',
+  },
+  clients: {
+    scheme: 'Hmac',
+  },
+}
 
 function _parse(replicaSettings, clientSettings) {
   if (isNullOrEmpty(replicaSettings))
@@ -77,7 +88,7 @@ async function build(replicaSettings, clientSettings, log) {
   await promisified_spawn(cmd.proc, cmd.args, process.env.THEMIS_DIR, log)
   log.info('Themis build terminated sucessfully!')
 }
-async function generateKeys(auth, numKeys, log) {
+async function generateKeys(numKeys, log) {
   log.info(`generating keys for ${numKeys} replicas...`)
   try {
     await fs.mkdir(
@@ -93,7 +104,7 @@ async function generateKeys(auth, numKeys, log) {
       '--bin',
       'keygen',
       '--',
-      auth,
+      auth.peers.scheme,
       '0',
       numKeys,
       '--out-dir',
@@ -105,21 +116,13 @@ async function generateKeys(auth, numKeys, log) {
 }
 async function createConfigFile(replicaSettings, log) {
   log.info('generating Themis config ...')
-  // Top level
-  /* let configString = `reply_size = ${replicaSettings.replySize}\nexecution = 'Single'\nbatching = ${replicaSettings.batchReplies}\n\n`
-  // Authentication
-  configString += `[authentication]\npeers = "${replicaSettings.peerAuthentication}"\nclients = "${replicaSettings.clientAuthentication}"\n\n`
-  // Batch
-  configString += `[batch]\nmin = ${replicaSettings.minBatchSize}\nmax = ${replicaSettings.maxBatchSize}\ntimeout = { secs = ${replicaSettings.timeout.secs}, nanos = ${replicaSettings.timeout.nano} }\n\n`
-  let maxFaulty = Math.floor((replicaSettings.replicas - 1) / 3)
-  let pbftString = `[pbft]\nfaults = ${maxFaulty}\nfirst_primary = 0\ncheckpoint_interval = 1000\nhigh_mark_delta = 3000\nrequest_timeout = 1000\nkeep_checkpoints = 2\nprimary_forwarding = 'Full'\nbackup_forwarding = 'Full'\nreply_mode = 'All'`*/
   let config = {
     reply_size: replicaSettings.replySize,
     execution: 'Single',
     batching: replicaSettings.batchReplies,
     authentication: {
-      peers: replicaSettings.peerAuthentication,
-      clients: replicaSettings.clientAuthentication,
+      peers: auth.peers.scheme,
+      clients: auth.clients.scheme,
     },
     batch: {
       timeout: {
@@ -151,9 +154,9 @@ async function createConfigFile(replicaSettings, log) {
       bind: hostIPs[i].ip,
       client_port: Number(process.env.THEMIS_CLIENT_PORT),
       peer_port: Number(process.env.THEMIS_REPLICA_PORT),
-      private_key: `keys/ed-25519-private-${replicaId}`,
-      public_key: `keys/ed-25519-public-${replicaId}`,
-      certificate: `keys/ed-25519-cert-${replicaId}`,
+      private_key: `${process.env.THEMIS_KEYS_DIR}/${auth.peers.pvKeyPrefix}${replicaId}`,
+      public_key: `${process.env.THEMIS_KEYS_DIR}/${auth.peers.pubKeyPrefix}${replicaId}`,
+      certificate: `${process.env.THEMIS_KEYS_DIR}/${auth.peers.certPrefix}${replicaId}`,
       prometheus_port: Number(process.env.THEMIS_PROMETHEUS_PORT),
     })
     replicaId++
@@ -212,11 +215,7 @@ async function configure(replicaSettings, clientSettings, log) {
   log.info('parsing replica and client objects')
   _parse(replicaSettings, clientSettings)
   log.info('objects parsed!')
-  await generateKeys(
-    replicaSettings.peerAuthentication,
-    replicaSettings.replicas,
-    log,
-  )
+  await generateKeys(replicaSettings.replicas, log)
   let hosts = await createConfigFile(replicaSettings, log)
   hosts = await passArgs(hosts, clientSettings, log)
   return hosts

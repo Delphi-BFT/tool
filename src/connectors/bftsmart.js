@@ -6,16 +6,8 @@ const { isNullOrEmpty, JSONtoDot } = require('../util/helpers')
 const { isBoolean, isInteger } = require('mathjs')
 const bftsmartSysConf = require('./assets/BFT-SMaRt/sysconf.json')
 const { after, secondsAsString } = require('../util/timestamp')
-/*
- *    'system.totalordermulticast.timeout': '2000',
- *    'system.bft': 'true',
- *    'system.client.invokeOrderedTimeout': '40',
- *   in EDF.
- */
 
 const processName = 'java'
-
-/* Java stuff */
 
 const javaProc = '/usr/bin/java'
 
