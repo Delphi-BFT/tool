@@ -20,12 +20,14 @@ async function compute(processName, log) {
   let pids = await getPids(processName, log)
   if (pids == null) return
   pidusage(pids, function (err, stats) {
-    let cputotal = 0.0
-    let mem = 0.0
-    Object.keys(stats).forEach(function (key) {
-      cputotal += stats[key] == undefined ? 0 : stats[key].cpu
-      mem += stats[key] == undefined ? 0 : stats[key].memory / 1000000000
-    })
+    let cputotal = - 1.0
+    let mem = - 1.0
+    if (stats != null && stats != undefined) {
+      Object.keys(stats).forEach(function (key) {
+        cputotal += stats[key] == undefined ? 0 : stats[key].cpu
+        mem += stats[key] == undefined ? 0 : stats[key].memory / 1000000000
+      })
+    }
     log.info(`current cpu usage of ${processName} process: ${cputotal}`)
     log.info(`current mem usage of ${processName} process: ${mem}`)
     procIntervals[processName].stats.cpu.push(cputotal)

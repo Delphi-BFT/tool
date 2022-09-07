@@ -36,7 +36,7 @@ async function run(executionDir, log) {
   try {
     await promisified_spawn(
       process.env.SHADOW_PROCESS,
-      [process.env.SHADOW_FILE],
+      ['--use-memory-manager=false', process.env.SHADOW_FILE],
       executionDir,
       log,
     )
