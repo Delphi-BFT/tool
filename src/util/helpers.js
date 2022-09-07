@@ -1,5 +1,7 @@
-const fs = require('fs')
+const fs = require('fs').promises
+const yaml = require('js-yaml')
 const statistics = require('simple-statistics')
+const path = require('path')
 async function transformLatencies(hosts) {
   let awsHosts = []
   for (let i = 0; i < hosts.length; i++) {
@@ -13,7 +15,7 @@ async function transformLatencies(hosts) {
 }
 
 async function deleteDirectoryIfExists(path) {
-  fs.rmSync(path, { recursive: true, force: true })
+  await fs.rm(path, { recursive: true, force: true })
 }
 
 function median(values) {
@@ -48,10 +50,48 @@ function removeOutliers(data) {
 function isNullOrEmpty(obj) {
   return obj === null || obj === undefined || obj === ''
 }
+function JSONtoDot(topLevelPrefix, json) {
+  let res = ''
+  if (typeof json !== 'object') {
+    return topLevelPrefix + ' = ' + json
+  }
+  for (const [key, value] of Object.entries(json)) {
+    const currentLevelPrefix =
+      topLevelPrefix !== '' ? topLevelPrefix + '.' + key : key
+    res += JSONtoDot(currentLevelPrefix, value) + '\n'
+    continue
+  }
+  return res
+}
+async function readAndMergeEDF(EDFPath) {
+  let EDF = await yaml.load(await fs.readFile(EDFPath, 'utf8'))
+  if (!EDF.plots) return EDF
+  for (let plot of Object.entries(EDF.plots)) {
+    let currentPlotObj = plot[1]
+    if (isNullOrEmpty(currentPlotObj.predefinedDatasets)) continue
+    if (
+      typeof currentPlotObj.predefinedDatasets === 'string' ||
+      currentPlotObj.predefinedDatasets instanceof String
+    ) {
+      // its is a path
+      currentPlotObj.predefinedDatasets = await yaml.load(
+        await fs.readFile(
+          path.join(EDFPath, `../${currentPlotObj.predefinedDatasets}`),
+          'utf-8',
+        ),
+      )
+    }
+
+    // else: predefinedPlots are embedded in current File
+  }
+  return EDF
+}
 module.exports = {
   transformLatencies,
   deleteDirectoryIfExists,
   median,
   removeOutliers,
   isNullOrEmpty,
+  readAndMergeEDF,
+  JSONtoDot,
 }

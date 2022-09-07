@@ -14,18 +14,18 @@ experiments:
           uniform: true
           replicas: 10000 us
           clients: 700 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 4
         minBatchSize: 400
         maxBatchSize: 400
         replySize: 1024
         batchReplies: true
-        peerAuthentication: Ed25519
-        clientAuthentication: Hmac
         timeout:
           secs: 0
           nano: 10_000_000
       client:
+        numberOfHosts: 1
         clients: 16
         startTime: 2 s
         payload: 1024
@@ -50,8 +50,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -79,8 +77,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -108,8 +104,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -137,8 +131,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000
@@ -166,8 +158,6 @@ experiments:
   #        maxBatchSize: 400
   #        replySize: 1024
   #        batchReplies: true
-  #        peerAuthentication: Ed25519
-  #        clientAuthentication: Hmac
   #        timeout:
   #          secs: 0
   #          nano: 10_000_000

@@ -1,9 +1,71 @@
-const fs = require('fs')
 const { getLatencies } = require('./cloudping')
-const { transformLatencies } = require('./helpers')
+const { transformLatencies, isNullOrEmpty } = require('./helpers')
+const yaml = require('js-yaml')
+const { isNull } = require('mathjs')
+const fs = require('fs').promises
 const SELF_LOOP_LATENCY = '10 us'
 const tab = '  '
-
+function parseEDF(EDF) {
+  /* TODO: parse misc object of experiments?
+   * check if latency specification for non-AWS latencies is conform to Shadow's expectations?
+   * check if AWS Region is valid
+   */
+  if (isNullOrEmpty(EDF.protocolConnectorPath))
+    throw Error('please specify a protocol connector')
+  if (isNullOrEmpty(EDF.experiments))
+    throw Error('No experiments were specified')
+  for (let experiment of EDF.experiments) {
+    let experimentId = Object.keys(experiment)[0]
+    let experimentObj = experiment[experimentId]
+    if (isNullOrEmpty(experimentObj.network))
+      throw Error(`network Object for ${experimentId} cannot be empty`)
+    if (isNullOrEmpty(experimentObj.network.latency))
+      throw Error(`latency Object for ${experimentId}.network cannot be empty`)
+    if (isNullOrEmpty(experimentObj.replica))
+      throw Error(`replica Object for ${experimentId} cannot be empty`)
+    if (isNullOrEmpty(experimentObj.client))
+      throw Error(`client Object for ${experimentId} cannot be empty`)
+    if (isNullOrEmpty(experimentObj.network.latency.uniform))
+      throw Error(`please specify a latency type for ${experimentId}`)
+    if (
+      isNullOrEmpty(experimentObj.network.latency.clients) ||
+      isNullOrEmpty(experimentObj.network.latency.replicas)
+    )
+      throw Error(
+        `please inter-replica latency and client-replica latency for ${experimentId}`,
+      )
+    if (isNullOrEmpty(experimentObj.replica.replicas)) {
+      throw Error(`number of replicas for ${experimentId} was not defined`)
+    }
+    if (isNullOrEmpty(experimentObj.client.numberOfHosts)) {
+      throw Error(`number of client hosts for ${experimentId} was not defined`)
+    }
+    if (!experimentObj.network.latency.uniform) {
+      if (!Array.isArray(experimentObj.network.latency.replicas))
+        throw Error(
+          `please specify an array in the form of [region1: numberOfReplicas, region2: numberOfReplicas] for ${experimentId}`,
+        )
+      let totalNumberOfReplicas = 0
+      for (let region of experimentObj.network.latency.replicas) {
+        totalNumberOfReplicas += Object.values(region)[0]
+      }
+      if (totalNumberOfReplicas != experimentObj.replica.replicas)
+        throw Error(
+          `sum of replica hosts accross all regions is different than experiment.replica.replicas for ${experimentId}`,
+        )
+      if (Array.isArray(experimentObj.network.latency.clients)) {
+        let totalNumberOfClients = 0
+        for (let region of experimentObj.network.latency.clients) {
+          totalNumberOfClients += Object.values(region)[0]
+        }
+        if (totalNumberOfClients != experimentObj.client.numberOfHosts)
+          throw Error(
+            `sum of client hosts accross all regions is different than experiment.client.clients for ${experimentId}`,
+          )
+      }
+    }
+  }
+}
 /* Author : Christian Berger */
 let createNode = (id, up, down) => {
   return (
@@ -266,6 +328,47 @@ async function makeAWSGraph(
     packet_losses,
   )
 }
+
+let makeConfigTemplate = async (shadowTemplate, fullPathgml, dir, misc) => {
+  let res = new Object()
+  if (shadowTemplate) res = yaml.load(await fs.readFile(shadowTemplate, 'utf8'))
+  // handle an undefined res here?
+  if (!res.general) res.general = new Object()
+  res.general.stop_time = misc.duration ? misc.duration : res.general.stop_time
+  res.general.data_directory = dir ? dir : res.general.data_directory
+  res.general.parallelism = misc.parallelism
+    ? misc.parallelism
+    : res.general.parallelism
+  if (!res.experimental) res.experimental = new Object()
+  res.experimental.use_legacy_working_dir = true
+  res.experimental.runahead = misc.runahead
+  res.network = new Object()
+  res.network.graph = { type: 'gml', file: { path: fullPathgml } }
+  res.network.use_shortest_path = misc.useShortestPath
+  res.hosts = new Object()
+  return res
+}
+let makeHost = (res, name, ip, network_node_id, procs) => {
+  let processes = []
+  for (let i = 0; i < procs.length; i++) {
+    processes.push({
+      path: procs[i].path,
+      environment: procs[i].env,
+      args: procs[i].args,
+      start_time: procs[i].startTime,
+    })
+  }
+  res.hosts[name] = {
+    ip_addr: ip,
+    network_node_id: network_node_id,
+    processes: processes,
+  }
+  return res
+}
+async function out(file, doc) {
+  await fs.writeFile(file, yaml.dump(doc))
+}
+
 module.exports = {
   createShadowHost,
   createGraph,
@@ -273,4 +376,8 @@ module.exports = {
   createEdge,
   createNode,
   makeAWSGraph,
+  makeHost,
+  out,
+  makeConfigTemplate,
+  parseEDF,
 }

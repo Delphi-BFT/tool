@@ -4,6 +4,7 @@
   "description": "",
   "main": "orchestrator.js",
   "dependencies": {
+    "@iarna/toml": "^2.2.5",
     "await-exec": "^0.1.2",
     "awk": "^1.0.0",
     "chart.js": "^3.7.1",

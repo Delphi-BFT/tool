@@ -14,6 +14,7 @@ experiments:
           uniform: false
           replicas: ['us-west-1': 2, 'us-east-1': 2]
           clients: ['us-west-1': 1, 'af-south-1': 1, 'ap-south-1': 1]
+        packetLoss: 0.0
       replica:
         replicas: 4
         blockSize: 100
@@ -22,8 +23,10 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
-        clients: 3
+        numberOfHosts: 1
         startTime: 60 s
         threadsPerClient: 2
         opPerClient: 10000
@@ -32,3 +35,4 @@ experiments:
         readOnly: false
         verbose: true
         clientSig: nosig
+        invokeOrderedTimeout: 40

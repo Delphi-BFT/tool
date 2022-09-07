@@ -3,7 +3,8 @@
 	url = https://github.com/bentoumia/libhotstuff.git
 [submodule "library"]
 	path = library
-	url = https://github.com/bft-smart/library.git
+  url = https://gitlab.sec.uni-passau.de/cb/library.git
+	branch = max-in-flight
 [submodule "themis"]
 	path = themis
 	url = https://github.com/ibr-ds/themis.git

@@ -13,6 +13,7 @@ experiments:
           uniform: false
           replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
           clients: ['us-west-1': 1]
+        packetLoss: 0.0
       replica:
         replicas: 4
         blockSize: 100
@@ -21,8 +22,10 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
-        clients: 1
+        numberOfHosts: 1
         threadsPerClient: 1
         opPerClient: 2000
         requestSize: 0
@@ -31,6 +34,7 @@ experiments:
         verbose: true
         startTime: 30 s
         clientSig: nosig
+        invokeOrderedTimeout: 40
   - 4replicasAWSIreland:
       misc:
         duration: 1200 s 
@@ -51,7 +55,10 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
+        numberOfHosts: 1
         clients: 1
         threadsPerClient: 1
         opPerClient: 2000
@@ -61,6 +68,7 @@ experiments:
         startTime: 30 s
         verbose: true
         clientSig: nosig
+        invokeOrderedTimeout: 40
   - 4replicasAWSSao:
       misc:
         duration: 1200 s 
@@ -81,8 +89,10 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
-        clients: 1
+        numberOfHosts: 1
         threadsPerClient: 1
         opPerClient: 2000
         requestSize: 0
@@ -91,6 +101,7 @@ experiments:
         verbose: true
         startTime: 30 s
         clientSig: nosig
+        invokeOrderedTimeout: 40
   - 4replicasAWSSydney:
       misc:
         duration: 1200 s
@@ -111,8 +122,10 @@ experiments:
         stateSize: 0
         context: false
         replicaSig: nosig
+        bft: true
+        timeout: 2000
       client:
-        clients: 1
+        numberOfHosts: 1
         threadsPerClient: 1
         opPerClient: 2000
         requestSize: 0
@@ -121,3 +134,4 @@ experiments:
         verbose: true
         startTime: 30 s
         clientSig: nosig
+        invokeOrderedTimeout: 40

@@ -7,76 +7,40 @@ plots:
       title: 'Throughput comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
       xAxisTitle: 'Number of Replicas'
       yAxisTitle: 'Throughput (ops/s)'
-    shadowPlot:
-      style:
-        label: 'Shadow'
-        pointStyle: triangle
-        pointBorderColor: '#c45850'
-        borderColor: '#c45850'
-    predefinedPlots:
-      HotStuff:
-        values:
-          - x: '4'
-            y: '105000'
-          - x: '8'
-            y: '107000'
-          - x: '16'
-            y: '107000'
-          - x: '32'
-            y: '60000'
-          - x: '64'
-            y: '40000'
-          - x: '128'
-            y: '32000'
-        style:
-          label: 'HotStuff'
-          pointStyle: star
-          pointBorderColor: '#8e5ea2'
-          borderColor: '#8e5ea2'
+    shadowDatasets:
+        Shadow-HotStuff-p1024:
+          style:
+            pointStyle: triangle
+            pointBorderColor: '#c45850'
+            borderColor: '#c45850'
+    predefinedDatasets: ./predefinedPlots/hotstuff/hs-p1024-throughput.yaml
   latencyDemo:
     type: latency
     details:
       title: 'Latency comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
       xAxisTitle: 'Number of Replicas'
       yAxisTitle: 'Latency (s)'
-    shadowPlot:
-      style:
-        label: 'Shadow'
-        pointStyle: triangle
-        pointBorderColor: '#c45850'
-        borderColor: '#c45850'
-    predefinedPlots:
-      HotStuff:
-        values:
-          - x: '4'
-            y: '20'
-          - x: '8'
-            y: '20'
-          - x: '16'
-            y: '20'
-          - x: '32'
-            y: '47'
-          - x: '64'
-            y: '60'
-          - x: '128'
-            y: '105'
-        style:
-          label: 'HotStuff'
-          pointStyle: star
-          pointBorderColor: '#8e5ea2'
-          borderColor: '#8e5ea2'
+    shadowDatasets:
+        Shadow-HotStuff-p1024:
+          style:
+            pointStyle: triangle
+            pointBorderColor: '#c45850'
+            borderColor: '#c45850'
+    predefinedDatasets: ./predefinedPlots/hotstuff/hs-p1024-latency.yaml
 experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 1000 us
-        duration: 30 s
+        duration: 5 s
         parallelism: 16
         useShortestPath: false
       plots:
         - name: throughputDemo
-          metric: 'tps'
+          datasetId: Shadow-HotStuff p1024
+          metric: 'tps' 
           label: 4
         - name: latencyDemo
+          datasetId: Shadow-HotStuff p1024
           metric: 'latency'
           label: 4
       network:
@@ -84,104 +48,111 @@ experiments:
         bandwidthDown: 10 Gibits # does not apply to clients (for now)
         latency:
          uniform: true
-         replicas: 10000 us
+         replicas: 1000 us
          clients: 1000 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 4
         blockSize: 400
-        replySize: 0
+        replySize: 1024
       client:
         clients: 2
         numberOfHosts: 2
-        outStandingPerClient: 800
-        requestSize: 0
+        outStandingPerClient: 1400
+        requestSize: 1024
   - 8rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 1000 us
-        duration: 30 s
+        duration: 5 s
         parallelism: 16
         useShortestPath: false
       plots:
         - name: throughputDemo
           metric: 'tps'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 8
         - name: latencyDemo
           metric: 'latency'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 8
       network:
         bandwidthUp: 10 Gibits # does not apply to clients (for now)
         bandwidthDown: 10 Gibits # does not apply to clients (for now)
         latency:
          uniform: true
-         replicas: 10000 us
+         replicas: 1000 us
          clients: 1000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 8
         blockSize: 400
-        replySize: 0
+        replySize: 1024
       client:
         clients: 2
         numberOfHosts: 2
-        outStandingPerClient: 800
-        requestSize: 0
+        outStandingPerClient: 1400
+        requestSize: 1024
   - 16rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 1000 us
-        duration: 30 s
+        duration: 10 s
         parallelism: 16
         useShortestPath: false
       plots:
         - name: throughputDemo
           metric: 'tps'
           label: 16
+          datasetId: 'Shadow-HotStuff-p1024'
         - name: latencyDemo
           metric: 'latency'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 16
       network:
         bandwidthUp: 10 Gibits # does not apply to clients (for now)
         bandwidthDown: 10 Gibits # does not apply to clients (for now)
         latency:
          uniform: true
-         replicas: 10000 us
+         replicas: 1000 us
          clients: 1000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 16
         blockSize: 400
-        replySize: 0
+        replySize: 1024
       client:
         clients: 16
         numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
+        outStandingPerClient: 175
+        requestSize: 1024
   - 32rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 1000 us
-        duration:  30 s
+        duration:  20 s
         parallelism: 16
         useShortestPath: false
       plots:
         - name: throughputDemo
           metric: 'tps'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 32
         - name: latencyDemo
           metric: 'latency'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 32
       network:
         bandwidthUp: 10 Gibits # does not apply to clients (for now)
         bandwidthDown: 10 Gibits # does not apply to clients (for now)
         latency:
          uniform: true
-         replicas: 10000 us
+         replicas: 1000 us
          clients: 1000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 32
         blockSize: 400
-        replySize: 0
+        replySize: 1024
       client:
         clients: 16
         numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
+        outStandingPerClient: 175
+        requestSize: 1024
   - 64rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 1000 us
@@ -191,26 +162,28 @@ experiments:
       plots:
         - name: throughputDemo
           metric: 'tps'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 64
         - name: latencyDemo
           metric: 'latency'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 64
       network:
         bandwidthUp: 10 Gibits # does not apply to clients (for now)
         bandwidthDown: 10 Gibits # does not apply to clients (for now)
         latency:
          uniform: true
-         replicas: 10000 us
+         replicas: 1000 us
          clients: 1000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 64
         blockSize: 400
-        replySize: 0
+        replySize: 1024
       client:
         clients: 16
         numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
+        outStandingPerClient: 175
+        requestSize: 1024
   - 128rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 1000 us
@@ -220,23 +193,25 @@ experiments:
       plots:
         - name: throughputDemo
           metric: 'tps'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 128
         - name: latencyDemo
           metric: 'latency'
+          datasetId: 'Shadow-HotStuff-p1024'
           label: 128
       network:
         bandwidthUp: 10 Gibits # does not apply to clients (for now)
         bandwidthDown: 10 Gibits # does not apply to clients (for now)
         latency:
          uniform: true
-         replicas: 10000 us
+         replicas: 1000 us
          clients: 1000 us
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 128
         blockSize: 400
-        replySize: 0
+        replySize: 1024
       client:
         clients: 16
         numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
+        outStandingPerClient: 175
+        requestSize: 1024

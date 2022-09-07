@@ -4,6 +4,23 @@ Delphi-BFT is a toolchain for simplifying and automating large-scale simulations
 
 This simulation method is resource-friendly and preserves application-realism since existing BFT frameworks can be simply plugged into the simulation engine without requiring code modifications or re-implementation. Further, the approach is useful to understand the performance of BFT protocols if they are network-bound.
 
+## The Paper
+
+A preprint of the paper is now available: https://www.researchgate.net/publication/363136002_Simulating_BFT_Protocol_Implementations_at_Scale
+
+Citing the paper:
+```
+@misc{berger22simulating,
+  doi = {10.48550/ARXIV.2208.14745},
+  url = {https://arxiv.org/abs/2208.14745},
+  author = {Berger, Christian and Toumia, Sadok Ben and Reiser, Hans P.},
+  keywords = {Distributed, Parallel, and Cluster Computing (cs.DC), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Simulating BFT Protocol Implementations at Scale},
+  publisher = {arXiv},
+  year = {2022},
+}
+```
+
 ### Showcase: Reproducing results from HotStuff evaluations
 
 We try to mimic the evaluation setup of the HotStuff paper (https://arxiv.org/abs/1803.05069) to compare their measurements with our simulation results. Their setup consists of more than hundred virtual machines deployed in an AWS data center; each machine has up to 1.2 GB/s bandwidth and there is less than 1 ms latency between each pair of machines (we use 1 ms in the simulation). The employed batch size is 400. We compare against two measurement series: "p1024" where the payload size of request and responses is 1024 bytes and  
@@ -150,7 +167,7 @@ echo 'export PATH="${PATH}:/home/${USER}/.local/bin"' >> ~/.bashrc && source ~/.
 Now it is time, to clone this repository and install the tool:
 
 ```
-cd shadow-experiments && git submodule update --init --recursive && npm install
+cd tool && git submodule update --init --recursive && npm install
 
 ```
 
@@ -164,6 +181,11 @@ make
 To start an experiment you have to pass an experiment description file to the orchestrator. See `examples/[ProtocolName].yaml`.
 
 IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories.
+```
+nano .env.example
+mv .env.example .env
+source .env
+```
 
 Once this is completed you can start the simulation, passing the experiment description file like this :
 

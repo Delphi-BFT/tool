@@ -1,56 +1,13 @@
-const fs = require('fs')
+const fs = require('fs').promises
 const { promisified_spawn } = require('../util/exec')
 const path = require('path')
 const ipUtil = require('../util/ip-util')
-const { isNullOrEmpty } = require('../util/helpers')
-const { isBoolean } = require('mathjs')
-
-/* BFT-SMaRt settings*/
-const sysconf = {
-  'system.communication.secretKeyAlgorithm': 'PBKDF2WithHmacSHA1',
-  'system.communication.secretKeyAlgorithmProvider': 'SunJCE',
-  'system.communication.hashAlgorithm': 'SHA-256',
-  'system.communication.hashAlgorithmProvider': 'SUN',
-  'system.communication.signatureAlgorithm': 'SHA256withECDSA',
-  'system.communication.signatureAlgorithmProvider': 'BC',
-  'system.communication.defaultKeyLoader': 'ECDSA',
-  'system.communication.useSenderThread': 'false',
-  'system.communication.defaultkeys': 'true',
-  'system.communication.bindaddress': 'auto',
-  'system.totalordermulticast.timeout': '4000',
-  'system.totalordermulticast.batchtimeout': '-1',
-  'system.totalordermulticast.fairbatch': 'false',
-  'system.totalordermulticast.nonces': '10',
-  'system.totalordermulticast.verifyTimestamps': 'false',
-  'system.communication.inQueueSize': '500000',
-  'system.communication.outQueueSize': '500000',
-  'system.communication.useSignatures': '0',
-  'system.shutdownhook': 'true',
-  'system.samebatchsize': 'true',
-  'system.numrepliers': '0',
-  'system.totalordermulticast.state_transfer': 'true',
-  'system.totalordermulticast.highMark': '10000',
-  'system.totalordermulticast.revival_highMark': '10',
-  'system.totalordermulticast.timeout_highMark': '200',
-  'system.totalordermulticast.log': 'true',
-  'system.totalordermulticast.log_parallel': 'false',
-  'system.totalordermulticast.log_to_disk': 'false',
-  'system.totalordermulticast.sync_log': 'false',
-  'system.totalordermulticast.checkpoint_period': '1000',
-  'system.totalordermulticast.global_checkpoint_period': '120000',
-  'system.totalordermulticast.checkpoint_to_disk': 'false',
-  'system.totalordermulticast.sync_ckp': 'false',
-  'system.ttp.id': '70002',
-  'system.bft': 'true',
-  'system.ssltls.protocol_version': 'TLSv1.2',
-  'system.ssltls.key_store_file': 'EC_KeyPair_256.pkcs12',
-  'system.ssltls.enabled_ciphers': 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256',
-  'system.client.invokeOrderedTimeout': '40',
-}
+const { isNullOrEmpty, JSONtoDot } = require('../util/helpers')
+const { isBoolean, isInteger } = require('mathjs')
+const bftsmartSysConf = require('./assets/BFT-SMaRt/sysconf.json')
+const { after, secondsAsString } = require('../util/timestamp')
 
 const processName = 'java'
-
-/* Java stuff */
 
 const javaProc = '/usr/bin/java'
 
@@ -99,6 +56,17 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'context property of replica object must have a boolean value',
     )
+  if (isNullOrEmpty(replicaSettings.bft))
+    throw new Error('please specify if BFT-SMaRt should use BFT mode')
+  if (!isBoolean(replicaSettings.bft))
+    throw new Error('experiment.replica.bft must have a boolean value')
+  if (isNullOrEmpty(replicaSettings.timeout))
+    throw new Error('please specify a timeout value')
+  if (
+    !Number.isInteger(replicaSettings.timeout) ||
+    !(replicaSettings.timeout > 0)
+  )
+    throw new Error('experiment.replica.timeout must be a positive Integer')
   if (isNullOrEmpty(replicaSettings.replicaSig))
     throw new Error(
       'replicaSig property of replica object of current experiment was not defined',
@@ -111,11 +79,11 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'replicaSig property of replica object must have <nosig | default | ecdsa> as value',
     )
-  if (isNullOrEmpty(clientSettings.clients))
+  if (isNullOrEmpty(clientSettings.numberOfHosts))
     throw new Error(
       'clients property of client object of current experiment was not defined',
     )
-  if (!Number.isInteger(clientSettings.clients))
+  if (!Number.isInteger(clientSettings.numberOfHosts))
     throw new Error('clients property of client object must be an Integer')
   if (isNullOrEmpty(clientSettings.threadsPerClient))
     throw new Error(
@@ -135,9 +103,12 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'clientInterval property of client object of current experiment was not defined',
     )
-  if (!Number.isInteger(clientSettings.clientInterval))
+  if (
+    !Number.isInteger(clientSettings.clientInterval) &&
+    Number(clientSettings.clientInterval) > 0
+  )
     throw new Error(
-      'clientInterval property of client object must be an Integer',
+      'clientInterval property of client object must be a positive integer',
     )
   if (isNullOrEmpty(clientSettings.requestSize))
     throw new Error(
@@ -169,6 +140,21 @@ function _parse(replicaSettings, clientSettings) {
     throw new Error(
       'verbose property of client object must have a boolean value',
     )
+  if (
+    !isNullOrEmpty(clientSettings.maxInFlight) &&
+    !Number.isInteger(clientSettings.maxInFlight) &&
+    !Number(clientSettings.maxInFlight) > 0
+  )
+    throw new Error('maxInFlight must be a positive integer')
+  if (isNullOrEmpty(clientSettings.invokeOrderedTimeout))
+    throw new Error('experiment.client.invokeOrderedTimeout must be specified')
+  if (
+    !Number.isInteger(clientSettings.invokeOrderedTimeout) ||
+    !(clientSettings.invokeOrderedTimeout > 0)
+  )
+    throw new Error(
+      'experiment.client.invokeOrderedTimeout must be a positive Integer',
+    )
 }
 
 function getProcessName() {
@@ -186,22 +172,30 @@ async function build(replicaSettings, clientSettings, log) {
   await promisified_spawn(cmd.proc, cmd.args, process.env.BFTSMART_DIR, log)
   log.info('BFT-SMaRt build terminated sucessfully!')
 }
-async function genSystemConfig(replicas, batchsize) {
+async function genSystemConfig(replicaSettings, clientSettings) {
   let viewString = ''
 
-  for (let i = 0; i < replicas; i++)
-    viewString += i + (i < replicas - 1 ? ',' : '')
-  sysconf['system.initial.view'] = viewString
-  sysconf['system.servers.num'] = replicas
-  sysconf['system.servers.f'] = Math.floor((replicas - 1) / 3)
-  sysconf['system.totalordermulticast.maxbatchsize'] = batchsize
-  let sysconfString = ''
+  for (let i = 0; i < replicaSettings.replicas; i++)
+    viewString += i + (i < replicaSettings.replicas - 1 ? ',' : '')
 
-  for (const [key, value] of Object.entries(sysconf)) {
-    sysconfString += key + ' = ' + value + '\n'
-  }
+  bftsmartSysConf.system.bft = replicaSettings.bft
+  bftsmartSysConf.system.initial = new Object()
+  bftsmartSysConf.system.initial.view = viewString
+  bftsmartSysConf.system.servers = new Object()
+  bftsmartSysConf.system.servers.num = replicaSettings.replicas
+  bftsmartSysConf.system.servers.f = Math.floor(
+    (replicaSettings.replicas - 1) / 3,
+  )
+  bftsmartSysConf.system.totalordermulticast.maxbatchsize =
+    replicaSettings.blockSize
+  bftsmartSysConf.system.totalordermulticast.timeout = replicaSettings.timeout
+  bftsmartSysConf.system.client = new Object()
+  bftsmartSysConf.system.client.invokeOrderedTimeout =
+    clientSettings.invokeOrderedTimeout
 
-  fs.writeFileSync(
+  let sysconfString = JSONtoDot('', bftsmartSysConf)
+
+  await fs.writeFile(
     path.join(
       process.env.BFTSMART_DIR,
       process.env.BFTSMART_SYSTEM_CONFIG_FILE,
@@ -229,13 +223,14 @@ async function genHostsConfig(replicas, clients) {
       clientIndex += 1000
     }
   }
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(process.env.BFTSMART_DIR, process.env.BFTSMART_HOSTS_FILE),
     hostsString,
   )
   return replicaIPs
 }
 async function passArgs(replicaIPs, replicaSettings, clientSettings) {
+  let currentReplicaStartTime = 0
   for (let i = 0; i < replicaIPs.length; i++) {
     if (replicaIPs[i].isClient) {
       replicaIPs[i].procs = []
@@ -250,8 +245,11 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
           clientSettings.readOnly
         } ${
           !isNullOrEmpty(clientSettings.verbose) ? clientSettings.verbose : true
-        } ${clientSettings.clientSig}`,
-        startTime: clientSettings.startTime ? clientSettings.startTime : 0,
+        } ${clientSettings.clientSig} ${clientSettings.maxInFlight}`,
+        startTime: after(
+          after('0 s', secondsAsString(replicaSettings.replicas)),
+          clientSettings.startTime ? clientSettings.startTime : '0 s',
+        ),
       })
     } else {
       replicaIPs[i].procs = []
@@ -260,6 +258,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
         env: '',
         args: `${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_REPLICA_CLASS} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
         startTime: '' + i + ' s',
+        //         startTime: after('0 s', secondsAsString(currentReplicaStartTime++)),
       })
     }
   }
@@ -268,7 +267,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
 }
 async function deleteCurrentView() {
   try {
-    fs.unlinkSync(
+    await fs.unlink(
       path.join(process.env.BFTSMART_DIR, process.env.BFTSMART_VIEW_FILE),
     )
   } catch (err) {
@@ -282,13 +281,14 @@ async function configure(replicaSettings, clientSettings, log) {
   log.info('deleting old view')
   await deleteCurrentView()
   log.info('generating system.config ...')
-  await genSystemConfig(replicaSettings.replicas, replicaSettings.blockSize)
+  await genSystemConfig(replicaSettings, clientSettings)
   log.info('system.config generated!')
   log.info('generating hosts.config ...')
   var replicaIPs = await genHostsConfig(
     replicaSettings.replicas,
-    clientSettings.clients,
-  )
+    clientSettings.numberOfHosts,
+  )        startTime: after('0 s', secondsAsString(currentReplicaStartTime++)),
+
   log.info('hosts.config generated!')
   replicaIPs = await passArgs(replicaIPs, replicaSettings, clientSettings)
   return replicaIPs
