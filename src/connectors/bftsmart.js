@@ -287,7 +287,7 @@ async function configure(replicaSettings, clientSettings, log) {
   var replicaIPs = await genHostsConfig(
     replicaSettings.replicas,
     clientSettings.numberOfHosts,
-  )        startTime: after('0 s', secondsAsString(currentReplicaStartTime++)),
+  )
 
   log.info('hosts.config generated!')
   replicaIPs = await passArgs(replicaIPs, replicaSettings, clientSettings)
