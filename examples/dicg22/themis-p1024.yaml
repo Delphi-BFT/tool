@@ -43,6 +43,7 @@ experiments:
           uniform: true
           replicas: 1000 us
           clients: 1000 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 8
         minBatchSize: 400
@@ -71,6 +72,7 @@ experiments:
           uniform: true
           replicas: 1000 us
           clients: 1000 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 16
         minBatchSize: 400
@@ -99,6 +101,7 @@ experiments:
           uniform: true
           replicas: 1000 us
           clients: 1000 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 32
         minBatchSize: 400
@@ -127,6 +130,7 @@ experiments:
           uniform: true
           replicas: 1000 us
           clients: 1000 us
+        packetLoss: 0.0
       replica: # should be validated by connectors (currently not done, they are passed as-is)
         replicas: 64
         minBatchSize: 400
@@ -155,6 +159,7 @@ experiments:
            uniform: true
            replicas: 1000 us
            clients: 1000 us
+         packetLoss: 0.0
        replica: # should be validated by connectors (currently not done, they are passed as-is)
          replicas: 128
          minBatchSize: 400

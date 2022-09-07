@@ -47,6 +47,7 @@ experiments:
           uniform: false
           replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
           clients: ['eu-west-1': 1]
+        packetLoss: 0.0
       replica:
         replicas: 4
         blockSize: 100
@@ -81,6 +82,7 @@ experiments:
           uniform: false
           replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
           clients: ['sa-east-1': 1]
+        packetLoss: 0.0
       replica:
         replicas: 4
         blockSize: 100
@@ -114,6 +116,7 @@ experiments:
           uniform: false
           replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
           clients: ['ap-southeast-2': 1]
+        packetLoss: 0.0
       replica:
         replicas: 4
         blockSize: 100
