@@ -1,27 +1,26 @@
 ---
 - name: setup basic Delphi-BFT dependencies
   hosts: opennebula
-  become: yes
-  become_user: root
   tasks:
     - name: Installing Node, NVM and NPM
       block:
         - name: CURL nvm
-          command: >
-           bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
+          shell: >
+           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           args:
             creates: "$HOME/.nvm/nvm.sh"
             chdir: $HOME
+            executable: /bin/bash
         - name: Install Node
-          command: >
-            bash -c 'source $HOME/.nvm/nvm.sh && nvm install "{{node_version}}" && nvm use "{{node_version}}"'
+          shell: >
+            source $HOME/.nvm/nvm.sh && nvm install "{{node_version}}" && nvm use "{{node_version}}"
           args:
             chdir: $HOME
-      become: no 
+            executable: /bin/bash
     - name: Installing Phantom
       block:
         - name: Installing Phantom dependencies
-          ansible.builtin.apt:
+          apt:
             pkg:
               - cmake 
               - findutils 
@@ -46,51 +45,69 @@
               - htop 
               - tmux
             state: latest
-        - name: Installing Rust
-          command: bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+          become: yes
+          become_user: root
+        - name: check if cargo is installed
+          shell: command -v cargo
+          register: cargo_exists
+          ignore_errors: yes
+          args:
+            executable: /bin/bash
+        - name: Download Installer
+          when: cargo_exists is failed
+          get_url:
+            url: https://sh.rustup.rs
+            dest: /tmp/sh.rustup.rs
+            mode: '0755'
+            force: 'yes'
+          tags:
+            - rust
+        - name: Install Rust/Cargo
+          when: cargo_exists is failed
+          shell: /tmp/sh.rustup.rs -y
+          tags:
+            - rust
+          args:
+            executable: /bin/bash
         - name: Cloning the Phantom repository and checking out tag v2.2.0
-          ansible.builtin.git:
+          git:
             repo: "{{ phantom_repo }}"
             dest: "{{ phantom_clone_dir }}"
             version: tags/"{{ phantom_version }}"
-          become: no
         - name: Building Phantom
-          ansible.builtin.command: >
-            ./setup build --clean --test
+          shell: >
+            source $HOME/.cargo/env && ./setup build --clean --test
           args:
             chdir: "{{ phantom_clone_dir }}"
+            executable: /bin/bash
           register: build
-          become: no
-        
         - debug: msg="{{ build.stdout}}"
         - debug: msg="{{ build.stderr}}"
         - name: Running Phantom tests
-          ansible.builtin.command: >
-            ./setup test
+          shell: >
+            source $HOME/.cargo/env && ./setup test
           args:
             chdir: "{{phantom_clone_dir}}"
+            executable: /bin/bash
           register: testing
-          become: no
-        
         - debug: msg="{{ testing.stdout}}"
         - debug: msg="{{ testing.stderr}}"
-
         - name: Installing Phantom
-          ansible.builtin.command: >
-            ./setup install
+          shell: >
+            source $HOME/.cargo/env &&  ./setup install
           args:
             chdir: "{{ phantom_clone_dir }}"
+            executable: /bin/bash
           register: installation
-          become: no
-        
         - debug: msg="{{ installation.stdout}}"
         - debug: msg="{{ installation.stderr}}"
         - name: Adding Phantom to PATH
-          ansible.builtin.command: >
-            bash -c 'echo 'export PATH="${PATH}:$HOME/.local/bin"' >> ~/.bashrc && source ~/.bashrc'
+          lineinfile: 
+            line: export PATH="${PATH}:$HOME/.local/bin" 
+            path: $HOME/.bashrc 
 
     - name: Installing HotStuff dependencies
-      ansible.builtin.apt:
+      apt:
         pkg:
           - libssl-dev 
           - libuv1-dev 
@@ -99,16 +116,24 @@
           - libtool 
           - autoconf
         state: latest
+      become: yes
+      become_user: root
+    - name: Installing BFT-SMaRt dependencies
+      apt:
+        pkg:
+          - openjdk-11-jre-headless
+        state: latest
+      become: yes
+      become_user: root
     - name: Cloning Delphi-BFT
-      ansible.builtin.git:
+      git:
         repo: "{{ delphi_bft_repo }}"
         dest: "{{ delphi_bft_clone_dir }}"
         version: main
-      become: no
     - name: Running npm install
-      ansible.builtin.command: npm install
+      shell: source $HOME/.nvm/nvm.sh && npm install
       args:
         chdir: "{{ delphi_bft_clone_dir }}"
-      become: no
+        executable: /bin/bash
       
 
