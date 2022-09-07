@@ -257,7 +257,8 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
         path: javaProc,
         env: '',
         args: `${process.env.BFTSMART_JAVA_ARGS} ${process.env.BFTSMART_REPLICA_CLASS} ${i} ${replicaSettings.replicaInterval} ${replicaSettings.replySize} ${replicaSettings.stateSize} ${replicaSettings.context} ${replicaSettings.replicaSig}`,
-        startTime: after('0 s', secondsAsString(currentReplicaStartTime++)),
+        startTime: '' + i + ' s',
+        //         startTime: after('0 s', secondsAsString(currentReplicaStartTime++)),
       })
     }
   }
@@ -287,6 +288,7 @@ async function configure(replicaSettings, clientSettings, log) {
     replicaSettings.replicas,
     clientSettings.numberOfHosts,
   )
+
   log.info('hosts.config generated!')
   replicaIPs = await passArgs(replicaIPs, replicaSettings, clientSettings)
   return replicaIPs
