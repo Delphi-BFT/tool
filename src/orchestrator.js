@@ -115,28 +115,12 @@ async function main() {
       shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
       // Generate Shadow File
       await eg.out(shadowFilePath, shadowTemplate)
-      let myGraph = ''
-      if (e[experimentId].network.latency.uniform)
-        myGraph = eg.createGraphSimple(
-          hosts,
-          e[experimentId].network.bandwidthUp,
-          e[experimentId].network.bandwidthDown,
-          e[experimentId].network.latency.replicas,
-          e[experimentId].network.latency.clients,
-          parseFloat(e[experimentId].network.packetLoss).toFixed(1),
-        )
-      else {
-        myGraph = await eg.makeAWSGraph(
-          hosts,
-          e[experimentId].network.latency.replicas,
-          e[experimentId].network.latency.clients,
-          e[experimentId].network.bandwidthUp,
-          e[experimentId].network.bandwidthDown,
-          parseFloat(e[experimentId].network.packetLoss).toFixed(1.0),
-          logger,
-        )
-      }
-      await fs.writeFile(networkFilePath, myGraph)
+      await eg.exportPNS(
+        hosts,
+        e[experimentId].network,
+        networkFilePath,
+        logger,
+      )
       let experimentStartTime = performance.now()
       await Promise.all([
         run(executionDir, logger),

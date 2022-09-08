@@ -368,14 +368,35 @@ let makeHost = (res, name, ip, network_node_id, procs) => {
 async function out(file, doc) {
   await fs.writeFile(file, yaml.dump(doc))
 }
-
+async function exportPNS(hosts, networkObj, PNSPath, log) {
+  let PNS = ''
+  if (networkObj.latency.uniform)
+    PNS = createGraphSimple(
+      hosts,
+      networkObj.bandwidthUp,
+      networkObj.bandwidthDown,
+      networkObj.latency.replicas,
+      networkObj.latency.clients,
+      parseFloat(networkObj.packetLoss).toFixed(1),
+    )
+  else {
+    PNS = await makeAWSGraph(
+      hosts,
+      networkObj.latency.replicas,
+      networkObj.latency.clients,
+      networkObj.bandwidthUp,
+      networkObj.bandwidthDown,
+      parseFloat(networkObj.packetLoss).toFixed(1.0),
+      log,
+    )
+  }
+  await fs.writeFile(PNSPath, PNS)
+}
 module.exports = {
   createShadowHost,
-  createGraph,
-  createGraphSimple,
+  exportPNS,
   createEdge,
   createNode,
-  makeAWSGraph,
   makeHost,
   out,
   makeConfigTemplate,
