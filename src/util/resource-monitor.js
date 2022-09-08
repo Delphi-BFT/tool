@@ -20,8 +20,8 @@ async function compute(processName, log) {
   let pids = await getPids(processName, log)
   if (pids == null) return
   pidusage(pids, function (err, stats) {
-    let cputotal = - 1.0
-    let mem = - 1.0
+    let cputotal = 0.0
+    let mem = 0.0
     if (stats != null && stats != undefined) {
       Object.keys(stats).forEach(function (key) {
         cputotal += stats[key] == undefined ? 0 : stats[key].cpu
