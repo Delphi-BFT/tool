@@ -74,11 +74,11 @@ async function createPlots(plots) {
 }
 
 async function pushValue(plotId, datasetId, label, value) {
-  let objectToPush = {}
-  objectToPush.x = label
-  objectToPush.y = value
   for (let dataset of plotsMap[plotId].data.datasets) {
-    if (dataset.label == datasetId) dataset.data.push(objectToPush)
+    if (dataset.label == datasetId) {
+      dataset.data.push({ x: String(label), y: value })
+      continue
+    }
   }
 }
 async function generatePlots(experimentsPath) {
@@ -94,4 +94,41 @@ async function generatePlots(experimentsPath) {
   }
 }
 
-module.exports = { createPlots, pushValue, generatePlots }
+function pushStatsToDatasets(plotsObj, stats) {
+  for (let p of plotsObj) {
+    if (p.metric == 'tps') {
+      pushValue(p.name, p.datasetId, p.label, stats.maxThroughput)
+      continue
+    }
+    if (p.metric == 'latency') {
+      pushValue(p.name, p.datasetId, p.label, stats.latencyOutlierRemoved)
+      continue
+    }
+    if (p.metric == 'cpu-shadow') {
+      pushValue(p.name, p.datasetId, p.label, stats.cpuShadow)
+      continue
+    }
+    if (p.metric == 'mem-shadow') {
+      pushValue(p.name, p.datasetId, p.label, stats.memShadow)
+      continue
+    }
+    if (p.metric == 'cpu-app') {
+      pushValue(p.name, p.datasetId, p.label, stats.cpuApp)
+      continue
+    }
+    if (p.metric == 'mem-app') {
+      pushValue(p.name, p.datasetId, p.label, stats.memApp)
+      continue
+    }
+    if (p.metric == 'mem-host') {
+      pushValue(p.name, p.datasetId, p.label, stats.hostActive)
+      continue
+    }
+    if (p.metric == 'elapsed') {
+      pushValue(p.name, p.datasetId, p.label, stats.elapsed)
+      continue
+    }
+  }
+}
+
+module.exports = { createPlots, pushStatsToDatasets, generatePlots }

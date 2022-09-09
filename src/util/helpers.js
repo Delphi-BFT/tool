@@ -13,7 +13,9 @@ async function transformLatencies(hosts) {
   }
   return awsHosts
 }
-
+async function backUpArtifact(source, dest) {
+  await fs.copyFile(source, dest)
+}
 async function deleteDirectoryIfExists(path) {
   await fs.rm(path, { recursive: true, force: true })
 }
@@ -93,5 +95,6 @@ module.exports = {
   removeOutliers,
   isNullOrEmpty,
   readAndMergeEDF,
+  backUpArtifact,
   JSONtoDot,
 }

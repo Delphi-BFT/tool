@@ -7,7 +7,11 @@ const path = require('path')
 const csvUtil = require('./util/csv-util')
 const { createLogger, format, transports } = require('winston')
 const { combine, splat, timestamp, printf } = format
-const { deleteDirectoryIfExists, readAndMergeEDF } = require('./util/helpers')
+const {
+  deleteDirectoryIfExists,
+  readAndMergeEDF,
+  backUpArtifact,
+} = require('./util/helpers')
 const { performance } = require('perf_hooks')
 const { promisified_spawn } = require('./util/exec')
 const { isNullOrEmpty } = require('./util/helpers')
@@ -56,9 +60,6 @@ async function createShadowHostConfig(shadowTemplate, replicas) {
   return shadowTemplate
 }
 
-async function backUpArtifact(source, dest) {
-  await fs.copyFile(source, dest)
-}
 async function main() {
   let args = process.argv.slice()
   let EDF = await readAndMergeEDF(args[2])
@@ -126,26 +127,26 @@ async function main() {
         run(executionDir, logger),
         (shadowInterval = monitor.register(
           process.env.SHADOW_PROCESS,
-          2000,
+          process.env.RESOURCE_MONITOR_INTERVAL,
           logger,
         )),
         (procInterval = monitor.register(
           protocol.getProcessName(),
-          2000,
+          process.env.RESOURCE_MONITOR_INTERVAL,
           logger,
         )),
-        (totalInterval = monitor.registerSI(2000, logger)),
+        (totalInterval = monitor.registerSI(
+          process.env.RESOURCE_MONITOR_INTERVAL,
+          logger,
+        )),
       ])
       let experimentEndTime = performance.now()
       let elapsedSeconds = (experimentEndTime - experimentStartTime) / 1000
       let resourceUsage = await monitor.unregister(logger)
       let perfStats = await getStats(protocol, experimentId, logger)
-      let statsForCSV = {
+      let statsObj = {
         experimentId: experimentId,
-        maxThroughput: perfStats.maxThroughput,
-        avgThroughput: perfStats.avgThroughput,
-        latencyAll: perfStats.latencyAll,
-        latencyOutlierRemoved: perfStats.latencyOutlierRemoved,
+        ...perfStats,
         cpuShadow: resourceUsage[process.env.SHADOW_PROCESS].medianCPU,
         memShadow: resourceUsage[process.env.SHADOW_PROCESS].maxMEM,
         cpuApp: resourceUsage[protocol.getProcessName()].medianCPU,
@@ -153,78 +154,10 @@ async function main() {
         hostActive: resourceUsage['total'].maxMEM,
         elapsed: elapsedSeconds,
       }
-      csvUtil.values.push(statsForCSV)
-      await csvUtil.save(path.join(experimentsPath, process.env.STATS_FILE))
+      csvUtil.values.push(statsObj)
+      await csvUtil.save(path.join(experimentsPath, process.env.STATS_FILE)) // save CSV after every exp
       if (e[experimentId].plots) {
-        for (let p of e[experimentId].plots) {
-          if (p.metric == 'tps') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              perfStats.maxThroughput,
-            )
-            continue
-          }
-          if (p.metric == 'latency') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              perfStats.latencyOutlierRemoved,
-            )
-            continue
-          }
-          if (p.metric == 'cpu-shadow') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              resourceUsage[process.env.SHADOW_PROCESS].medianCPU,
-            )
-            continue
-          }
-          if (p.metric == 'mem-shadow') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              resourceUsage[process.env.SHADOW_PROCESS].maxMEM,
-            )
-            continue
-          }
-          if (p.metric == 'cpu-app') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              resourceUsage[protocol.getProcessName()].medianCPU,
-            )
-            continue
-          }
-          if (p.metric == 'mem-app') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              resourceUsage[protocol.getProcessName()].maxMEM,
-            )
-            continue
-          }
-          if (p.metric == 'mem-host') {
-            plot.pushValue(
-              p.name,
-              p.datasetId,
-              p.label,
-              resourceUsage['total'].maxMEM,
-            )
-            continue
-          }
-          if (p.metric == 'elapsed') {
-            plot.pushValue(p.name, p.datasetId, p.label, elapsedSeconds)
-            continue
-          }
-        }
+        plot.pushStatsToDatasets(e[experimentId].plots, statsObj)
       }
 
       await backUpArtifact(
