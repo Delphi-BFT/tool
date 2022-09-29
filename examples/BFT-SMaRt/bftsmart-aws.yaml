@@ -8,17 +8,17 @@ experiments:
         parallelism: 20
         useShortestPath: false
       network:
-        bandwidthUp: 10 Gbit
-        bandwidthDown: 10 Gbit
+        bandwidthUp: 100 Mibit
+        bandwidthDown: 100 Mibit
         latency:
           uniform: false
-          replicas: ['us-west-1': 2, 'us-east-1': 2]
+          replicas: ['us-west-1': 1, 'us-east-1': 1, 'eu-central-1': 1, 'eu-north-1': 1]
           clients: ['us-west-1': 1, 'af-south-1': 1, 'ap-south-1': 1]
         packetLoss: 0.0
       replica:
         replicas: 4
-        blockSize: 100
-        replicaInterval: 100
+        blockSize: 1000
+        replicaInterval: 4000
         replySize: 0
         stateSize: 0
         context: false
@@ -26,12 +26,12 @@ experiments:
         bft: true
         timeout: 2000
       client:
-        numberOfHosts: 1
+        numberOfHosts: 3
         startTime: 60 s
-        threadsPerClient: 2
+        threadsPerClient: 1
         opPerClient: 10000
-        requestSize: 4000
-        clientInterval: 100
+        requestSize: 0
+        clientInterval: 0
         readOnly: false
         verbose: true
         clientSig: nosig
