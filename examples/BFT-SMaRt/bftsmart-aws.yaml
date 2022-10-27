@@ -3,7 +3,7 @@ protocolConnectorPath: ./connectors/bftsmart.js
 experiments:
   - 4Replicas:
       misc:
-        duration: 300 s
+        duration: 9000 s
         runahead: 630 us
         parallelism: 20
         useShortestPath: false
@@ -18,7 +18,7 @@ experiments:
       replica:
         replicas: 4
         blockSize: 1000
-        replicaInterval: 4000
+        replicaInterval: 2000
         replySize: 0
         stateSize: 0
         context: false
@@ -29,7 +29,7 @@ experiments:
         numberOfHosts: 3
         startTime: 60 s
         threadsPerClient: 1
-        opPerClient: 10000
+        opPerClient: 20000
         requestSize: 0
         clientInterval: 0
         readOnly: false
