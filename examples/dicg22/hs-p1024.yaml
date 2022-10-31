@@ -2,7 +2,7 @@ protocolName: hotstuff
 protocolConnectorPath: ./connectors/hotstuff.js
 plots:
   throughputDemo:
-    type: tps
+    metric: tps
     details:
       title: 'Throughput comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
       xAxisTitle: 'Number of Replicas'
@@ -15,7 +15,7 @@ plots:
             borderColor: '#c45850'
     predefinedDatasets: ./predefinedPlots/hotstuff/hs-p1024-throughput.yaml
   latencyDemo:
-    type: latency
+    metric: latency
     details:
       title: 'Latency comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
       xAxisTitle: 'Number of Replicas'

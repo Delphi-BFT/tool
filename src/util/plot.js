@@ -1,4 +1,3 @@
-const { LinearScale } = require('chart.js')
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas')
 const path = require('path')
 const fs = require('fs').promises
@@ -9,6 +8,7 @@ const renderer = new ChartJSNodeCanvas({
 })
 
 const plotsMap = new Map()
+
 async function createPlots(plots) {
   for (const [plotId, plotObj] of Object.entries(plots)) {
     plotsMap[plotId] = {
@@ -45,12 +45,7 @@ async function createPlots(plots) {
       plotsMap[plotId].data.datasets.push({
         label: shadowDatasetId,
         data: [],
-        borderWidth: 1,
-        borderColor: shadowDatasetObj.style.borderColor,
-        fill: false,
-        pointStyle: shadowDatasetObj.style.pointStyle,
-        pointRadius: 5,
-        pointBorderColor: shadowDatasetObj.style.pointBorderColor,
+        ...shadowDatasetObj.style,
       })
     }
     if (plotObj.predefinedDatasets) {
@@ -60,12 +55,7 @@ async function createPlots(plots) {
         console.log(predefinedDatasetObj)
         plotsMap[plotId].data.datasets.push({
           label: predefinedDatasetId,
-          borderColor: predefinedDatasetObj.style.borderColor,
-          borderWidth: 1,
-          fill: false,
-          pointStyle: predefinedDatasetObj.style.pointStyle,
-          pointRadius: 5,
-          pointBorderColor: predefinedDatasetObj.style.pointBorderColor,
+          ...predefinedDatasetObj.style,
           data: predefinedDatasetObj.values,
         })
       }
