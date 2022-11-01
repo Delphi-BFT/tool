@@ -1,0 +1,18 @@
+- name: HotStuff-p1024
+  values:
+    - x: '4'
+      y: '20'
+    - x: '8'
+      y: '20'
+    - x: '16'
+      y: '20'
+    - x: '32'
+      y: '47'
+    - x: '64'
+      y: '60'
+    - x: '128'
+      y: '105'
+  style:
+    pointStyle: star
+    pointBorderColor: '#8e5ea2'
+    borderColor: '#8e5ea2'

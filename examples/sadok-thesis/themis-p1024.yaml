@@ -1,0 +1,177 @@
+protocolName: themis
+protocolConnectorPath: ./connectors/themis.js
+experiments:
+  - name: 4rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 10 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 4
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 10_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 175
+      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+  - name: 8rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 10 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 8
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 10_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 100
+      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+  - name: 16rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 10 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 16
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 10_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 50
+      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+  - name: 32rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 10 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 32
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 10_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 50
+      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+  - name: 64rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 10 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 64
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 10_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 50
+      duration: 8 # WATCH OUT FOR THIS VALUE (for now
+  - name: 128rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 10 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 128
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 10_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 50
+      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
