@@ -1,27 +1,27 @@
 protocolName: hotstuff
 protocolConnectorPath: ./connectors/hotstuff.js
 experiments:
-  - 4rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        duration: 10 s
-        runahead: 630 us
-        parallelism: 8
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gbit # does not apply to clients (for now)
-        bandwidthDown: 10 Gbit # does not apply to clients (for now)
-        latency:
-          uniform: false
-          replicas: ['us-west-1': 2, 'af-south-1': 2]
-          clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 4
-        blockSize: 400
-        replySize: 128
-      client:
-        numberOfHosts: 2
-        clients: 4
-        startTime: 0 s
-        outStandingPerClient: 1400
-        requestSize: 128
+  - name: 4rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      duration: 10 s
+      runahead: 630 us
+      parallelism: 8
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gbit # does not apply to clients (for now)
+      bandwidthDown: 10 Gbit # does not apply to clients (for now)
+      latency:
+        uniform: false
+        replicas: ['us-west-1': 2, 'af-south-1': 2]
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 4
+      blockSize: 400
+      replySize: 128
+    client:
+      numberOfHosts: 2
+      clients: 4
+      startTime: 0 s
+      outStandingPerClient: 1400
+      requestSize: 128

@@ -88,11 +88,12 @@ async function main() {
   logger.info(process.env)
   /* start*/
   logger.info('initiating orchestrator...')
-  for (e of EDF.experiments) {
+  for (const EDO of EDF.experiments) {
+    console.log(EDO)
     logger.info('starting new experiment ...')
-    let experimentId = Object.keys(e)[0]
-    let replicaSettings = e[experimentId].replica
-    let clientSettings = e[experimentId].client
+    let experimentId = EDO.name
+    let replicaSettings = EDO.replica
+    let clientSettings = EDO.client
     let shadowFilePath = path.join(executionDir, process.env.SHADOW_FILE)
     let networkFilePath = path.join(executionDir, process.env.NETWORK_FILE)
     try {
@@ -104,7 +105,7 @@ async function main() {
           : process.env.SHADOW_TEMPLATE,
         process.env.NETWORK_FILE,
         path.join(experimentsPath, experimentId),
-        e[experimentId].misc,
+        EDO.misc,
       )
       await build(protocol, replicaSettings, clientSettings, logger)
       let hosts = await configure(
@@ -116,12 +117,7 @@ async function main() {
       shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
       // Generate Shadow File
       await eg.out(shadowFilePath, shadowTemplate)
-      await eg.exportPNS(
-        hosts,
-        e[experimentId].network,
-        networkFilePath,
-        logger,
-      )
+      await eg.exportPNS(hosts, EDO.network, networkFilePath, logger)
       let experimentStartTime = performance.now()
       await Promise.all([
         run(executionDir, logger),
@@ -140,6 +136,9 @@ async function main() {
           logger,
         )),
       ])
+      if (protocol.getProcessName() == 'java') {
+        await promisified_spawn('killall java', {}, executionDir, logger)
+      }
       let experimentEndTime = performance.now()
       let elapsedSeconds = (experimentEndTime - experimentStartTime) / 1000
       let resourceUsage = await monitor.unregister(logger)
@@ -156,8 +155,8 @@ async function main() {
       }
       csvUtil.values.push(statsObj)
       await csvUtil.save(path.join(experimentsPath, process.env.STATS_FILE)) // save CSV after every exp
-      if (e[experimentId].plots) {
-        plot.pushStatsToDatasets(e[experimentId].plots, statsObj)
+      if (EDO.plots) {
+        plot.pushStatsToDatasets(EDO.plots, statsObj)
       }
 
       await backUpArtifact(

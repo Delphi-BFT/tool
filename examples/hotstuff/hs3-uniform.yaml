@@ -1,7 +1,7 @@
 protocolName: hotstuff
 protocolConnectorPath: ./connectors/hotstuff.js
 experiments:
-  - 4rep: # this will be passed to as data_dir value in shadow.yaml
+    - name: 4rep
       misc:
         runahead: 630 us
         duration: 10 s

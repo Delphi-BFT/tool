@@ -14,51 +14,50 @@ function parseEDF(EDF) {
     throw Error('please specify a protocol connector')
   if (isNullOrEmpty(EDF.experiments))
     throw Error('No experiments were specified')
-  for (let experiment of EDF.experiments) {
-    let experimentId = Object.keys(experiment)[0]
-    let experimentObj = experiment[experimentId]
-    if (isNullOrEmpty(experimentObj.network))
+  for (const EDO of EDF.experiments) {
+    let experimentId = EDO.name
+    if (isNullOrEmpty(EDO.network))
       throw Error(`network Object for ${experimentId} cannot be empty`)
-    if (isNullOrEmpty(experimentObj.network.latency))
+    if (isNullOrEmpty(EDO.network.latency))
       throw Error(`latency Object for ${experimentId}.network cannot be empty`)
-    if (isNullOrEmpty(experimentObj.replica))
+    if (isNullOrEmpty(EDO.replica))
       throw Error(`replica Object for ${experimentId} cannot be empty`)
-    if (isNullOrEmpty(experimentObj.client))
+    if (isNullOrEmpty(EDO.client))
       throw Error(`client Object for ${experimentId} cannot be empty`)
-    if (isNullOrEmpty(experimentObj.network.latency.uniform))
+    if (isNullOrEmpty(EDO.network.latency.uniform))
       throw Error(`please specify a latency type for ${experimentId}`)
     if (
-      isNullOrEmpty(experimentObj.network.latency.clients) ||
-      isNullOrEmpty(experimentObj.network.latency.replicas)
+      isNullOrEmpty(EDO.network.latency.clients) ||
+      isNullOrEmpty(EDO.network.latency.replicas)
     )
       throw Error(
         `please inter-replica latency and client-replica latency for ${experimentId}`,
       )
-    if (isNullOrEmpty(experimentObj.replica.replicas)) {
+    if (isNullOrEmpty(EDO.replica.replicas)) {
       throw Error(`number of replicas for ${experimentId} was not defined`)
     }
-    if (isNullOrEmpty(experimentObj.client.numberOfHosts)) {
+    if (isNullOrEmpty(EDO.client.numberOfHosts)) {
       throw Error(`number of client hosts for ${experimentId} was not defined`)
     }
-    if (!experimentObj.network.latency.uniform) {
-      if (!Array.isArray(experimentObj.network.latency.replicas))
+    if (!EDO.network.latency.uniform) {
+      if (!Array.isArray(EDO.network.latency.replicas))
         throw Error(
           `please specify an array in the form of [region1: numberOfReplicas, region2: numberOfReplicas] for ${experimentId}`,
         )
       let totalNumberOfReplicas = 0
-      for (let region of experimentObj.network.latency.replicas) {
+      for (let region of EDO.network.latency.replicas) {
         totalNumberOfReplicas += Object.values(region)[0]
       }
-      if (totalNumberOfReplicas != experimentObj.replica.replicas)
+      if (totalNumberOfReplicas != EDO.replica.replicas)
         throw Error(
           `sum of replica hosts accross all regions is different than experiment.replica.replicas for ${experimentId}`,
         )
-      if (Array.isArray(experimentObj.network.latency.clients)) {
+      if (Array.isArray(EDO.network.latency.clients)) {
         let totalNumberOfClients = 0
-        for (let region of experimentObj.network.latency.clients) {
+        for (let region of EDO.network.latency.clients) {
           totalNumberOfClients += Object.values(region)[0]
         }
-        if (totalNumberOfClients != experimentObj.client.numberOfHosts)
+        if (totalNumberOfClients != EDO.client.numberOfHosts)
           throw Error(
             `sum of client hosts accross all regions is different than experiment.client.clients for ${experimentId}`,
           )

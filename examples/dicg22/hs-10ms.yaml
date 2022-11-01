@@ -1,148 +1,148 @@
 protocolName: hotstuff
 protocolConnectorPath: ./connectors/hotstuff.js
 experiments:
-  - 4rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 1000 us
-        duration: 30 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gibits # does not apply to clients (for now)
-        bandwidthDown: 10 Gibits # does not apply to clients (for now)
-        latency:
-         uniform: true
-         replicas: 10000 us
-         clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 4
-        blockSize: 400
-        replySize: 0
-      client:
-        clients: 2
-        numberOfHosts: 2
-        outStandingPerClient: 800
-        requestSize: 0
-  - 8rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 1000 us
-        duration: 30 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gibits # does not apply to clients (for now)
-        bandwidthDown: 10 Gibits # does not apply to clients (for now)
-        latency:
-         uniform: true
-         replicas: 10000 us
-         clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 8
-        blockSize: 400
-        replySize: 0
-      client:
-        clients: 2
-        numberOfHosts: 2
-        outStandingPerClient: 800
-        requestSize: 0
-  - 16rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 1000 us
-        duration: 30 s
-        parallelism: 16
-        useShortestPath: false
-      plots:
-        - name: throughputDemo
-          metric: 'tps'
-          label: 16
-        - name: latencyDemo
-          metric: 'latency'
-          label: 16
-      network:
-        bandwidthUp: 10 Gibits # does not apply to clients (for now)
-        bandwidthDown: 10 Gibits # does not apply to clients (for now)
-        latency:
-         uniform: true
-         replicas: 10000 us
-         clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 16
-        blockSize: 400
-        replySize: 0
-      client:
-        clients: 16
-        numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
-  - 32rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 1000 us
-        duration:  30 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gibits # does not apply to clients (for now)
-        bandwidthDown: 10 Gibits # does not apply to clients (for now)
-        latency:
-         uniform: true
-         replicas: 10000 us
-         clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 32
-        blockSize: 400
-        replySize: 0
-      client:
-        clients: 16
-        numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
-  - 64rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 1000 us
-        duration: 30 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gibits # does not apply to clients (for now)
-        bandwidthDown: 10 Gibits # does not apply to clients (for now)
-        latency:
-         uniform: true
-         replicas: 10000 us
-         clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 64
-        blockSize: 400
-        replySize: 0
-      client:
-        clients: 16
-        numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
-  - 128rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 1000 us
-        duration: 30 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gibits # does not apply to clients (for now)
-        bandwidthDown: 10 Gibits # does not apply to clients (for now)
-        latency:
-         uniform: true
-         replicas: 10000 us
-         clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 128
-        blockSize: 400
-        replySize: 0
-      client:
-        clients: 16
-        numberOfHosts: 2
-        outStandingPerClient: 100
-        requestSize: 0
+  - name: 4rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 1000 us
+      duration: 30 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibits # does not apply to clients (for now)
+      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      latency:
+       uniform: true
+       replicas: 10000 us
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 4
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 2
+      numberOfHosts: 2
+      outStandingPerClient: 800
+      requestSize: 0
+  - name: 8rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 1000 us
+      duration: 30 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibits # does not apply to clients (for now)
+      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      latency:
+       uniform: true
+       replicas: 10000 us
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 8
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 2
+      numberOfHosts: 2
+      outStandingPerClient: 800
+      requestSize: 0
+  - name: 16rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 1000 us
+      duration: 30 s
+      parallelism: 16
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        metric: 'tps'
+        label: 16
+      - name: latencyDemo
+        metric: 'latency'
+        label: 16
+    network:
+      bandwidthUp: 10 Gibits # does not apply to clients (for now)
+      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      latency:
+       uniform: true
+       replicas: 10000 us
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 16
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 100
+      requestSize: 0
+  - name: 32rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 1000 us
+      duration:  30 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibits # does not apply to clients (for now)
+      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      latency:
+       uniform: true
+       replicas: 10000 us
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 32
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 100
+      requestSize: 0
+  - name: 64rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 1000 us
+      duration: 30 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibits # does not apply to clients (for now)
+      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      latency:
+       uniform: true
+       replicas: 10000 us
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 64
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 100
+      requestSize: 0
+  - name: 128rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 1000 us
+      duration: 30 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibits # does not apply to clients (for now)
+      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      latency:
+       uniform: true
+       replicas: 10000 us
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 128
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 100
+      requestSize: 0

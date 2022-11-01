@@ -294,10 +294,67 @@ async function configure(replicaSettings, clientSettings, log) {
   return replicaIPs
 }
 
+async function getStats(experimentId, log) {
+  let clientFile = await fs.readFile(
+    path.join(
+      path.join(process.env.BFTSMART_EXPERIMENTS_OUTPUT_DIR, experimentId),
+      path.join(
+        `hosts/${process.env.BFTSMART_CLIENT_HOST_PREFIX}0/${process.env.BFTSMART_CLIENT_HOST_PREFIX}0.java.1000.stdout`,
+      ),
+    ),
+  )
+  let replicaFile = await fs.readFile(
+    path.join(
+      path.join(process.env.BFTSMART_EXPERIMENTS_OUTPUT_DIR, experimentId),
+      path.join(
+        `hosts/${process.env.BFTSMART_REPLICA_HOST_PREFIX}0/${process.env.BFTSMART_REPLICA_HOST_PREFIX}0.java.1000.stdout`,
+      ),
+    ),
+  )
+  let clientFileLines = clientFile.toString().split('\n')
+  let replicaFileLines = replicaFile.toString().split('\n')
+  let TPSEntries = []
+  let maxThroughput = -1
+  let avgThroughput = -1
+  replicaFileLines.forEach((line) => {
+    if (line.includes('Throughput =')) {
+      let tps = parseFloat(line.split('= ')[1].split(' operations/sec')[0])
+      maxThroughput = maxThroughput < tps ? tps : maxThroughput
+      TPSEntries.push(tps)
+    }
+  })
+  if (TPSEntries.length > 2) {
+    for (let i = 1; i < TPSEntries.length - 1; i++) {
+      avgThroughput += TPSEntries[i] / TPSEntries.length - 2
+    }
+  }
+  let latency = -1
+  let avgLatNoOutlier = -1
+  clientFileLines.forEach((line) => {
+    if (line.includes('executions (-10%)') && avgLatNoOutlier == -1) {
+      avgLatNoOutlier = parseFloat(
+        line.split('executions (-10%) = ')[1].split(' us')[0],
+      )
+    }
+    if (line.includes('executions (all samples)') && latency == -1) {
+      latency = parseFloat(
+        line.split('executions (all samples) = ')[1].split(' us')[0],
+      )
+    }
+  })
+  return {
+    maxThroughput: maxThroughput,
+    avgThroughput: avgThroughput,
+    latencyAll: latency,
+    latencyOutlierRemoved: avgLatNoOutlier,
+  }
+}
+
 module.exports = {
   build,
   configure,
   getProcessName,
+  getStats,
   getExecutionDir,
   getExperimentsOutputDirectory,
 }
