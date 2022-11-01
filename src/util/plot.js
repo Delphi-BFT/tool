@@ -10,8 +10,8 @@ const renderer = new ChartJSNodeCanvas({
 const plotsMap = new Map()
 
 async function createPlots(plots) {
-  for (const [plotId, plotObj] of Object.entries(plots)) {
-    plotsMap[plotId] = {
+  for (const plotObj of plots) {
+    plotsMap[plotObj.name] = {
       type: 'line',
       options: {
         plugins: {
@@ -39,22 +39,17 @@ async function createPlots(plots) {
         datasets: [],
       },
     }
-    for (const [shadowDatasetId, shadowDatasetObj] of Object.entries(
-      plotObj.shadowDatasets,
-    )) {
-      plotsMap[plotId].data.datasets.push({
-        label: shadowDatasetId,
+    for (const datasetObj of plotObj.shadowDatasets) {
+      plotsMap[plotObj.name].data.datasets.push({
+        label: datasetObj.name,
         data: [],
-        ...shadowDatasetObj.style,
+        ...datasetObj.style,
       })
     }
     if (plotObj.predefinedDatasets) {
-      for (const [predefinedDatasetId, predefinedDatasetObj] of Object.entries(
-        plotObj.predefinedDatasets,
-      )) {
-        console.log(predefinedDatasetObj)
-        plotsMap[plotId].data.datasets.push({
-          label: predefinedDatasetId,
+      for (const predefinedDatasetObj of plotObj.predefinedDatasets) {
+        plotsMap[plotObj.name].data.datasets.push({
+          label: predefinedDatasetObj.name,
           ...predefinedDatasetObj.style,
           data: predefinedDatasetObj.values,
         })
@@ -64,11 +59,13 @@ async function createPlots(plots) {
 }
 
 async function pushValue(plotId, datasetId, label, value) {
+  console.log(JSON.stringify(plotsMap))
   for (let dataset of plotsMap[plotId].data.datasets) {
     if (dataset.label == datasetId) {
       dataset.data.push({ x: String(label), y: value })
       continue
     }
+    console.log(`${dataset.label} != ${datasetId}`)
   }
 }
 async function generatePlots(experimentsPath) {

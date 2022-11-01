@@ -1,32 +1,32 @@
 protocolName: themis
 experiments:
-  - 4rep: # this will be passed to as data_dir value in shadow.yaml
-      misc:
-        runahead: 630 us
-        duration: 45 s
-        parallelism: 6
-        useShortestPath: false
-      network:
-        bandwidthUp: 10 Gibit # does not apply to clients (for now)
-        bandwidthDown: 10 Gibit # does not apply to clients (for now)
-        latency:
-          uniform: true
-          replicas: 10000 us
-          clients: 1000 us
-        packetLoss: 0.0
-      replica: # should be validated by connectors (currently not done, they are passed as-is)
-        replicas: 4
-        minBatchSize: 400
-        maxBatchSize: 400
-        replySize: 0
-        batchReplies: true
-        timeout:
-          secs: 0
-          nano: 50_000_000
-      client:
-        numberOfHosts: 1
-        clients: 16
-        payload: 0
-        startTime: 5 s
-        concurrent: 100
-        duration: 43 # WATCH OUT FOR THIS VALUE (for now)
+  - name: 4rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 45 s
+      parallelism: 6
+      useShortestPath: false
+    network:
+      bandwidthUp: 10 Gibit # does not apply to clients (for now)
+      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      latency:
+        uniform: true
+        replicas: 10000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 4
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 0
+      batchReplies: true
+      timeout:
+        secs: 0
+        nano: 50_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 0
+      startTime: 5 s
+      concurrent: 100
+      duration: 43 # WATCH OUT FOR THIS VALUE (for now)

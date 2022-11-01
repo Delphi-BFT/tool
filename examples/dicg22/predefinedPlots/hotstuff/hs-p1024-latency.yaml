@@ -1,4 +1,4 @@
-HotStuff-p1024:
+- name: HotStuff-p1024
   values:
     - x: '4'
       y: '20'

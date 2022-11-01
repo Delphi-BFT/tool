@@ -1,140 +1,140 @@
 protocolName: bftsmart
 protocolConnectorPath: ./connectors/bftsmart.js
 experiments:
-  - 4replicasAWSOregon:
-      misc:
-        duration: 1200 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 1 Gbit
-        bandwidthDown: 1 Gbit
-        latency:
-          uniform: false
-          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
-          clients: ['us-west-1': 1]
-        packetLoss: 0.0
-      replica:
-        replicas: 4
-        blockSize: 100
-        replicaInterval: 100
-        replySize: 0
-        stateSize: 0
-        context: false
-        replicaSig: nosig
-        bft: true
-        timeout: 2000
-      client:
-        numberOfHosts: 1
-        threadsPerClient: 1
-        opPerClient: 2000
-        requestSize: 0
-        clientInterval: 0
-        readOnly: false
-        verbose: true
-        startTime: 30 s
-        clientSig: nosig
-        invokeOrderedTimeout: 40
-  - 4replicasAWSIreland:
-      misc:
-        duration: 1200 s 
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 1 Gbit
-        bandwidthDown: 1 Gbit
-        latency:
-          uniform: false
-          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
-          clients: ['eu-west-1': 1]
-        packetLoss: 0.0
-      replica:
-        replicas: 4
-        blockSize: 100
-        replicaInterval: 100
-        replySize: 0
-        stateSize: 0
-        context: false
-        replicaSig: nosig
-        bft: true
-        timeout: 2000
-      client:
-        numberOfHosts: 1
-        clients: 1
-        threadsPerClient: 1
-        opPerClient: 2000
-        requestSize: 0
-        clientInterval: 0
-        readOnly: false
-        startTime: 30 s
-        verbose: true
-        clientSig: nosig
-        invokeOrderedTimeout: 40
-  - 4replicasAWSSao:
-      misc:
-        duration: 1200 s 
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 1 Gbit
-        bandwidthDown: 1 Gbit
-        latency:
-          uniform: false
-          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
-          clients: ['sa-east-1': 1]
-        packetLoss: 0.0
-      replica:
-        replicas: 4
-        blockSize: 100
-        replicaInterval: 100
-        replySize: 0
-        stateSize: 0
-        context: false
-        replicaSig: nosig
-        bft: true
-        timeout: 2000
-      client:
-        numberOfHosts: 1
-        threadsPerClient: 1
-        opPerClient: 2000
-        requestSize: 0
-        clientInterval: 0
-        readOnly: false
-        verbose: true
-        startTime: 30 s
-        clientSig: nosig
-        invokeOrderedTimeout: 40
-  - 4replicasAWSSydney:
-      misc:
-        duration: 1200 s
-        parallelism: 16
-        useShortestPath: false
-      network:
-        bandwidthUp: 1 Gbit
-        bandwidthDown: 1 Gbit
-        latency:
-          uniform: false
-          replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
-          clients: ['ap-southeast-2': 1]
-        packetLoss: 0.0
-      replica:
-        replicas: 4
-        blockSize: 100
-        replicaInterval: 100
-        replySize: 0
-        stateSize: 0
-        context: false
-        replicaSig: nosig
-        bft: true
-        timeout: 2000
-      client:
-        numberOfHosts: 1
-        threadsPerClient: 1
-        opPerClient: 2000
-        requestSize: 0
-        clientInterval: 0
-        readOnly: false
-        verbose: true
-        startTime: 30 s
-        clientSig: nosig
-        invokeOrderedTimeout: 40
+  - name: 4replicasAWSOregon
+    misc:
+      duration: 1200 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 1 Gbit
+      bandwidthDown: 1 Gbit
+      latency:
+        uniform: false
+        replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+        clients: ['us-west-1': 1]
+      packetLoss: 0.0
+    replica:
+      replicas: 4
+      blockSize: 100
+      replicaInterval: 100
+      replySize: 0
+      stateSize: 0
+      context: false
+      replicaSig: nosig
+      bft: true
+      timeout: 2000
+    client:
+      numberOfHosts: 1
+      threadsPerClient: 1
+      opPerClient: 2000
+      requestSize: 0
+      clientInterval: 0
+      readOnly: false
+      verbose: true
+      startTime: 30 s
+      clientSig: nosig
+      invokeOrderedTimeout: 40
+  - name: 4replicasAWSIreland
+    misc:
+      duration: 1200 s 
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 1 Gbit
+      bandwidthDown: 1 Gbit
+      latency:
+        uniform: false
+        replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+        clients: ['eu-west-1': 1]
+      packetLoss: 0.0
+    replica:
+      replicas: 4
+      blockSize: 100
+      replicaInterval: 100
+      replySize: 0
+      stateSize: 0
+      context: false
+      replicaSig: nosig
+      bft: true
+      timeout: 2000
+    client:
+      numberOfHosts: 1
+      clients: 1
+      threadsPerClient: 1
+      opPerClient: 2000
+      requestSize: 0
+      clientInterval: 0
+      readOnly: false
+      startTime: 30 s
+      verbose: true
+      clientSig: nosig
+      invokeOrderedTimeout: 40
+  - name: 4replicasAWSSao
+    misc:
+      duration: 1200 s 
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 1 Gbit
+      bandwidthDown: 1 Gbit
+      latency:
+        uniform: false
+        replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+        clients: ['sa-east-1': 1]
+      packetLoss: 0.0
+    replica:
+      replicas: 4
+      blockSize: 100
+      replicaInterval: 100
+      replySize: 0
+      stateSize: 0
+      context: false
+      replicaSig: nosig
+      bft: true
+      timeout: 2000
+    client:
+      numberOfHosts: 1
+      threadsPerClient: 1
+      opPerClient: 2000
+      requestSize: 0
+      clientInterval: 0
+      readOnly: false
+      verbose: true
+      startTime: 30 s
+      clientSig: nosig
+      invokeOrderedTimeout: 40
+  - name: 4replicasAWSSydney
+    misc:
+      duration: 1200 s
+      parallelism: 16
+      useShortestPath: false
+    network:
+      bandwidthUp: 1 Gbit
+      bandwidthDown: 1 Gbit
+      latency:
+        uniform: false
+        replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
+        clients: ['ap-southeast-2': 1]
+      packetLoss: 0.0
+    replica:
+      replicas: 4
+      blockSize: 100
+      replicaInterval: 100
+      replySize: 0
+      stateSize: 0
+      context: false
+      replicaSig: nosig
+      bft: true
+      timeout: 2000
+    client:
+      numberOfHosts: 1
+      threadsPerClient: 1
+      opPerClient: 2000
+      requestSize: 0
+      clientInterval: 0
+      readOnly: false
+      verbose: true
+      startTime: 30 s
+      clientSig: nosig
+      invokeOrderedTimeout: 40
