@@ -205,6 +205,7 @@ async function getStats(experimentId, log) {
   // Average TPS
   let averageTPS = -1
   if (numArr.length > 2) {
+    averageTPS = 0
     for (let i = 1; i < numArr.length - 1; i++) averageTPS += numArr[i]
     averageTPS = averageTPS / (numArr.length - 2)
   }

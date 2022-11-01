@@ -230,33 +230,23 @@ async function getStats(experimentId, log) {
     path.join(
       path.join(process.env.THEMIS_EXPERIMENTS_OUTPUT_DIR, experimentId),
       path.join(
-        `hosts/${process.env.THEMIS_CLIENT_HOST_PREFIX}0/themisClient0.bench-client.1000.stdout`,
+        `hosts/${process.env.THEMIS_CLIENT_HOST_PREFIX}0/${THEMIS_CLIENT_HOST_PREFIX}0.bench-client.1000.stdout`,
       ),
     ),
   )
   let clientFileLines = clientFile.toString().split('\n')
   let RPSEntries = []
   let LAGEntries = []
-  for (line in clientFileLines) {
-    if (
-      clientFileLines[line].includes('RPS:') &&
-      !clientFileLines[line].includes('Total rps:')
-    ) {
-      let rps = parseFloat(
-        clientFileLines[line].split('RPS: ')[1].replace(/(\r\n|\n|\r)/gm, ''),
-      )
+  clientFileLines.forEach((line) => {
+    if (line.includes('RPS:') && !line.includes('Total rps:')) {
+      let rps = parseFloat(line.split('RPS: ')[1].replace(/(\r\n|\n|\r)/gm, ''))
       if (rps > 0) RPSEntries.push(rps)
     }
-    if (
-      clientFileLines[line].includes('LAG:') &&
-      !clientFileLines[line].includes('Total lag:')
-    ) {
-      let lag = parseFloat(
-        clientFileLines[line].split('LAG: ')[1].replace(/(\r\n|\n|\r)/gm, ''),
-      )
+    if (line.includes('LAG:') && !line.includes('Total lag:')) {
+      let lag = parseFloat(line.split('LAG: ')[1].replace(/(\r\n|\n|\r)/gm, ''))
       if (lag > 0) LAGEntries.push(lag)
     }
-  }
+  })
   let maxThroughput = math.max(RPSEntries)
   let avgThroughput = math.mean(RPSEntries)
   let avgLag = math.mean(LAGEntries)

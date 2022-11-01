@@ -4,8 +4,8 @@ experiments:
   - 4rep: # this will be passed to as data_dir value in shadow.yaml
       misc:
         runahead: 630 us
-        duration: 10 s
-        parallelism: 10
+        duration: 6 s
+        parallelism: 1
         useShortestPath: false
       network:
         bandwidthUp: 10 Gibit # does not apply to clients (for now)
@@ -26,7 +26,7 @@ experiments:
           nano: 10_000_000
       client:
         numberOfHosts: 1
-        clients: 16
+        clients: 4
         startTime: 2 s
         payload: 1024
         concurrent: 175

@@ -27,9 +27,9 @@ experiments:
         timeout: 2000
       client:
         numberOfHosts: 1
-        startTime: 60 s
+        startTime: 30 s
         threadsPerClient: 2
-        opPerClient: 10000
+        opPerClient: 1000
         requestSize: 4000
         clientInterval: 100
         readOnly: false
