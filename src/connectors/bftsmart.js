@@ -245,7 +245,7 @@ async function passArgs(replicaIPs, replicaSettings, clientSettings) {
           clientSettings.readOnly
         } ${
           !isNullOrEmpty(clientSettings.verbose) ? clientSettings.verbose : true
-        } ${clientSettings.clientSig} ${clientSettings.maxInFlight}`,
+        } ${clientSettings.clientSig}`,
         startTime: after(
           after('0 s', secondsAsString(replicaSettings.replicas)),
           clientSettings.startTime ? clientSettings.startTime : '0 s',
