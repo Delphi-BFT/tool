@@ -20,7 +20,7 @@ experiments:
       blockSize: 400
       replySize: 0
     client:
-      clients: 2
+      clients: 16
       numberOfHosts: 2
       outStandingPerClient: 800
       requestSize: 0
@@ -43,7 +43,7 @@ experiments:
       blockSize: 400
       replySize: 0
     client:
-      clients: 2
+      clients: 16
       numberOfHosts: 2
       outStandingPerClient: 800
       requestSize: 0
