@@ -1,4 +1,9 @@
 const fetch = require('node-fetch')
+const https = require('https')
+// Temporary fix for CloudPing SSL issue
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+})
 
 // cloudping daily averages api endpoint
 
@@ -9,7 +14,7 @@ async function getLatencies(log) {
 
   log.info('getting latencies from cloudping ...')
   try {
-    const response = await fetch(apiUrl, { method: 'GET' })
+    const response = await fetch(apiUrl, { method: 'GET', agent: httpsAgent })
     if (response.ok) {
       log.info('got ok response from cloudping!')
       const json = await response.json()
