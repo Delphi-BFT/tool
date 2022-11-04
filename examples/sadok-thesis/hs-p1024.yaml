@@ -31,8 +31,8 @@ experiments:
   - name: 4rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration: 3 s
-      parallelism: 8
+      duration: 5 s
+      parallelism: 16
       useShortestPath: false
     plots:
       - name: throughputDemo
@@ -64,7 +64,7 @@ experiments:
     misc:
       runahead: 1000 us
       duration: 5 s
-      parallelism: 8
+      parallelism: 16
       useShortestPath: false
     plots:
       - name: throughputDemo
