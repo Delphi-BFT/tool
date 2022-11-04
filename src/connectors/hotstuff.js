@@ -129,7 +129,7 @@ async function passArgs(
         hosts[i].procs.push({
           path: process.env.HOTSTUFF_CLIENT_BIN,
           env: '',
-          args: `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`,
+          args: `--cid ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`,
           startTime: clientStartTime,
         })
         log.debug(
@@ -152,7 +152,7 @@ async function passArgs(
     hosts[i].procs.push({
       path: process.env.HOTSTUFF_REPLICA_BIN,
       env: '',
-      args: `--conf ${conf}`,
+      args: `--pace-maker dummy --conf ${conf}`,
       startTime: 0,
     })
     log.debug(
