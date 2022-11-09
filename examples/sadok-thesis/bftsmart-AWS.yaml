@@ -7,8 +7,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 1 Gbit
-      bandwidthDown: 1 Gbit
+      replicaBandwidthUp: 1 Gbit
+      replicaBandwidthDown: 1 Gbit
+      clientBandwidthUp: 1 Gbit
+      clientBandwidthDown: 1 Gbit
       latency:
         uniform: false
         replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
@@ -41,8 +43,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 1 Gbit
-      bandwidthDown: 1 Gbit
+      replicaBandwidthUp: 1 Gbit
+      replicaBandwidthDown: 1 Gbit
+      clientBandwidthUp: 1 Gbit
+      clientBandwidthDown: 1 Gbit
       latency:
         uniform: false
         replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
@@ -76,8 +80,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 1 Gbit
-      bandwidthDown: 1 Gbit
+      replicaBandwidthUp: 1 Gbit
+      replicaBandwidthDown: 1 Gbit
+      clientBandwidthUp: 1 Gbit
+      clientBandwidthDown: 1 Gbit
       latency:
         uniform: false
         replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
@@ -110,8 +116,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 1 Gbit
-      bandwidthDown: 1 Gbit
+      replicaBandwidthUp: 1 Gbit
+      replicaBandwidthDown: 1 Gbit
+      clientBandwidthUp: 1 Gbit
+      clientBandwidthDown: 1 Gbit
       latency:
         uniform: false
         replicas: ['us-west-1': 1, 'eu-west-1': 1, 'sa-east-1':1, 'ap-southeast-2':1]
