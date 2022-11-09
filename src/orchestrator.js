@@ -116,7 +116,7 @@ async function main() {
         logger,
       )
       if (EDO.fault) {
-        if (EDO.type == 'crash')
+        if (EDO.fault.type == 'crash')
           await crashFault.crash(
             replicaSettings.replicas,
             hosts,
