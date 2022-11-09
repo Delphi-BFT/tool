@@ -15,6 +15,7 @@ const {
 const { performance } = require('perf_hooks')
 const { promisified_spawn } = require('./util/exec')
 const { isNullOrEmpty } = require('./util/helpers')
+const crashFault = require('./faults/crash')
 
 async function getStats(protocol, experimentId, log) {
   if (protocol.getStats) return protocol.getStats(experimentId, log)
@@ -112,6 +113,13 @@ async function main() {
         protocol,
         replicaSettings,
         clientSettings,
+        logger,
+      )
+      await crashFault.crash(
+        replicaSettings.replicas,
+        hosts,
+        EDO.fault.threshold,
+        EDO.fault.timestamp,
         logger,
       )
       shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)

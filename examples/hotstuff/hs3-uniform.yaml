@@ -8,10 +8,10 @@ experiments:
         parallelism: 8
         useShortestPath: false
       network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
+        replicaBandwidthUp: 10 Gibits
+        replicaBandwidthDown: 10 Gibits
+        clientBandwidthUp: 10 Gibits
+        clientBandwidthDown: 10 Gibits
         latency:
           uniform: true
           replicas: 10000 us
@@ -27,3 +27,7 @@ experiments:
         startTime: 0 s
         outStandingPerClient: 1400
         requestSize: 128
+      fault:
+        type: crash
+        threshold: 0.33
+        timestamp: 5 s

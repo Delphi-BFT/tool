@@ -354,12 +354,14 @@ let makeConfigTemplate = async (shadowTemplate, fullPathgml, dir, misc) => {
 let makeHost = (res, name, ip, network_node_id, procs) => {
   let processes = []
   for (let i = 0; i < procs.length; i++) {
-    processes.push({
+    let procsObj = {
       path: procs[i].path,
       environment: procs[i].env,
       args: procs[i].args,
       start_time: procs[i].startTime,
-    })
+    }
+    if (procs[i].stopTime) procsObj['stop_time'] = procs[i].stopTime
+    processes.push(procsObj)
   }
   res.hosts[name] = {
     ip_addr: ip,
