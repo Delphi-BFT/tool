@@ -8,8 +8,10 @@ experiments:
       runahead: 630 us
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gbit
-      bandwidthDown: 10 Gbit
+      replicaBandwidthUp: 10 Gbit
+      replicaBandwidthDown: 10 Gbit
+      clientBandwidthUp: 10 Gbit
+      clientBandwidthDown: 10 Gbit
       latency:
         uniform: true
         replicas: 10000 us

@@ -126,8 +126,8 @@ async function createConfigFile(replicaSettings, log) {
     },
     batch: {
       timeout: {
-        secs: Number(replicaSettings.timeout.secs),
-        nanos: Number(replicaSettings.timeout.nano),
+        secs: Number(replicaSettings.batchTimeout.secs),
+        nanos: Number(replicaSettings.batchTimeout.nano),
       },
       min: Number(replicaSettings.minBatchSize),
       max: Number(replicaSettings.maxBatchSize),
@@ -165,6 +165,8 @@ async function createConfigFile(replicaSettings, log) {
     await fs.readFile('./src/connectors/assets/themis/pbft.toml'),
   )
   pbft.pbft.nfaults = Math.floor((replicaSettings.replicas - 1) / 3)
+  if (replicaSettings.requestTimeout)
+    pbft.pbft.request_timeout = replicaSettings.requestTimeout
   let configString = TOML.stringify(config)
   let pbftString = TOML.stringify(pbft)
   /* Execution Dir??? */

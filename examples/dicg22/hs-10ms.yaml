@@ -8,8 +8,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 10000 us
@@ -31,8 +33,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 10000 us
@@ -61,8 +65,10 @@ experiments:
         metric: 'latency'
         label: 16
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 10000 us
@@ -84,8 +90,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 10000 us
@@ -107,8 +115,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 10000 us
@@ -130,8 +140,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 10000 us

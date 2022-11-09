@@ -1,4 +1,5 @@
 protocolName: themis
+protocolConnectorPath: ./connectors/themis.js
 experiments:
   - name: 4rep # this will be passed to as data_dir value in shadow.yaml
     misc:
@@ -7,8 +8,10 @@ experiments:
       parallelism: 6
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 100 Gibits
+      clientBandwidthDown: 100 Gibits
       latency:
         uniform: true
         replicas: 10000 us
@@ -20,9 +23,9 @@ experiments:
       maxBatchSize: 400
       replySize: 0
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
-        nano: 50_000_000
+        nano: 100_000_000
     client:
       numberOfHosts: 1
       clients: 16

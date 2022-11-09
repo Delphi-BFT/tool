@@ -31,7 +31,7 @@ function parseEDF(EDF) {
       isNullOrEmpty(EDO.network.latency.replicas)
     )
       throw Error(
-        `please inter-replica latency and client-replica latency for ${experimentId}`,
+        `please specify inter-replica latency and client-replica latency for ${experimentId}`,
       )
     if (isNullOrEmpty(EDO.replica.replicas)) {
       throw Error(`number of replicas for ${experimentId} was not defined`)
@@ -152,8 +152,10 @@ let createGraph = (
 /* Author : Christian Berger */
 let createGraphSimple = (
   hosts,
-  bandwidth_up,
-  bandwidth_down,
+  replicaBwUp,
+  replicaBwDown,
+  clientBwUp,
+  clientBwDown,
   replicaDelay,
   clientDelay,
   packet_loss,
@@ -166,11 +168,11 @@ let createGraphSimple = (
   for (let i = 0; i < hosts.length; i++) {
     // Init all hosts
     if (!hosts[i].isClient) {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(replicaBwUp)
+      host_bandwidth_down.push(replicaBwDown)
     } else {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(clientBwUp)
+      host_bandwidth_down.push(clientBwDown)
     }
 
     latencies.push([])
@@ -251,8 +253,10 @@ async function makeAWSGraph(
   replicasIPs,
   replicaLatencies,
   clientLatencies,
-  bandwidth_up,
-  bandwidth_down,
+  replicaBwUp,
+  replicaBwDown,
+  clientBwUp,
+  clientBwDown,
   packet_loss,
   log,
 ) {
@@ -281,11 +285,11 @@ async function makeAWSGraph(
     latencies.push([])
     packet_losses.push([])
     if (!replicasIPs[i].isClient) {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(replicaBwUp)
+      host_bandwidth_down.push(replicaBwDown)
     } else {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(clientBwUp)
+      host_bandwidth_down.push(clientBwDown)
     }
     for (let j = 0; j < replicasIPs.length; j++) {
       if (i == j) {
@@ -350,12 +354,14 @@ let makeConfigTemplate = async (shadowTemplate, fullPathgml, dir, misc) => {
 let makeHost = (res, name, ip, network_node_id, procs) => {
   let processes = []
   for (let i = 0; i < procs.length; i++) {
-    processes.push({
+    let procsObj = {
       path: procs[i].path,
       environment: procs[i].env,
       args: procs[i].args,
       start_time: procs[i].startTime,
-    })
+    }
+    if (procs[i].stopTime) procsObj['stop_time'] = procs[i].stopTime
+    processes.push(procsObj)
   }
   res.hosts[name] = {
     ip_addr: ip,
@@ -372,8 +378,10 @@ async function exportPNS(hosts, networkObj, PNSPath, log) {
   if (networkObj.latency.uniform)
     PNS = createGraphSimple(
       hosts,
-      networkObj.bandwidthUp,
-      networkObj.bandwidthDown,
+      networkObj.replicaBandwidthUp,
+      networkObj.replicaBandwidthDown,
+      networkObj.clientBandwidthUp,
+      networkObj.clientBandwidthDown,
       networkObj.latency.replicas,
       networkObj.latency.clients,
       parseFloat(networkObj.packetLoss).toFixed(1),
@@ -383,8 +391,10 @@ async function exportPNS(hosts, networkObj, PNSPath, log) {
       hosts,
       networkObj.latency.replicas,
       networkObj.latency.clients,
-      networkObj.bandwidthUp,
-      networkObj.bandwidthDown,
+      networkObj.replicaBandwidthUp,
+      networkObj.replicaBandwidthDown,
+      networkObj.clientBandwidthUp,
+      networkObj.clientBandwidthDown,
       parseFloat(networkObj.packetLoss).toFixed(1.0),
       log,
     )

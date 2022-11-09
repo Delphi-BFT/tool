@@ -8,8 +8,10 @@ experiments:
       parallelism: 20
       useShortestPath: false
     network:
-      bandwidthUp: 100 Mibit
-      bandwidthDown: 100 Mibit
+      replicaBandwidthUp: 100 Mibit
+      replicaBandwidthDown: 100 Mibit
+      clientBandwidthUp: 10 Gibit
+      clientBandwidthDown: 10 Gibit
       latency:
         uniform: false
         replicas: ['us-west-1': 1, 'ap-southeast-2': 1, 'eu-central-1': 1, 'af-south-1': 1]
