@@ -22,7 +22,7 @@ experiments:
     client:
       clients: 16
       numberOfHosts: 2
-      outStandingPerClient: 800
+      outStandingPerClient: 100
       requestSize: 0
   - name: 8rep # this will be passed to as data_dir value in shadow.yaml
     misc:
@@ -45,7 +45,7 @@ experiments:
     client:
       clients: 16
       numberOfHosts: 2
-      outStandingPerClient: 800
+      outStandingPerClient: 100
       requestSize: 0
   - name: 16rep # this will be passed to as data_dir value in shadow.yaml
     misc:

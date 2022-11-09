@@ -132,7 +132,7 @@ async function passArgs(hosts, replicaSettings, clientSettings, log) {
         hosts[i].procs.push({
           path: process.env.HOTSTUFF_CLIENT_BIN,
           env: '',
-          args: `--idx ${clientIndex} --iter -1 --max-async ${clientSettings.outStandingPerClient}`,
+          args: `--cid ${clientIndex} --iter -1 --max-async ${clientSettings.outStandingPerClient}`,
           startTime: clientSettings.startTime
             ? clientSettings.startTime
             : '0 s',

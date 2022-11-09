@@ -1,0 +1,18 @@
+- name: HotStuff-l10-lat
+  values:
+    - x: '4'
+      y: '84.087'
+    - x: '8'
+      y: '85.657'
+    - x: '16'
+      y: '86.480'
+    - x: '32'
+      y: '88.348'
+    - x: '64'
+      y: '92.289'
+    - x: '128'
+      y: '105.767'
+  style:
+    pointStyle: star
+    pointBorderColor: '#8e5ea2'
+    borderColor: '#8e5ea2'

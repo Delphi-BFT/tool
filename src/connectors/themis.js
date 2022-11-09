@@ -129,8 +129,8 @@ async function createConfigFile(replicaSettings, log) {
         secs: Number(replicaSettings.batchTimeout.secs),
         nanos: Number(replicaSettings.batchTimeout.nano),
       },
-      nmin: Number(replicaSettings.minBatchSize),
-      nmax: Number(replicaSettings.maxBatchSize),
+      min: Number(replicaSettings.minBatchSize),
+      max: Number(replicaSettings.maxBatchSize),
     },
   }
 
