@@ -26,10 +26,10 @@ plots:
           pointBorderColor: '#c45850'
           borderColor: '#c45850'
 experiments:
-  #  - name: 21rep # this will be passed to as data_dir value in shadow.yaml
+  #  - name: Uniform-10Gibit-UntrottledClients-00-100Out
   #    misc:
-  #      runahead: 1000 us
-  #      duration: 1000 s
+  #      runahead: 630 us
+  #      duration: 7 s
   #      parallelism: 34
   #      useShortestPath: false
   #    plots:
@@ -42,11 +42,171 @@ experiments:
   #        metric: latency
   #        label: 4
   #    network:
-  #      bandwidthUp: 200 Mbits # does not apply to clients (for now)
-  #      bandwidthDown: 200 Mbits # does not apply to clients (for now)
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 10 Gibit
   #      latency:
-  #       uniform: false
-  #       replicas: ['us-east-1': 2, 'us-east-2': 2,'us-west-1': 2, 'us-west-2': 2,'af-south-1': 2, 'ap-east-1': 2,'eu-west-1': 2, 'ap-south-1': 2,'ap-northeast-3': 2, 'ap-northeast-2': 2,'ap-northeast-1': 1] 
+  #       uniform: true
+  #       replicas: 1000 us
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 0
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 100
+  #      requestSize: 0
+  #  - name: Uniform-10Gibit-UntrottledClients-00-125Out
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 7 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 4
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 4
+  #    network:
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 10 Gibit
+  #      latency:
+  #       uniform: true
+  #       replicas: 1000 us
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 0
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 125
+  #      requestSize: 0
+  #  - name: Uniform-10Gbit-UntrottledClients-00-125Out
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 7 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 4
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 4
+  #    network:
+  #      bandwidthUp: 10 Gbit
+  #      bandwidthDown: 10 Gbit
+  #      latency:
+  #       uniform: true
+  #       replicas: 1000 us
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 0
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 125
+  #      requestSize: 0
+  #  - name: Uniform-200Mbit-UntrottledClients-00-125Out
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 7 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 4
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 4
+  #    network:
+  #      bandwidthUp: 200 Mbit
+  #      bandwidthDown: 200 Mbit
+  #      latency:
+  #       uniform: true
+  #       replicas: 1000 us
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 0
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 125
+  #      requestSize: 0
+  #  - name: Uniform-10Gibit200Mbit-UntrottledClients-00-125Out
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 7 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 4
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 4
+  #    network:
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 200 Mbit
+  #      latency:
+  #       uniform: true
+  #       replicas: 1000 us
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 0
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 125
+  #      requestSize: 0
+  #  - name: Uniform-10Gibit-UntrottledClients-00-100Out-1024
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 7 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 4
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 4
+  #    network:
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 10 Gibit
+  #      latency:
+  #       uniform: true
+  #       replicas: 1000 us
   #       clients: 1000 us
   #      packetLoss: 0.0
   #    replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -58,10 +218,10 @@ experiments:
   #      numberOfHosts: 2
   #      outStandingPerClient: 100
   #      requestSize: 1024
-  #  - name: 21replight # this will be passed to as data_dir value in shadow.yaml
+  #  - name: Uniform-10Gibit-UntrottledClients-00-125Out-1024
   #    misc:
-  #      runahead: 1000 us
-  #      duration: 1000 s
+  #      runahead: 630 us
+  #      duration: 7 s
   #      parallelism: 34
   #      useShortestPath: false
   #    plots:
@@ -74,43 +234,11 @@ experiments:
   #        metric: latency
   #        label: 4
   #    network:
-  #      bandwidthUp: 200 Mbits # does not apply to clients (for now)
-  #      bandwidthDown: 200 Mbits # does not apply to clients (for now)
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 10 Gibit
   #      latency:
-  #       uniform: false
-  #       replicas: ['us-east-1': 2, 'us-east-2': 2,'us-west-1': 2, 'us-west-2': 2,'af-south-1': 2, 'ap-east-1': 2,'eu-west-1': 2, 'ap-south-1': 2,'ap-northeast-3': 2, 'ap-northeast-2': 2,'ap-northeast-1': 1] 
-  #       clients: 1000 us
-  #      packetLoss: 0.0
-  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
-  #      replicas: 21
-  #      blockSize: 400
-  #      replySize: 1024
-  #    client:
-  #      clients: 16
-  #      numberOfHosts: 2
-  #      outStandingPerClient: 75
-  #      requestSize: 1024
-  #  - name: 21repheavy # this will be passed to as data_dir value in shadow.yaml
-  #    misc:
-  #      runahead: 1000 us
-  #      duration: 1000 s
-  #      parallelism: 34
-  #      useShortestPath: false
-  #    plots:
-  #      - name: throughputDemo
-  #        datasetId: Shadow-HotStuff-p1024
-  #        metric: tps
-  #        label: 4
-  #      - name: latencyDemo
-  #        datasetId: Shadow-HotStuff-p1024
-  #        metric: latency
-  #        label: 4
-  #    network:
-  #      bandwidthUp: 200 Mbits # does not apply to clients (for now)
-  #      bandwidthDown: 200 Mbits # does not apply to clients (for now)
-  #      latency:
-  #       uniform: false
-  #       replicas: ['us-east-1': 2, 'us-east-2': 2,'us-west-1': 2, 'us-west-2': 2,'af-south-1': 2, 'ap-east-1': 2,'eu-west-1': 2, 'ap-south-1': 2,'ap-northeast-3': 2, 'ap-northeast-2': 2,'ap-northeast-1': 1] 
+  #       uniform: true
+  #       replicas: 1000 us
   #       clients: 1000 us
   #      packetLoss: 0.0
   #    replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -122,10 +250,10 @@ experiments:
   #      numberOfHosts: 2
   #      outStandingPerClient: 125
   #      requestSize: 1024
-  #  - name: 21rep10gib # this will be passed to as data_dir value in shadow.yaml
+  #  - name: Uniform-10Gbit-UntrottledClients-00-125Out-1024
   #    misc:
-  #      runahead: 1000 us
-  #      duration: 1000 s
+  #      runahead: 630 us
+  #      duration: 7 s
   #      parallelism: 34
   #      useShortestPath: false
   #    plots:
@@ -138,11 +266,11 @@ experiments:
   #        metric: latency
   #        label: 4
   #    network:
-  #      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-  #      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+  #      bandwidthUp: 10 Gbit
+  #      bandwidthDown: 10 Gbit
   #      latency:
-  #       uniform: false
-  #       replicas: ['us-east-1': 2, 'us-east-2': 2,'us-west-1': 2, 'us-west-2': 2,'af-south-1': 2, 'ap-east-1': 2,'eu-west-1': 2, 'ap-south-1': 2,'ap-northeast-3': 2, 'ap-northeast-2': 2,'ap-northeast-1': 1] 
+  #       uniform: true
+  #       replicas: 1000 us
   #       clients: 1000 us
   #      packetLoss: 0.0
   #    replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -154,10 +282,10 @@ experiments:
   #      numberOfHosts: 2
   #      outStandingPerClient: 125
   #      requestSize: 1024
-  #  - name: 21rep150 # this will be passed to as data_dir value in shadow.yaml
+  #  - name: Uniform-200Mbit-UntrottledClients-00-125Out-1024
   #    misc:
-  #      runahead: 1000 us
-  #      duration: 1000 s
+  #      runahead: 630 us
+  #      duration: 7 s
   #      parallelism: 34
   #      useShortestPath: false
   #    plots:
@@ -170,11 +298,11 @@ experiments:
   #        metric: latency
   #        label: 4
   #    network:
-  #      bandwidthUp: 200 Mbits # does not apply to clients (for now)
-  #      bandwidthDown: 200 Mbits # does not apply to clients (for now)
+  #      bandwidthUp: 200 Mbit
+  #      bandwidthDown: 200 Mbit
   #      latency:
-  #       uniform: false
-  #       replicas: ['us-east-1': 2, 'us-east-2': 2,'us-west-1': 2, 'us-west-2': 2,'af-south-1': 2, 'ap-east-1': 2,'eu-west-1': 2, 'ap-south-1': 2,'ap-northeast-3': 2, 'ap-northeast-2': 2,'ap-northeast-1': 1] 
+  #       uniform: true
+  #       replicas: 1000 us
   #       clients: 1000 us
   #      packetLoss: 0.0
   #    replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -184,12 +312,12 @@ experiments:
   #    client:
   #      clients: 16
   #      numberOfHosts: 2
-  #      outStandingPerClient: 150
+  #      outStandingPerClient: 125
   #      requestSize: 1024
-  #  - name: 21rep17510gibit # this will be passed to as data_dir value in shadow.yaml
+  #  - name: Uniform-10Gibit200Mbit-UntrottledClients-00-125Out-1024
   #    misc:
-  #      runahead: 1000 us
-  #      duration: 1000 s
+  #      runahead: 630 us
+  #      duration: 7 s
   #      parallelism: 34
   #      useShortestPath: false
   #    plots:
@@ -202,11 +330,11 @@ experiments:
   #        metric: latency
   #        label: 4
   #    network:
-  #      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-  #      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 200 Mbit
   #      latency:
-  #       uniform: false
-  #       replicas: ['us-east-1': 2, 'us-east-2': 2,'us-west-1': 2, 'us-west-2': 2,'af-south-1': 2, 'ap-east-1': 2,'eu-west-1': 2, 'ap-south-1': 2,'ap-northeast-3': 2, 'ap-northeast-2': 2,'ap-northeast-1': 1] 
+  #       uniform: true
+  #       replicas: 1000 us
   #       clients: 1000 us
   #      packetLoss: 0.0
   #    replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -216,64 +344,12 @@ experiments:
   #    client:
   #      clients: 16
   #      numberOfHosts: 2
-  #      outStandingPerClient: 175
+  #      outStandingPerClient: 125
   #      requestSize: 1024
-  #  - name: 21rep17510gibiallin # this will be passed to as data_dir value in shadow.yaml
-  #    misc:
-  #      runahead: 1000 us
-  #      duration: 600 s
-  #      parallelism: 34
-  #      useShortestPath: false
-  #    plots:
-  #      - name: throughputDemo
-  #        datasetId: Shadow-HotStuff-p1024
-  #        metric: tps
-  #        label: 4
-  #      - name: latencyDemo
-  #        datasetId: Shadow-HotStuff-p1024
-  #        metric: latency
-  #        label: 4
-  #    network:
-  #      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-  #      bandwidthDown: 10 Gibits # does not apply to clients (for now)
-  #      latency:
-  #       uniform: false
-  #       replicas: [ 'eu-west-1': 1,
-  #    'eu-west-2': 1,
-  #    'eu-north-1': 1,
-  #    'ap-south-1': 1,
-  #    'eu-west-3': 1,
-  #    'eu-south-1': 1,
-  #    'af-south-1': 1,
-  #'ap-northeast-3': 1,
-  #    'ap-northeast-2': 1,
-  #    'me-south-1': 1,
-  #    'ap-northeast-1': 1,
-  #    'sa-east-1': 1,
-  #    'ca-central-1': 1,
-  #    'ap-east-1': 1,
-  #    'ap-southeast-1': 1,
-  #    'ap-southeast-2': 1,
-  #    'eu-central-1': 1,
-  #    'us-east-1': 1,
-  #    'us-east-2': 1,
-  #    'us-west-1': 1,
-  #    'us-west-2': 1]
-  #       clients: 1000 us
-  #      packetLoss: 0.0
-  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
-  #      replicas: 21
-  #      blockSize: 400
-  #      replySize: 1024
-  #    client:
-  #      clients: 16
-  #      numberOfHosts: 2
-  #      outStandingPerClient: 150
-  #      requestSize: 1024
-  - name: 21rep175200Mbitallin
+  - name: AWS-10Gibit-UnthrottledClient-125Out
     misc:
-      runahead: 1000 us
-      duration: 600 s
+      runahead: 630 us
+      duration: 60 s
       parallelism: 34
       useShortestPath: false
     plots:
@@ -286,8 +362,164 @@ experiments:
         metric: latency
         label: 4
     network:
-      bandwidthUp: 200 Mbits 
-      bandwidthDown: 200 Mbits 
+      bandwidthUp: 10 Gibit
+      bandwidthDown: 10 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'af-south-1': 1,
+'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 125
+      requestSize: 0
+  - name: AWS-10Gbit-UnthrottledClient-125Out
+    misc:
+      runahead: 630 us
+      duration: 60 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 4
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 4
+    network:
+      bandwidthUp: 10 Gbit
+      bandwidthDown: 10 Gbit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'af-south-1': 1,
+'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 125
+      requestSize: 0
+  - name: AWS-200Mbit-UnthrottledClient-125Out
+    misc:
+      runahead: 630 us
+      duration: 60 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 4
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 4
+    network:
+      bandwidthUp: 10 Gbit
+      bandwidthDown: 10 Gbit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'af-south-1': 1,
+'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 0
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 125
+      requestSize: 0
+  - name: AWS-10Gibit-UnthrottledClient-125Out-1024
+    misc:
+      runahead: 630 us
+      duration: 60 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 4
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 4
+    network:
+      bandwidthUp: 10 Gibit
+      bandwidthDown: 10 Gibit
       latency:
        uniform: false
        replicas: [ 'eu-west-1': 1,
@@ -320,5 +552,109 @@ experiments:
     client:
       clients: 16
       numberOfHosts: 2
-      outStandingPerClient: 150
+      outStandingPerClient: 125
+      requestSize: 1024
+  - name: AWS-10Gbit-UnthrottledClient-125Out-1024
+    misc:
+      runahead: 630 us
+      duration: 60 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 4
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 4
+    network:
+      bandwidthUp: 10 Gbit
+      bandwidthDown: 10 Gbit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'af-south-1': 1,
+'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 1024
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 125
+      requestSize: 1024
+  - name: AWS-200Mbit-UnthrottledClient-125Out-1024
+    misc:
+      runahead: 630 us
+      duration: 60 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 4
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 4
+    network:
+      bandwidthUp: 10 Gbit
+      bandwidthDown: 10 Gbit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'af-south-1': 1,
+'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 1024
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 125
       requestSize: 1024

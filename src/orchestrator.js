@@ -137,7 +137,7 @@ async function main() {
         )),
       ])
       if (protocol.getProcessName() == 'java') {
-        await promisified_spawn('killall java', {}, executionDir, logger)
+        await promisified_spawn('killall', ['java'], executionDir, logger)
       }
       let experimentEndTime = performance.now()
       let elapsedSeconds = (experimentEndTime - experimentStartTime) / 1000

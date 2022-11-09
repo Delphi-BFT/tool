@@ -1,10 +1,160 @@
 protocolName: themis
 protocolConnectorPath: ./connectors/themis.js
 experiments:
-  - name: 21rep150200Mbit # this will be passed to as data_dir value in shadow.yaml
+  #  - name: AWS-10Gibi-UnthrottledClients-125Conc-00
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 360 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    network:
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 10 Gibit 
+  #      latency:
+  #       uniform: false
+  #       replicas: [ 'eu-west-1': 1,
+  #            'eu-west-2': 1,
+  #            'eu-north-1': 1,
+  #            'ap-south-1': 1,
+  #            'eu-west-3': 1,
+  #            'eu-south-1': 1,
+  #            'af-south-1': 1,
+  #            'ap-northeast-3': 1,
+  #            'ap-northeast-2': 1,
+  #            'me-south-1': 1,
+  #            'ap-northeast-1': 1,
+  #            'sa-east-1': 1,
+  #            'ca-central-1': 1,
+  #            'ap-east-1': 1,
+  #            'ap-southeast-1': 1,
+  #            'ap-southeast-2': 1,
+  #            'eu-central-1': 1,
+  #            'us-east-1': 1,
+  #            'us-east-2': 1,
+  #            'us-west-1': 1,
+  #            'us-west-2': 1]
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:  
+  #      replicas: 21
+  #      minBatchSize: 400
+  #      maxBatchSize: 400
+  #      replySize: 0
+  #      batchReplies: true
+  #      timeout:
+  #        secs: 0
+  #        nano: 2_000_000_000
+  #    client:
+  #      numberOfHosts: 1
+  #      clients: 16
+  #      payload: 0
+  #      concurrent: 125
+  #      duration: 59999 
+  #      startTime: 30s
+  #  - name: AWS-200Mbits-UnthrottledClients-125Conc-00
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 360 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    network:
+  #      bandwidthUp: 200 Mbits 
+  #      bandwidthDown: 200 Mbits 
+  #      latency:
+  #       uniform: false
+  #       replicas: [ 'eu-west-1': 1,
+  #            'eu-west-2': 1,
+  #            'eu-north-1': 1,
+  #            'ap-south-1': 1,
+  #            'eu-west-3': 1,
+  #            'eu-south-1': 1,
+  #            'af-south-1': 1,
+  #            'ap-northeast-3': 1,
+  #            'ap-northeast-2': 1,
+  #            'me-south-1': 1,
+  #            'ap-northeast-1': 1,
+  #            'sa-east-1': 1,
+  #            'ca-central-1': 1,
+  #            'ap-east-1': 1,
+  #            'ap-southeast-1': 1,
+  #            'ap-southeast-2': 1,
+  #            'eu-central-1': 1,
+  #            'us-east-1': 1,
+  #            'us-east-2': 1,
+  #            'us-west-1': 1,
+  #            'us-west-2': 1]
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:  
+  #      replicas: 21
+  #      minBatchSize: 400
+  #      maxBatchSize: 400
+  #      replySize: 0
+  #      batchReplies: true
+  #      timeout:
+  #        secs: 0
+  #        nano: 2_000_000_000
+  #    client:
+  #      numberOfHosts: 1
+  #      clients: 16
+  #      payload: 0
+  #      concurrent: 125
+  #      duration: 59999 
+  #      startTime: 30 s
+  #  - name: AWS-10Gibi-UnthrottledClients-125Conc-1024
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 360 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    network:
+  #      bandwidthUp: 10 Gibit
+  #      bandwidthDown: 10 Gibit 
+  #      latency:
+  #       uniform: false
+  #       replicas: [ 'eu-west-1': 1,
+  #            'eu-west-2': 1,
+  #            'eu-north-1': 1,
+  #            'ap-south-1': 1,
+  #            'eu-west-3': 1,
+  #            'eu-south-1': 1,
+  #            'af-south-1': 1,
+  #            'ap-northeast-3': 1,
+  #            'ap-northeast-2': 1,
+  #            'me-south-1': 1,
+  #            'ap-northeast-1': 1,
+  #            'sa-east-1': 1,
+  #            'ca-central-1': 1,
+  #            'ap-east-1': 1,
+  #            'ap-southeast-1': 1,
+  #            'ap-southeast-2': 1,
+  #            'eu-central-1': 1,
+  #            'us-east-1': 1,
+  #            'us-east-2': 1,
+  #            'us-west-1': 1,
+  #            'us-west-2': 1]
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:  
+  #      replicas: 21
+  #      minBatchSize: 400
+  #      maxBatchSize: 400
+  #      replySize: 1024
+  #      batchReplies: true
+  #      timeout:
+  #        secs: 0
+  #        nano: 2_000_000_000
+  #    client:
+  #      numberOfHosts: 1
+  #      clients: 16
+  #      payload: 1024
+  #      concurrent: 125
+  #      duration: 59999 
+  #      startTime: 30s
+  - name: AWS-200Mbits-UnthrottledClients-125Conc-1024
     misc:
       runahead: 630 us
-      duration: 600 s
+      duration: 360 s
       parallelism: 34
       useShortestPath: false
     network:
@@ -35,7 +185,7 @@ experiments:
             'us-west-2': 1]
        clients: 1000 us
       packetLoss: 0.0
-    replica: # should be validated by connectors (currently not done, they are passed as-is)
+    replica:  
       replicas: 21
       minBatchSize: 400
       maxBatchSize: 400
@@ -43,10 +193,11 @@ experiments:
       batchReplies: true
       timeout:
         secs: 0
-        nano: 200_000_000
+        nano: 2_000_000_000
     client:
       numberOfHosts: 1
       clients: 16
       payload: 1024
-      concurrent: 150
-      duration: 590 # WATCH OUT FOR THIS VALUE (for now)
+      concurrent: 125
+      duration: 59999 
+      startTime: 30 s
