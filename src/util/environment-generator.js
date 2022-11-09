@@ -152,8 +152,10 @@ let createGraph = (
 /* Author : Christian Berger */
 let createGraphSimple = (
   hosts,
-  bandwidth_up,
-  bandwidth_down,
+  replicaBwUp,
+  replicaBwDown,
+  clientBwUp,
+  clientBwDown,
   replicaDelay,
   clientDelay,
   packet_loss,
@@ -166,11 +168,11 @@ let createGraphSimple = (
   for (let i = 0; i < hosts.length; i++) {
     // Init all hosts
     if (!hosts[i].isClient) {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(replicaBwUp)
+      host_bandwidth_down.push(replicaBwDown)
     } else {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(clientBwUp)
+      host_bandwidth_down.push(clientBwDown)
     }
 
     latencies.push([])
@@ -251,8 +253,10 @@ async function makeAWSGraph(
   replicasIPs,
   replicaLatencies,
   clientLatencies,
-  bandwidth_up,
-  bandwidth_down,
+  replicaBwUp,
+  replicaBwDown,
+  clientBwUp,
+  clientBwDown,
   packet_loss,
   log,
 ) {
@@ -281,11 +285,11 @@ async function makeAWSGraph(
     latencies.push([])
     packet_losses.push([])
     if (!replicasIPs[i].isClient) {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(replicaBwUp)
+      host_bandwidth_down.push(replicaBwDown)
     } else {
-      host_bandwidth_up.push(bandwidth_up)
-      host_bandwidth_down.push(bandwidth_down)
+      host_bandwidth_up.push(clientBwUp)
+      host_bandwidth_down.push(clientBwDown)
     }
     for (let j = 0; j < replicasIPs.length; j++) {
       if (i == j) {
@@ -372,8 +376,10 @@ async function exportPNS(hosts, networkObj, PNSPath, log) {
   if (networkObj.latency.uniform)
     PNS = createGraphSimple(
       hosts,
-      networkObj.bandwidthUp,
-      networkObj.bandwidthDown,
+      networkObj.replicaBandwidthUp,
+      networkObj.replicaBandwidthDown,
+      networkObj.clientBandwidthUp,
+      networkObj.clientBandwidthDown,
       networkObj.latency.replicas,
       networkObj.latency.clients,
       parseFloat(networkObj.packetLoss).toFixed(1),
@@ -383,8 +389,10 @@ async function exportPNS(hosts, networkObj, PNSPath, log) {
       hosts,
       networkObj.latency.replicas,
       networkObj.latency.clients,
-      networkObj.bandwidthUp,
-      networkObj.bandwidthDown,
+      networkObj.replicaBandwidthUp,
+      networkObj.replicaBandwidthDown,
+      networkObj.clientBandwidthUp,
+      networkObj.clientBandwidthDown,
       parseFloat(networkObj.packetLoss).toFixed(1.0),
       log,
     )

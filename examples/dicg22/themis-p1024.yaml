@@ -8,8 +8,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
         uniform: true
         replicas: 1000 us
@@ -21,7 +23,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -37,8 +39,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
         uniform: true
         replicas: 1000 us
@@ -50,7 +54,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -66,8 +70,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
         uniform: true
         replicas: 1000 us
@@ -79,7 +85,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -95,8 +101,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
         uniform: true
         replicas: 1000 us
@@ -108,7 +116,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -124,8 +132,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
         uniform: true
         replicas: 1000 us
@@ -137,7 +147,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -153,8 +163,10 @@ experiments:
       parallelism: 16
       useShortestPath: false
     network:
-      bandwidthUp: 10 Gibit # does not apply to clients (for now)
-      bandwidthDown: 10 Gibit # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
         uniform: true
         replicas: 1000 us
@@ -166,7 +178,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:

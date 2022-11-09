@@ -44,8 +44,10 @@ experiments:
         metric: latency
         label: 4
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 1000 us
@@ -76,8 +78,10 @@ experiments:
         datasetId: Shadow-HotStuff-p1024
         label: 8
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 1000 us
@@ -108,8 +112,10 @@ experiments:
         datasetId: Shadow-HotStuff-p1024
         label: 16
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 1000 us
@@ -140,8 +146,10 @@ experiments:
         datasetId: Shadow-HotStuff-p1024
         label: 32
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 1000 us
@@ -172,8 +180,10 @@ experiments:
         datasetId: Shadow-HotStuff-p1024
         label: 64
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 1000 us
@@ -204,8 +214,10 @@ experiments:
         datasetId: Shadow-HotStuff-p1024
         label: 128
     network:
-      bandwidthUp: 10 Gibits # does not apply to clients (for now)
-      bandwidthDown: 10 Gibits # does not apply to clients (for now)
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 10 Gibits
+      clientBandwidthDown: 10 Gibits
       latency:
        uniform: true
        replicas: 1000 us

@@ -21,7 +21,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -50,7 +50,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -79,7 +79,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -108,7 +108,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -137,7 +137,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
@@ -166,7 +166,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
-      timeout:
+      batchTimeout:
         secs: 0
         nano: 10_000_000
     client:
