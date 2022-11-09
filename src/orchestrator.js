@@ -115,13 +115,16 @@ async function main() {
         clientSettings,
         logger,
       )
-      await crashFault.crash(
-        replicaSettings.replicas,
-        hosts,
-        EDO.fault.threshold,
-        EDO.fault.timestamp,
-        logger,
-      )
+      if (EDO.fault) {
+        if (EDO.type == 'crash')
+          await crashFault.crash(
+            replicaSettings.replicas,
+            hosts,
+            EDO.fault.threshold,
+            EDO.fault.timestamp,
+            logger,
+          )
+      }
       shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
       // Generate Shadow File
       await eg.out(shadowFilePath, shadowTemplate)

@@ -10,8 +10,8 @@ experiments:
     network:
       replicaBandwidthUp: 10 Gibits
       replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
+      clientBandwidthUp: 100 Gibits
+      clientBandwidthDown: 100 Gibits
       latency:
         uniform: true
         replicas: 10000 us
@@ -23,6 +23,7 @@ experiments:
       maxBatchSize: 400
       replySize: 1024
       batchReplies: true
+      requestTimeout: 40000
       batchTimeout:
         secs: 0
         nano: 10_000_000
@@ -30,151 +31,6 @@ experiments:
       numberOfHosts: 1
       clients: 4
       startTime: 2 s
-      payload: 1024
-      concurrent: 175
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
-  - name: 8rep # this will be passed to as data_dir value in shadow.yaml
-    misc:
-      runahead: 630 us
-      duration: 10 s
-      clientDelay: 0 s # timestamp to start CLIs
-      parallelism: 10
-      useShortestPath: false
-    network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
-      latency:
-        uniform: true
-        delay: 1000 us
-    replica: # should be validated by connectors (currently not done, they are passed as-is)
-      replicas: 8
-      minBatchSize: 400
-      maxBatchSize: 400
-      replySize: 1024
-      batchReplies: true
-      batchTimeout:
-        secs: 0
-        nano: 10_000_000
-    client:
-      clients: 16
-      payload: 1024
-      concurrent: 175
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
-  - name: 16rep # this will be passed to as data_dir value in shadow.yaml
-    misc:
-      runahead: 630 us
-      duration: 10 s
-      clientDelay: 0 s # timestamp to start CLIs
-      parallelism: 10
-      useShortestPath: false
-    network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
-      latency:
-        uniform: true
-        delay: 1000 us
-    replica: # should be validated by connectors (currently not done, they are passed as-is)
-      replicas: 16
-      minBatchSize: 400
-      maxBatchSize: 400
-      replySize: 1024
-      batchReplies: true
-      batchTimeout:
-        secs: 0
-        nano: 10_000_000
-    client:
-      clients: 16
-      payload: 1024
-      concurrent: 175
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
-  - name: 32rep # this will be passed to as data_dir value in shadow.yaml
-    misc:
-      runahead: 630 us
-      duration: 10 s
-      clientDelay: 0 s # timestamp to start CLIs
-      parallelism: 10
-      useShortestPath: false
-    network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
-      latency:
-        uniform: true
-        delay: 1000 us
-    replica: # should be validated by connectors (currently not done, they are passed as-is)
-      replicas: 32
-      minBatchSize: 400
-      maxBatchSize: 400
-      replySize: 1024
-      batchReplies: true
-      batchTimeout:
-        secs: 0
-        nano: 10_000_000
-    client:
-      clients: 16
-      payload: 1024
-      concurrent: 175
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
-  - name: 64rep # this will be passed to as data_dir value in shadow.yaml
-    misc:
-      runahead: 630 us
-      duration: 10 s
-      clientDelay: 0 s # timestamp to start CLIs
-      parallelism: 10
-      useShortestPath: false
-    network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
-      latency:
-        uniform: true
-        delay: 1000 us
-    replica: # should be validated by connectors (currently not done, they are passed as-is)
-      replicas: 64
-      minBatchSize: 400
-      maxBatchSize: 400
-      replySize: 1024
-      batchReplies: true
-      batchTimeout:
-        secs: 0
-        nano: 10_000_000
-    client:
-      clients: 16
-      payload: 1024
-      concurrent: 175
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
-  - name: 128rep # this will be passed to as data_dir value in shadow.yaml
-    misc:
-      runahead: 630 us
-      duration: 10 s
-      clientDelay: 0 s # timestamp to start CLIs
-      parallelism: 10
-      useShortestPath: false
-    network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 10 Gibits
-      clientBandwidthDown: 10 Gibits
-      latency:
-        uniform: true
-        delay: 1000 us
-    replica: # should be validated by connectors (currently not done, they are passed as-is)
-      replicas: 128
-      minBatchSize: 400
-      maxBatchSize: 400
-      replySize: 1024
-      batchReplies: true
-      batchTimeout:
-        secs: 0
-        nano: 10_000_000
-    client:
-      clients: 16
       payload: 1024
       concurrent: 175
       duration: 8 # WATCH OUT FOR THIS VALUE (for now)

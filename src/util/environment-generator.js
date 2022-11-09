@@ -31,7 +31,7 @@ function parseEDF(EDF) {
       isNullOrEmpty(EDO.network.latency.replicas)
     )
       throw Error(
-        `please inter-replica latency and client-replica latency for ${experimentId}`,
+        `please specify inter-replica latency and client-replica latency for ${experimentId}`,
       )
     if (isNullOrEmpty(EDO.replica.replicas)) {
       throw Error(`number of replicas for ${experimentId} was not defined`)

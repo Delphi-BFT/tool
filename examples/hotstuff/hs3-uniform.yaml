@@ -10,8 +10,8 @@ experiments:
       network:
         replicaBandwidthUp: 10 Gibits
         replicaBandwidthDown: 10 Gibits
-        clientBandwidthUp: 10 Gibits
-        clientBandwidthDown: 10 Gibits
+        clientBandwidthUp: 100 Gibits
+        clientBandwidthDown: 100 Gibits
         latency:
           uniform: true
           replicas: 10000 us
@@ -21,13 +21,14 @@ experiments:
         replicas: 4
         blockSize: 400
         replySize: 128
+        pacemaker:
+          type: rr
+          propDelay: 2
+          baseTimeout: 2
       client:
         numberOfHosts: 2
         clients: 4
         startTime: 0 s
         outStandingPerClient: 1400
         requestSize: 128
-      fault:
-        type: crash
-        threshold: 0.33
-        timestamp: 5 s
+

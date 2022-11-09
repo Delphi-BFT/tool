@@ -100,20 +100,23 @@ async function genArtifacts(blockSize, log) {
   )
   log.info('Finished generating artifacts...')
 }
-async function passArgs(
-  hosts,
-  outStandingPerClient,
-  numberOfClientHosts,
-  numberOfClients,
-  clientStartTime,
-  log,
-) {
+async function passArgs(hosts, replicaSettings, clientSettings, log) {
+  let pacemakerString = ' '
+  if (replicaSettings.pacemaker && replicaSettings.pacemaker.type == 'rr') {
+    pacemakerString += `--pace-maker rr`
+    if (replicaSettings.pacemaker.propDelay)
+      pacemakerString += ` --prop-delay ${replicaSettings.pacemaker.propDelay}`
+    if (replicaSettings.pacemaker.baseTimeout)
+      pacemakerString += ` --base-timeout ${replicaSettings.pacemaker.baseTimeout}`
+  } else pacemakerString += '--pace-maker dummy'
   let replicaIndex = 0
   let clientIndex = 0
   let clientHostIndex = 1 // BEWARE: IT STARTS AT 1
-  let clientsPerHost = Math.floor(numberOfClients / numberOfClientHosts)
+  let clientsPerHost = Math.floor(
+    clientSettings.clients / clientSettings.numberOfHosts,
+  )
   let clientsOnLastHost =
-    clientsPerHost + (numberOfClients % numberOfClientHosts) // WATCH OUT CAN BE 0
+    clientsPerHost + (clientSettings.clients % clientSettings.numberOfHosts) // WATCH OUT CAN BE 0
 
   log.debug(
     `clients per host: ${clientsPerHost}, last host gets: ${clientsOnLastHost}`,
@@ -121,7 +124,7 @@ async function passArgs(
   for (let i = 0; i < hosts.length; i++) {
     if (hosts[i].isClient) {
       let clientsOnCurrentHost =
-        clientHostIndex < numberOfClientHosts
+        clientHostIndex < clientSettings.numberOfHosts
           ? clientsPerHost
           : clientsOnLastHost
       hosts[i].procs = []
@@ -129,8 +132,10 @@ async function passArgs(
         hosts[i].procs.push({
           path: process.env.HOTSTUFF_CLIENT_BIN,
           env: '',
-          args: `--idx ${clientIndex} --iter -1 --max-async ${outStandingPerClient}`,
-          startTime: clientStartTime,
+          args: `--idx ${clientIndex} --iter -1 --max-async ${clientSettings.outStandingPerClient}`,
+          startTime: clientSettings.startTime
+            ? clientSettings.startTime
+            : '0 s',
         })
         log.debug(
           `client ${clientIndex} added on host: ${clientHostIndex} with path: ${
@@ -152,7 +157,7 @@ async function passArgs(
     hosts[i].procs.push({
       path: process.env.HOTSTUFF_REPLICA_BIN,
       env: '',
-      args: `--conf ${conf}`,
+      args: `--conf ${conf}` + pacemakerString,
       startTime: 0,
     })
     log.debug(
@@ -260,14 +265,7 @@ async function configure(replicaSettings, clientSettings, log) {
   }
   await writeHosts(hostIPs, log)
   await genArtifacts(replicaSettings.blockSize, log)
-  let hosts = await passArgs(
-    hostIPs,
-    clientSettings.outStandingPerClient,
-    clientSettings.numberOfHosts,
-    clientSettings.clients,
-    clientSettings.startTime ? clientSettings.startTime : 0,
-    log,
-  )
+  let hosts = await passArgs(hostIPs, replicaSettings, clientSettings, log)
   await copyConfig(log)
   return hosts
 }
