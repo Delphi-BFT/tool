@@ -8,20 +8,20 @@ experiments:
       parallelism: 6
       useShortestPath: false
     network:
-      replicaBandwidthUp: 10 Gibits
-      replicaBandwidthDown: 10 Gibits
-      clientBandwidthUp: 100 Gibits
-      clientBandwidthDown: 100 Gibits
+      replicaBandwidthUp: 1000 Gibits
+      replicaBandwidthDown: 1000 Gibits
+      clientBandwidthUp: 1000 Gibits
+      clientBandwidthDown: 1000 Gibits
       latency:
         uniform: true
-        replicas: 10000 us
+        replicas: 1000 us
         clients: 1000 us
       packetLoss: 0.0
     replica: # should be validated by connectors (currently not done, they are passed as-is)
       replicas: 4
       minBatchSize: 400
       maxBatchSize: 400
-      replySize: 0
+      replySize: 1024
       batchReplies: true
       batchTimeout:
         secs: 0
@@ -29,7 +29,7 @@ experiments:
     client:
       numberOfHosts: 1
       clients: 16
-      payload: 0
+      payload: 1024
       startTime: 5 s
-      concurrent: 100
+      concurrent: 300
       duration: 43 # WATCH OUT FOR THIS VALUE (for now)
