@@ -1,7 +1,7 @@
 protocolName: hotstuff
 protocolConnectorPath: ./connectors/hotstuff.js
 plots:
-  - name: throughputDemo
+  - name: throughput-p1024
     metric: tps
     details:
       title: 'Throughput comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
@@ -14,7 +14,7 @@ plots:
           pointBorderColor: '#c45850'
           borderColor: '#c45850'
     predefinedDatasets: ./predefinedPlots/hotstuff/hs-p1024-throughput.yaml
-  - name: latencyDemo
+  - name: latency-p1024
     metric: latency
     details:
       title: 'Latency comparison of Shadow-HotStuff and HotStuff with 1kb request/response sizes'
@@ -27,21 +27,117 @@ plots:
           pointBorderColor: '#c45850'
           borderColor: '#c45850'
     predefinedDatasets: ./predefinedPlots/hotstuff/hs-p1024-latency.yaml
+  - name: cpu-shadow-p1024
+    metric: cpu-shadow
+    details:
+      title: 'CPU Usage of the Shadow Process of Shadow-HotStuff at an Increasing System Scale'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'CPU Usage (100 * vCPU)'
+    shadowDatasets: 
+      - name: Shadow-HotStuff-p1024
+        style:
+          pointStyle: triangle
+          pointBorderColor: '#c45850'
+          borderColor: '#c45850'
+  - name: mem-shadow-p1024
+    metric: mem-shadow
+    details:
+      title: 'Memory Usage of the Shadow Process of Shadow-HotStuff at an Increasing System Scale'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowDatasets:
+      - name: Shadow-HotStuff-p1024
+        style:
+          pointStyle: triangle
+          pointBorderColor: '#c45850'
+          borderColor: '#c45850'
+  - name: elapsed-p1024
+    metric: elapsed
+    details:
+      title: 'Duration of Shadow-HotStuff Simulations at an Increasing System Scale'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Duration (s)'
+    shadowDatasets:
+      - name: Shadow-HotStuff-p1024
+        style:
+          pointStyle: triangle
+          pointBorderColor: '#c45850'
+          borderColor: '#c45850'
+  - name: cpu-app-p1024
+    metric: cpu-app
+    details:
+      title: 'CPU Usage of the Replica Processes of Shadow-HotStuff at an Increasing System Scale'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'CPU Usage (100 * vCPU)'
+    shadowDatasets: 
+      - name: Shadow-HotStuff-p1024
+        style:
+          pointStyle: triangle
+          pointBorderColor: '#c45850'
+          borderColor: '#c45850'
+  - name: mem-app-p1024
+    metric: mem-app
+    details:
+      title: 'Memory Usage of the Replica Processes of Shadow-HotStuff at an Increasing System Scale'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowDatasets:
+      - name: Shadow-HotStuff-p1024
+        style:
+          pointStyle: triangle
+          pointBorderColor: '#c45850'
+          borderColor: '#c45850'
+  - name: mem-host-p1024
+    metric: mem-host
+    details:
+      title: 'Total Host Memory Usage for Shadow-HotStuff Simulations at an Increasing System Scale'
+      xAxisTitle: 'Number of Replicas'
+      yAxisTitle: 'Memory Usage (GB)'
+    shadowDatasets:
+      - name: Shadow-HotStuff-p1024
+        style:
+          pointStyle: triangle
+          pointBorderColor: '#c45850'
+          borderColor: '#c45850'
 experiments:
   - name: 4rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration: 5 s
-      parallelism: 16
+      duration: 15 s
+      parallelism: 34
       useShortestPath: false
     plots:
-      - name: throughputDemo
+      - name: throughput-p1024
         datasetId: Shadow-HotStuff-p1024
         metric: tps
         label: 4
-      - name: latencyDemo
+      - name: latency-p1024
         datasetId: Shadow-HotStuff-p1024
         metric: latency
+        label: 4
+      - name: cpu-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-shadow
+        label: 4
+      - name: mem-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-shadow
+        label: 4
+      - name: mem-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-app
+        label: 4
+      - name: cpu-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-app
+        label: 4
+      - name: mem-host-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-host
+        label: 4
+      - name: elapsed-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: elapsed
         label: 4
     network:
       replicaBandwidthUp: 10 Gibits
@@ -65,17 +161,41 @@ experiments:
   - name: 8rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration: 5 s
-      parallelism: 16
+      duration: 15 s
+      parallelism: 34
       useShortestPath: false
     plots:
-      - name: throughputDemo
+      - name: throughput-p1024
         metric: tps
         datasetId: Shadow-HotStuff-p1024
         label: 8
-      - name: latencyDemo
+      - name: latency-p1024
         metric: latency
         datasetId: Shadow-HotStuff-p1024
+        label: 8
+      - name: cpu-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-shadow
+        label: 8
+      - name: mem-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-shadow
+        label: 8
+      - name: mem-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-app
+        label: 8
+      - name: cpu-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-app
+        label: 8
+      - name: mem-host-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-host
+        label: 8
+      - name: elapsed-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: elapsed
         label: 8
     network:
       replicaBandwidthUp: 10 Gibits
@@ -99,17 +219,41 @@ experiments:
   - name: 16rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration: 10 s
-      parallelism: 16
+      duration: 15 s
+      parallelism: 34
       useShortestPath: false
     plots:
-      - name: throughputDemo
+      - name: throughput-p1024
         metric: tps
         label: 16
         datasetId: Shadow-HotStuff-p1024
-      - name: latencyDemo
+      - name: latency-p1024
         metric: latency
         datasetId: Shadow-HotStuff-p1024
+        label: 16
+      - name: cpu-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-shadow
+        label: 16
+      - name: mem-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-shadow
+        label: 16
+      - name: mem-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-app
+        label: 16
+      - name: cpu-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-app
+        label: 16
+      - name: mem-host-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-host
+        label: 16
+      - name: elapsed-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: elapsed
         label: 16
     network:
       replicaBandwidthUp: 10 Gibits
@@ -133,17 +277,41 @@ experiments:
   - name: 32rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration:  20 s
-      parallelism: 16
+      duration:  15 s
+      parallelism: 34
       useShortestPath: false
     plots:
-      - name: throughputDemo
+      - name: throughput-p1024
         metric: tps
         datasetId: Shadow-HotStuff-p1024
         label: 32
-      - name: latencyDemo
+      - name: latency-p1024
         metric: latency
         datasetId: Shadow-HotStuff-p1024
+        label: 32
+      - name: cpu-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-shadow
+        label: 32
+      - name: mem-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-shadow
+        label: 32
+      - name: mem-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-app
+        label: 32
+      - name: cpu-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-app
+        label: 32
+      - name: mem-host-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-host
+        label: 32
+      - name: elapsed-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: elapsed
         label: 32
     network:
       replicaBandwidthUp: 10 Gibits
@@ -167,17 +335,41 @@ experiments:
   - name: 64rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration: 30 s
-      parallelism: 16
+      duration: 15 s
+      parallelism: 34
       useShortestPath: false
     plots:
-      - name: throughputDemo
+      - name: throughput-p1024
         metric: tps
         datasetId: Shadow-HotStuff-p1024
         label: 64
-      - name: latencyDemo
+      - name: latency-p1024
         metric: latency
         datasetId: Shadow-HotStuff-p1024
+        label: 64
+      - name: cpu-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-shadow
+        label: 64
+      - name: mem-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-shadow
+        label: 64
+      - name: mem-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-app
+        label: 64
+      - name: cpu-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-app
+        label: 64
+      - name: mem-host-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-host
+        label: 64
+      - name: elapsed-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: elapsed
         label: 64
     network:
       replicaBandwidthUp: 10 Gibits
@@ -201,17 +393,41 @@ experiments:
   - name: 128rep # this will be passed to as data_dir value in shadow.yaml
     misc:
       runahead: 1000 us
-      duration: 30 s
-      parallelism: 16
+      duration: 15 s
+      parallelism: 34
       useShortestPath: false
     plots:
-      - name: throughputDemo
+      - name: throughput-p1024
         metric: tps
         datasetId: Shadow-HotStuff-p1024
         label: 128
-      - name: latencyDemo
+      - name: latency-p1024
         metric: latency
         datasetId: Shadow-HotStuff-p1024
+        label: 128
+      - name: cpu-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-shadow
+        label: 128
+      - name: mem-shadow-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-shadow
+        label: 128
+      - name: mem-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-app
+        label: 128
+      - name: cpu-app-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: cpu-app
+        label: 128
+      - name: mem-host-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: mem-host
+        label: 128
+      - name: elapsed-p1024
+        datasetId: Shadow-HotStuff-p1024
+        metric: elapsed
         label: 128
     network:
       replicaBandwidthUp: 10 Gibits

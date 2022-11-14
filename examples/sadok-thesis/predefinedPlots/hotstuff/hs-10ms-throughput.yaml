@@ -1,17 +1,17 @@
 - name: HotStuff-l10-thr
   values:
     - x: '4'
-      y: '19186'
+      y: '19174'
     - x: '8'
-      y: '18800'
+      y: '18780'
     - x: '16'
-      y: '18696'
+      y: '18617'
     - x: '32'
-      y: '18200'
+      y: '18189'
     - x: '64'
-      y: '17600'
+      y: '17499'
     - x: '128'
-      y: '15152'
+      y: '15114'
   style:
     pointStyle: star
     pointBorderColor: '#8e5ea2'

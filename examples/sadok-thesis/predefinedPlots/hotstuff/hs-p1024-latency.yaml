@@ -1,17 +1,17 @@
 - name: HotStuff-p1024
   values:
     - x: '4'
-      y: '20'
+      y: '19.363'
     - x: '8'
-      y: '20'
+      y: '19.9232'
     - x: '16'
-      y: '20'
+      y: '19.7376'
     - x: '32'
-      y: '47'
+      y: '39.2842'
     - x: '64'
-      y: '60'
+      y: '65.2438'
     - x: '128'
-      y: '105'
+      y: '108.2954'
   style:
     pointStyle: star
     pointBorderColor: '#8e5ea2'
