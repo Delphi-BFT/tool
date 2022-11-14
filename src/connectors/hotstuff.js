@@ -109,7 +109,7 @@ async function passArgs(hosts, replicaSettings, clientSettings, log) {
     if (replicaSettings.pacemaker.baseTimeout)
       pacemakerString += ` --base-timeout ${replicaSettings.pacemaker.baseTimeout}`
   } else pacemakerString += '--pace-maker dummy'
-  pacemakerString += ` ${
+  pacemakerString += ` --imp-timeout ${
     replicaSettings.pacemaker.impTimer ? replicaSettings.pacemaker.impTimer : 1
   }`
   let replicaIndex = 0
