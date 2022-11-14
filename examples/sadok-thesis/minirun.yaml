@@ -79,6 +79,7 @@ experiments:
         type: rr
         propDelay: 1
         baseTimeout: 1
+        impTimer: 3
     client:
       clients: 16
       numberOfHosts: 2
@@ -138,6 +139,7 @@ experiments:
         type: rr
         propDelay: 1
         baseTimeout: 1
+        impTimer: 3
     client:
       clients: 16
       numberOfHosts: 2
@@ -197,6 +199,7 @@ experiments:
         type: rr
         propDelay: 1
         baseTimeout: 1
+        impTimer: 3
     client:
       clients: 16
       numberOfHosts: 2
@@ -256,6 +259,7 @@ experiments:
         type: rr
         propDelay: 1
         baseTimeout: 1
+        impTimer: 3
     client:
       clients: 16
       numberOfHosts: 2
@@ -315,6 +319,7 @@ experiments:
   #        type: rr
   #        propDelay: 1
   #        baseTimeout: 1
+  #        impTimer: 3
   #    client:
   #      clients: 16
   #      numberOfHosts: 2
@@ -377,6 +382,7 @@ experiments:
   #        type: rr
   #        propDelay: 1
   #        baseTimeout: 1
+  #        impTimer: 3
   #    client:
   #      clients: 16
   #      numberOfHosts: 2
@@ -435,6 +441,7 @@ experiments:
   #        type: rr
   #        propDelay: 1
   #        baseTimeout: 1
+  #        impTimer: 3
   #    client:
   #      clients: 16
   #      numberOfHosts: 2
@@ -493,6 +500,7 @@ experiments:
         type: rr
         propDelay: 1
         baseTimeout: 1
+        impTimer: 3
     client:
       clients: 16
       numberOfHosts: 2
