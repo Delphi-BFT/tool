@@ -9,7 +9,7 @@ function promisified_spawn(cmd, args, workingDir, log) {
       if (code) {
         log.error('child proess terminated with code: ' + code)
         reject(code)
-        throw new Error('child process exited with non-zero code!')
+        throw 'child process exited with non-zero code!'
       }
       log.info('child proess terminated with code: ' + code)
       resolve(code)

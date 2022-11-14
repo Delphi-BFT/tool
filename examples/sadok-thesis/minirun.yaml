@@ -26,21 +26,21 @@ plots:
           pointBorderColor: '#c45850'
           borderColor: '#c45850'
 experiments:
-  - name: AWS-10Gibit-UnthrottledClient-125Out-1024-Crash
+  - name: AWS-10Gibit-UnthrottledClient-150Out-00
     misc:
       runahead: 630 us
-      duration: 60 s
+      duration: 70 s
       parallelism: 34
       useShortestPath: false
     plots:
       - name: throughputDemo
         datasetId: Shadow-HotStuff-p1024
         metric: tps
-        label: 4
+        label: 10Gibi-00
       - name: latencyDemo
         datasetId: Shadow-HotStuff-p1024
         metric: latency
-        label: 4
+        label: 10Gibi-00
     network:
       replicaBandwidthUp: 10 Gibit
       replicaBandwidthDown: 10 Gibit
@@ -54,8 +54,13 @@ experiments:
     'ap-south-1': 1,
     'eu-west-3': 1,
     'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
     'af-south-1': 1,
-'ap-northeast-3': 1,
+    'ap-northeast-3': 1,
     'ap-northeast-2': 1,
     'me-south-1': 1,
     'ap-northeast-1': 1,
@@ -63,12 +68,66 @@ experiments:
     'ca-central-1': 1,
     'ap-east-1': 1,
     'ap-southeast-1': 1,
-    'ap-southeast-2': 1,
+    'ap-southeast-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 0
+      pacemaker:
+        type: rr
+        propDelay: 1
+        baseTimeout: 1
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 150
+      requestSize: 0
+      startTime: 30 s
+  - name: AWS-10Gibit-UnthrottledClient-150Out-1024
+    misc:
+      runahead: 630 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 10Gibi-1024
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 10Gibi-1024
+    network:
+      replicaBandwidthUp: 10 Gibit
+      replicaBandwidthDown: 10 Gibit
+      clientBandwidthUp: 100 Gibit
+      clientBandwidthDown: 100 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
     'eu-central-1': 1,
     'us-east-1': 1,
     'us-east-2': 1,
     'us-west-1': 1,
-    'us-west-2': 1]
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
        clients: 1000 us
       packetLoss: 0.0
     replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -82,27 +141,24 @@ experiments:
     client:
       clients: 16
       numberOfHosts: 2
-      outStandingPerClient: 125
+      outStandingPerClient: 150
       requestSize: 1024
-    fault:
-      type: crash
-      threshold: 0.33
-      timestamp: 20 s
-  - name: AWS-200Mbit-UnthrottledClient-125Out-1024-Crash
+      startTime: 30 s
+  - name: AWS-200Mbit-UnthrottledClient-150Out-00
     misc:
       runahead: 630 us
-      duration: 60 s
+      duration: 70 s
       parallelism: 34
       useShortestPath: false
     plots:
       - name: throughputDemo
         datasetId: Shadow-HotStuff-p1024
         metric: tps
-        label: 4
+        label: 200Mbit-00
       - name: latencyDemo
         datasetId: Shadow-HotStuff-p1024
         metric: latency
-        label: 4
+        label: 200Mbit-00
     network:
       replicaBandwidthUp: 200 Mbit
       replicaBandwidthDown: 200 Mbit
@@ -116,8 +172,13 @@ experiments:
     'ap-south-1': 1,
     'eu-west-3': 1,
     'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
     'af-south-1': 1,
-'ap-northeast-3': 1,
+    'ap-northeast-3': 1,
     'ap-northeast-2': 1,
     'me-south-1': 1,
     'ap-northeast-1': 1,
@@ -125,12 +186,66 @@ experiments:
     'ca-central-1': 1,
     'ap-east-1': 1,
     'ap-southeast-1': 1,
-    'ap-southeast-2': 1,
+    'ap-southeast-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 400
+      replySize: 0
+      pacemaker:
+        type: rr
+        propDelay: 1
+        baseTimeout: 1
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 150
+      requestSize: 0
+      startTime: 30 s
+  - name: AWS-200Mbit-UnthrottledClient-150Out-1024
+    misc:
+      runahead: 630 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 200Mbit-1024
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 200Mbit-1024
+    network:
+      replicaBandwidthUp: 200 Mbit 
+      replicaBandwidthDown: 200 Mbit
+      clientBandwidthUp: 100 Gibit
+      clientBandwidthDown: 100 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
     'eu-central-1': 1,
     'us-east-1': 1,
     'us-east-2': 1,
     'us-west-1': 1,
-    'us-west-2': 1]
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
        clients: 1000 us
       packetLoss: 0.0
     replica: # should be validated by connectors (currently not done, they are passed as-is)
@@ -144,9 +259,243 @@ experiments:
     client:
       clients: 16
       numberOfHosts: 2
-      outStandingPerClient: 125
+      outStandingPerClient: 150
       requestSize: 1024
-    fault:
-      type: crash
-      threshold: 0.33
-      timestamp: 20 s
+      startTime: 30 s
+  #  - name: AWS-200Mbit-UnthrottledClient-150Out-1024-Crash
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 70 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 200Mbit-1024-Crash
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 200Mbit-1024-Crash
+  #    network:
+  #      replicaBandwidthUp: 200 Mbit
+  #      replicaBandwidthDown: 200 Mbit
+  #      clientBandwidthUp: 100 Gibit
+  #      clientBandwidthDown: 100 Gibit
+  #      latency:
+  #       uniform: false
+  #       replicas: [ 'eu-west-1': 1,
+  #    'eu-west-2': 1,
+  #    'eu-north-1': 1,
+  #    'ap-south-1': 1,
+  #    'eu-west-3': 1,
+  #    'eu-south-1': 1,
+  #    'eu-central-1': 1,
+  #    'us-east-1': 1,
+  #    'us-east-2': 1,
+  #    'us-west-1': 1,
+  #    'us-west-2': 1,
+  #    'af-south-1': 1,
+  #    'ap-northeast-3': 1,
+  #    'ap-northeast-2': 1,
+  #    'me-south-1': 1,
+  #    'ap-northeast-1': 1,
+  #    'sa-east-1': 1,
+  #    'ca-central-1': 1,
+  #    'ap-east-1': 1,
+  #    'ap-southeast-1': 1,
+  #    'ap-southeast-2': 1]
+  #       clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 1024
+  #      pacemaker:
+  #        type: rr
+  #        propDelay: 1
+  #        baseTimeout: 1
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 150
+  #      requestSize: 1024
+  #    fault:
+  #      type: crash
+  #      threshold: 0.1
+  #      timestamp: 4 s
+  #  - name: AWS-200Mbit-UnthrottledClient-150Out-1024-Packetloss
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 70 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 200Mbit-1024-Packetloss
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 200Mbit-1024-Packetloss
+  #    network:
+  #      replicaBandwidthUp: 200 Mbit
+  #      replicaBandwidthDown: 200 Mbit
+  #      clientBandwidthUp: 100 Gibit
+  #      clientBandwidthDown: 100 Gibit
+  #      latency:
+  #       uniform: false
+  #       replicas: [ 'eu-west-1': 1,
+  #    'eu-west-2': 1,
+  #    'eu-north-1': 1,
+  #    'ap-south-1': 1,
+  #    'eu-west-3': 1,
+  #    'eu-south-1': 1,
+  #    'eu-central-1': 1,
+  #    'us-east-1': 1,
+  #    'us-east-2': 1,
+  #    'us-west-1': 1,
+  #    'us-west-2': 1,
+  #    'af-south-1': 1,
+  #    'ap-northeast-3': 1,
+  #    'ap-northeast-2': 1,
+  #    'me-south-1': 1,
+  #    'ap-northeast-1': 1,
+  #    'sa-east-1': 1,
+  #    'ca-central-1': 1,
+  #    'ap-east-1': 1,
+  #    'ap-southeast-1': 1,
+  #    'ap-southeast-2': 1]
+  #       clients: 1000 us
+  #      packetLoss: 0.04
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 1024
+  #      pacemaker:
+  #        type: rr
+  #        propDelay: 1
+  #        baseTimeout: 1
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 150
+  #      requestSize: 1024
+  #  - name: AWS-200Mbit-UnthrottledClient-150Out-1024-Packetloss
+  #    misc:
+  #      runahead: 630 us
+  #      duration: 70 s
+  #      parallelism: 34
+  #      useShortestPath: false
+  #    plots:
+  #      - name: throughputDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: tps
+  #        label: 200Mbit-1024-Packetloss
+  #      - name: latencyDemo
+  #        datasetId: Shadow-HotStuff-p1024
+  #        metric: latency
+  #        label: 200Mbit-1024-Packetloss
+  #    network:
+  #      replicaBandwidthUp: 200 Mbit
+  #      replicaBandwidthDown: 200 Mbit
+  #      clientBandwidthUp: 100 Gibit
+  #      clientBandwidthDown: 100 Gibit
+  #      latency:
+  #       uniform: false
+  #       replicas: [ 'eu-west-1': 1,
+  #    'eu-west-2': 1,
+  #    'eu-north-1': 1,
+  #    'ap-south-1': 1,
+  #    'eu-west-3': 1,
+  #    'eu-south-1': 1,
+  #    'eu-central-1': 1,
+  #    'us-east-1': 1,
+  #    'us-east-2': 1,
+  #    'us-west-1': 1,
+  #    'us-west-2': 1,
+  #    'af-south-1': 1,
+  #    'ap-northeast-3': 1,
+  #    'ap-northeast-2': 1,
+  #    'me-south-1': 1,
+  #    'ap-northeast-1': 1,
+  #    'sa-east-1': 1,
+  #    'ca-central-1': 1,
+  #    'ap-east-1': 1,
+  #    'ap-southeast-1': 1,
+  #    'ap-southeast-2': 1]
+  #       clients: 1000 us
+  #      packetLoss: 0.04
+  #    replica: # should be validated by connectors (currently not done, they are passed as-is)
+  #      replicas: 21
+  #      blockSize: 400
+  #      replySize: 1024
+  #      pacemaker:
+  #        type: rr
+  #        propDelay: 1
+  #        baseTimeout: 1
+  #    client:
+  #      clients: 16
+  #      numberOfHosts: 2
+  #      outStandingPerClient: 150
+  #      requestSize: 1024
+  - name: AWS-200Mbit-UnthrottledClient-150Out-1024-SmallBlocks
+    misc:
+      runahead: 630 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    plots:
+      - name: throughputDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: tps
+        label: 200Mbit-1024
+      - name: latencyDemo
+        datasetId: Shadow-HotStuff-p1024
+        metric: latency
+        label: 200Mbit-1024
+    network:
+      replicaBandwidthUp: 200 Mbit 
+      replicaBandwidthDown: 200 Mbit
+      clientBandwidthUp: 100 Gibit
+      clientBandwidthDown: 100 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
+       clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 21
+      blockSize: 200
+      replySize: 1024
+      pacemaker:
+        type: rr
+        propDelay: 1
+        baseTimeout: 1
+    client:
+      clients: 16
+      numberOfHosts: 2
+      outStandingPerClient: 150
+      requestSize: 1024
+      startTime: 30 s

@@ -1,0 +1,225 @@
+protocolName: bftsmart
+protocolConnectorPath: ./connectors/bftsmart.js
+experiments:
+  #  - name: 4Replicas
+  #    misc:
+  #      duration: 1200 s
+  #      parallelism: 34
+  #      runahead: 500 us
+  #      useShortestPath: false
+  #    network:
+  #      replicaBandwidthUp: 10 Gibit
+  #      replicaBandwidthDown: 10 Gibit
+  #      clientBandwidthUp: 10 Gibit
+  #      clientBandwidthDown: 10 Gibit
+  #      latency:
+  #        uniform: true
+  #        replicas: 1000 us
+  #        clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:
+  #      replicas: 4
+  #      blockSize: 400
+  #      replicaInterval: 8000
+  #      replySize: 1024
+  #      stateSize: 0
+  #      context: false
+  #      replicaSig: nosig
+  #      bft: true
+  #      timeout: 2000
+  #    client:
+  #      numberOfHosts: 16
+  #      startTime: 30 s
+  #      threadsPerClient: 50
+  #      opPerClient: 400
+  #      requestSize: 1024
+  #      clientInterval: 0
+  #      readOnly: false
+  #      verbose: true
+  #      clientSig: nosig
+  #      invokeOrderedTimeout: 40
+  #  - name: 8Replicas
+  #    misc:
+  #      duration: 1200 s
+  #      parallelism: 34
+  #      runahead: 500 us
+  #      useShortestPath: false
+  #    network:
+  #      replicaBandwidthUp: 10 Gibit
+  #      replicaBandwidthDown: 10 Gibit
+  #      clientBandwidthUp: 10 Gibit
+  #      clientBandwidthDown: 10 Gibit
+  #      latency:
+  #        uniform: true
+  #        replicas: 1000 us
+  #        clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:
+  #      replicas: 8
+  #      blockSize: 400
+  #      replicaInterval: 8000
+  #      replySize: 1024
+  #      stateSize: 0
+  #      context: false
+  #      replicaSig: nosig
+  #      bft: true
+  #      timeout: 2000
+  #    client:
+  #      numberOfHosts: 16
+  #      startTime: 30 s
+  #      threadsPerClient: 50
+  #      opPerClient: 400
+  #      requestSize: 1024
+  #      clientInterval: 0
+  #      readOnly: false
+  #      verbose: true
+  #      clientSig: nosig
+  #      invokeOrderedTimeout: 40
+  #  - name: 16Replicas
+  #    misc:
+  #      duration: 1200 s
+  #      parallelism: 34
+  #      runahead: 500 us
+  #      useShortestPath: false
+  #    network:
+  #      replicaBandwidthUp: 10 Gibit
+  #      replicaBandwidthDown: 10 Gibit
+  #      clientBandwidthUp: 10 Gibit
+  #      clientBandwidthDown: 10 Gibit
+  #      latency:
+  #        uniform: true
+  #        replicas: 1000 us
+  #        clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:
+  #      replicas: 16
+  #      blockSize: 400
+  #      replicaInterval: 8000
+  #      replySize: 1024
+  #      stateSize: 0
+  #      context: false
+  #      replicaSig: nosig
+  #      bft: true
+  #      timeout: 2000
+  #    client:
+  #      numberOfHosts: 16
+  #      startTime: 30 s
+  #      threadsPerClient: 50
+  #      opPerClient: 400
+  #      requestSize: 1024
+  #      clientInterval: 0
+  #      readOnly: false
+  #      verbose: true
+  #      clientSig: nosig
+  #      invokeOrderedTimeout: 40
+  #  - name: 32Replicas
+  #    misc:
+  #      duration: 1200 s
+  #      parallelism: 34
+  #      runahead: 500 us
+  #      useShortestPath: false
+  #    network:
+  #      replicaBandwidthUp: 10 Gibit
+  #      replicaBandwidthDown: 10 Gibit
+  #      clientBandwidthUp: 10 Gibit
+  #      clientBandwidthDown: 10 Gibit
+  #      latency:
+  #        uniform: true
+  #        replicas: 1000 us
+  #        clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:
+  #      replicas: 32
+  #      blockSize: 400
+  #      replicaInterval: 8000
+  #      replySize: 1024
+  #      stateSize: 0
+  #      context: false
+  #      replicaSig: nosig
+  #      bft: true
+  #      timeout: 2000
+  #    client:
+  #      numberOfHosts: 16
+  #      startTime: 30 s
+  #      threadsPerClient: 50
+  #      opPerClient: 400
+  #      requestSize: 1024
+  #      clientInterval: 0
+  #      readOnly: false
+  #      verbose: true
+  #      clientSig: nosig
+  #      invokeOrderedTimeout: 40
+  #  - name: 64Replicas
+  #    misc:
+  #      duration: 1200 s
+  #      parallelism: 34
+  #      runahead: 500 us
+  #      useShortestPath: false
+  #    network:
+  #      replicaBandwidthUp: 10 Gibit
+  #      replicaBandwidthDown: 10 Gibit
+  #      clientBandwidthUp: 10 Gibit
+  #      clientBandwidthDown: 10 Gibit
+  #      latency:
+  #        uniform: true
+  #        replicas: 1000 us
+  #        clients: 1000 us
+  #      packetLoss: 0.0
+  #    replica:
+  #      replicas: 64
+  #      blockSize: 400
+  #      replicaInterval: 8000
+  #      replySize: 1024
+  #      stateSize: 0
+  #      context: false
+  #      replicaSig: nosig
+  #      bft: true
+  #      timeout: 2000
+  #    client:
+  #      numberOfHosts: 16
+  #      startTime: 30 s
+  #      threadsPerClient: 50
+  #      opPerClient: 400
+  #      requestSize: 1024
+  #      clientInterval: 0
+  #      readOnly: false
+  #      verbose: true
+  #      clientSig: nosig
+  #      invokeOrderedTimeout: 40
+  - name: 128Replicas
+    misc:
+      duration: 1200 s
+      parallelism: 34
+      runahead: 500 us
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 10 Gibit
+      replicaBandwidthDown: 10 Gibit
+      clientBandwidthUp: 10 Gibit
+      clientBandwidthDown: 10 Gibit
+      latency:
+        uniform: true
+        replicas: 1000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica:
+      replicas: 128
+      blockSize: 400
+      replicaInterval: 8000
+      replySize: 1024
+      stateSize: 0
+      context: false
+      replicaSig: nosig
+      bft: true
+      timeout: 2000
+    client:
+      numberOfHosts: 16
+      startTime: 30 s
+      threadsPerClient: 50
+      opPerClient: 400
+      requestSize: 1024
+      clientInterval: 0
+      readOnly: false
+      verbose: true
+      clientSig: nosig
+      invokeOrderedTimeout: 40
