@@ -189,7 +189,7 @@ async function passArgs(hosts, clientSettings, log) {
       hosts[i].procs = []
       hosts[i].procs.push({
         path: path.join(process.env.THEMIS_DIR, process.env.THEMIS_CLIENT_BIN),
-        env: 'RUST_BACKTRACE=1',
+        env: 'RUST_LOG=INFO',
         args: `-d ${clientSettings.duration} --config ${process.env.THEMIS_CONFIG_PATH} --payload ${clientSettings.payload} -c ${clientSettings.clients} --concurrent ${clientSettings.concurrent}`,
         startTime: clientSettings.startTime ? clientSettings.startTime : 0,
       })
@@ -199,7 +199,7 @@ async function passArgs(hosts, clientSettings, log) {
     hosts[i].procs = []
     hosts[i].procs.push({
       path: path.join(process.env.THEMIS_DIR, process.env.THEMIS_REPLICA_BIN),
-      env: 'RUST_BACKTRACE=1',
+      env: 'RUST_LOG=INFO',
       args: `${replicaIndex} --config ${process.env.THEMIS_CONFIG_PATH}`,
       start_time: 0,
     })
@@ -232,7 +232,7 @@ async function getStats(experimentId, log) {
     path.join(
       path.join(process.env.THEMIS_EXPERIMENTS_OUTPUT_DIR, experimentId),
       path.join(
-        `hosts/${process.env.THEMIS_CLIENT_HOST_PREFIX}0/${THEMIS_CLIENT_HOST_PREFIX}0.bench-client.1000.stdout`,
+        `hosts/${process.env.THEMIS_CLIENT_HOST_PREFIX}0/${process.env.THEMIS_CLIENT_HOST_PREFIX}0.bench-client.1000.stdout`,
       ),
     ),
   )
