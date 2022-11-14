@@ -9,6 +9,7 @@ async function crash(nreplicas, hosts, threshold, timestamp, log) {
     for (const proc of host.procs) {
       proc.stopTime = timestamp
     }
+    nfaulty--
   }
 }
 module.exports = { crash }
