@@ -1,8 +1,8 @@
 [pbft]
 first_primary = 0
-checkpoint_interval = 1000
-high_mark_delta = 3000
-request_timeout = 1000
+checkpoint_interval = 1200
+high_mark_delta = 3200
+request_timeout = 3000
 keep_checkpoints = 2
 primary_forwarding = 'Full'
 backup_forwarding = 'Full'

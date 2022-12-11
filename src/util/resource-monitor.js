@@ -18,7 +18,7 @@ async function getPids(processName, log) {
 
 async function compute(processName, log) {
   let pids = await getPids(processName, log)
-  if (pids == null) return
+  if (pids == null) throw 'could not fetch usage data'
   pidusage(pids, function (err, stats) {
     let cputotal = 0.0
     let mem = 0.0
@@ -36,7 +36,10 @@ async function compute(processName, log) {
 }
 async function register(processName, time, log) {
   let interval = setInterval(async function () {
-    await compute(processName, log)
+    await compute(processName, log).catch((error) => {
+    	log.error(`an error occurred while fetching usage data for ${processName} unregistering...`);
+	unregister(log);
+    });
   }, time)
   let intervalObject = {}
   intervalObject['interval'] = interval

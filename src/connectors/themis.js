@@ -164,7 +164,7 @@ async function createConfigFile(replicaSettings, log) {
   let pbft = TOML.parse(
     await fs.readFile('./src/connectors/assets/themis/pbft.toml'),
   )
-  pbft.pbft.nfaults = Math.floor((replicaSettings.replicas - 1) / 3)
+  pbft.pbft.faults = Math.floor((replicaSettings.replicas - 1) / 3)
   if (replicaSettings.requestTimeout)
     pbft.pbft.request_timeout = replicaSettings.requestTimeout
   let configString = TOML.stringify(config)

@@ -80,9 +80,10 @@ async function main() {
     level: process.env.LOG_LEVEL,
     format: combine(format.colorize(), splat(), timestamp(), shadowLogFormat),
     transports: [
-      new transports.File({
+    /*  new transports.File({
         filename: path.join(experimentsPath, 'combined.log'),
       }),
+      */
       new transports.Console(),
     ],
   })
@@ -130,8 +131,9 @@ async function main() {
       await eg.out(shadowFilePath, shadowTemplate)
       await eg.exportPNS(hosts, EDO.network, networkFilePath, logger)
       let experimentStartTime = performance.now()
-      await Promise.all([
-        run(executionDir, logger),
+      try {
+      	await Promise.all([
+        	run(executionDir, logger),
         (shadowInterval = monitor.register(
           process.env.SHADOW_PROCESS,
           process.env.RESOURCE_MONITOR_INTERVAL,
@@ -147,8 +149,16 @@ async function main() {
           logger,
         )),
       ])
+      } catch (e) {
+      	logger.error(`Experiment did not terminate successfully`)
+      }
       if (protocol.getProcessName() == 'java') {
-        await promisified_spawn('killall', ['java'], executionDir, logger)
+	try{
+          await promisified_spawn('killall', ['java'], executionDir, logger) 
+	} catch(e) {
+          
+         logger.info(`killall failed, BFT-SMaRt was killed successfully by Shadow ;)`)
+	}
       }
       let experimentEndTime = performance.now()
       let elapsedSeconds = (experimentEndTime - experimentStartTime) / 1000

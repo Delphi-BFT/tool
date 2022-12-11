@@ -109,7 +109,7 @@ async function passArgs(hosts, replicaSettings, clientSettings, log) {
     if (replicaSettings.pacemaker.baseTimeout)
       pacemakerString += ` --base-timeout ${replicaSettings.pacemaker.baseTimeout}`
   } else pacemakerString += '--pace-maker dummy'
-  pacemakerString += ` --imp-timeout ${
+  pacemakerString += ` --imp-timeout ${replicaSettings.pacemaker && 
     replicaSettings.pacemaker.impTimer ? replicaSettings.pacemaker.impTimer : 1
   }`
   let replicaIndex = 0
@@ -241,6 +241,7 @@ async function build(replicaSettings, clientSettings, log) {
     [
       '-DCMAKE_BUILD_TYPE=Release',
       '-DBUILD_SHARED=ON',
+      '-DHOTSTUFF_DEBUG_LOG=OFF',
       '-DHOTSTUFF_PROTO_LOG=ON',
       `-DCMAKE_CXX_FLAGS=-g -DHOTSTUFF_ENABLE_BENCHMARK -DHOTSTUFF_CMD_RESPSIZE=${replicaSettings.replySize} -DHOTSTUFF_CMD_REQSIZE=${clientSettings.requestSize}`,
     ],

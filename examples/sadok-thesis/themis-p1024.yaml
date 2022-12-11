@@ -3,9 +3,9 @@ protocolConnectorPath: ./connectors/themis.js
 experiments:
   - name: 4rep # this will be passed to as data_dir value in shadow.yaml
     misc:
-      runahead: 630 us
-      duration: 10 s
-      parallelism: 16
+      runahead: 900 us
+      duration: 210 s
+      parallelism: 34
       useShortestPath: false
     network:
       replicaBandwidthUp: 10 Gibits
@@ -31,12 +31,13 @@ experiments:
       clients: 16
       payload: 1024
       concurrent: 175
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+      duration: 60 # WATCH OUT FOR THIS VALUE (for now)
+      startTime: 149 s
   - name: 8rep # this will be passed to as data_dir value in shadow.yaml
     misc:
-      runahead: 630 us
-      duration: 10 s
-      parallelism: 16
+      runahead: 900 us
+      duration: 210 s
+      parallelism: 34
       useShortestPath: false
     network:
       replicaBandwidthUp: 10 Gibits
@@ -62,12 +63,13 @@ experiments:
       clients: 16
       payload: 1024
       concurrent: 100
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+      duration: 60 # WATCH OUT FOR THIS VALUE (for now)
+      startTime: 149 s
   - name: 16rep # this will be passed to as data_dir value in shadow.yaml
     misc:
-      runahead: 630 us
-      duration: 10 s
-      parallelism: 16
+      runahead: 900 us
+      duration: 210 s
+      parallelism: 34
       useShortestPath: false
     network:
       replicaBandwidthUp: 10 Gibits
@@ -93,12 +95,13 @@ experiments:
       clients: 16
       payload: 1024
       concurrent: 50
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+      duration: 60 # WATCH OUT FOR THIS VALUE (for now)
+      startTime: 149 s
   - name: 32rep # this will be passed to as data_dir value in shadow.yaml
     misc:
-      runahead: 630 us
-      duration: 10 s
-      parallelism: 16
+      runahead: 900 us
+      duration: 210 s
+      parallelism: 34
       useShortestPath: false
     network:
       replicaBandwidthUp: 10 Gibits
@@ -124,12 +127,13 @@ experiments:
       clients: 16
       payload: 1024
       concurrent: 50
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+      duration: 60 # WATCH OUT FOR THIS VALUE (for now)
+      startTime: 149 s
   - name: 64rep # this will be passed to as data_dir value in shadow.yaml
     misc:
-      runahead: 630 us
-      duration: 10 s
-      parallelism: 16
+      runahead: 900 us
+      duration: 210 s
+      parallelism: 34
       useShortestPath: false
     network:
       replicaBandwidthUp: 10 Gibits
@@ -155,12 +159,13 @@ experiments:
       clients: 16
       payload: 1024
       concurrent: 50
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now
+      duration: 60 # WATCH OUT FOR THIS VALUE (for now
+      startTime: 149 s
   - name: 128rep # this will be passed to as data_dir value in shadow.yaml
     misc:
-      runahead: 630 us
-      duration: 10 s
-      parallelism: 16
+      runahead: 900 us
+      duration: 210 s
+      parallelism: 34
       useShortestPath: false
     network:
       replicaBandwidthUp: 10 Gibits
@@ -186,4 +191,5 @@ experiments:
       clients: 16
       payload: 1024
       concurrent: 50
-      duration: 8 # WATCH OUT FOR THIS VALUE (for now)
+      duration: 60 # WATCH OUT FOR THIS VALUE (for now)
+      startTime: 149 s
