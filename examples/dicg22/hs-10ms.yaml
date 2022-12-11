@@ -57,13 +57,6 @@ experiments:
       duration: 30 s
       parallelism: 16
       useShortestPath: false
-    plots:
-      - name: throughputDemo
-        metric: 'tps'
-        label: 16
-      - name: latencyDemo
-        metric: 'latency'
-        label: 16
     network:
       replicaBandwidthUp: 10 Gibits
       replicaBandwidthDown: 10 Gibits
