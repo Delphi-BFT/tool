@@ -1,0 +1,215 @@
+protocolName: themis
+protocolConnectorPath: ./connectors/themis.js
+experiments:
+  - name: AWS-200Mbit-150Concurrent-1KiB-BlockSize400
+    misc:
+      runahead: 900 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 200 Mbit 
+      replicaBandwidthDown: 200 Mbit
+      clientBandwidthUp: 10 Gibit
+      clientBandwidthDown: 10 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
+       clients: ['ap-south-1': 1]
+      packetLoss: 0.0
+    replica:  
+      replicas: 21
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      requestTimeout: 3000
+      batchTimeout:
+        secs: 0
+        nano: 3_000_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 150
+      duration: 70
+  - name: AWS-1Gbit-150Concurrent-1KiB-BlockSize400
+    misc:
+      runahead: 900 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 1 Gbit
+      replicaBandwidthDown: 1 Gbit
+      clientBandwidthUp: 10 Gibit
+      clientBandwidthDown: 10 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
+       clients: ['ap-south-1': 1]
+      packetLoss: 0.0
+    replica:  
+      replicas: 21
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      requestTimeout: 3000
+      batchTimeout:
+        secs: 0
+        nano: 3_000_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 150
+      duration: 70
+  - name: AWS-200Mbit-150Concurrent-1KiB-BlockSize200
+    misc:
+      runahead: 900 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 200 Mbit 
+      replicaBandwidthDown: 200 Mbit
+      clientBandwidthUp: 10 Gibit
+      clientBandwidthDown: 10 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
+       clients: ['ap-south-1': 1]
+      packetLoss: 0.0
+    replica:  
+      replicas: 21
+      minBatchSize: 200
+      maxBatchSize: 200
+      replySize: 1024
+      batchReplies: true
+      requestTimeout: 3000
+      batchTimeout:
+        secs: 0
+        nano: 3_000_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 150
+      duration: 70
+  - name: AWS-200Mbit-150Concurrent-1KiB-BlockSize400-Crash
+    misc:
+      runahead: 900 us
+      duration: 70 s
+      parallelism: 34
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 200 Mbit 
+      replicaBandwidthDown: 200 Mbit
+      clientBandwidthUp: 10 Gibit
+      clientBandwidthDown: 10 Gibit
+      latency:
+       uniform: false
+       replicas: [ 'eu-west-1': 1,
+    'eu-west-2': 1,
+    'eu-north-1': 1,
+    'ap-south-1': 1,
+    'eu-west-3': 1,
+    'eu-south-1': 1,
+    'eu-central-1': 1,
+    'us-east-1': 1,
+    'us-east-2': 1,
+    'us-west-1': 1,
+    'us-west-2': 1,
+    'af-south-1': 1,
+    'ap-northeast-3': 1,
+    'ap-northeast-2': 1,
+    'me-south-1': 1,
+    'ap-northeast-1': 1,
+    'sa-east-1': 1,
+    'ca-central-1': 1,
+    'ap-east-1': 1,
+    'ap-southeast-1': 1,
+    'ap-southeast-2': 1]
+       clients: ['ap-south-1': 1]
+      packetLoss: 0.0
+    replica:  
+      replicas: 21
+      minBatchSize: 400
+      maxBatchSize: 400
+      replySize: 1024
+      batchReplies: true
+      requestTimeout: 3000
+      batchTimeout:
+        secs: 0
+        nano: 3_000_000_000
+    client:
+      numberOfHosts: 1
+      clients: 16
+      payload: 1024
+      concurrent: 150
+      duration: 70
+    fault:
+      type: crash
+      threshold: 0.1
+      timestamp: 5 s
