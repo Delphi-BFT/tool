@@ -180,7 +180,7 @@ make
 
 To start an experiment you have to pass an experiment description file to the orchestrator. See `examples/[ProtocolName].yaml`.
 
-IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories.
+IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories. Also, make sure to create the output directory (e.g.[ProtocolName]_EXPERIMENTS_OUTPUT_DIR) of your experiments for each protocol beforehand.
 ```
 nano .env.example
 mv .env.example .env
