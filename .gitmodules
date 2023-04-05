@@ -8,3 +8,7 @@
 [submodule "themis"]
 	path = themis
 	url = https://github.com/ibr-ds/themis.git
+[submodule "Kauri-Public"]
+	path = Kauri-Public
+	url = https://github.com/Raycoms/Kauri-Public.git
+	branch = latest

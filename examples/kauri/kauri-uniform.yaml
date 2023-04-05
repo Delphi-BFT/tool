@@ -1,0 +1,32 @@
+protocolName: kauri
+protocolConnectorPath: ./connectors/kauri.js
+experiments:
+    - name: 4rep
+      misc:
+        runahead: 630 us
+        duration: 120 s
+        parallelism: 34
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 25 Mbit
+        replicaBandwidthDown: 25 Mbit
+        clientBandwidthUp: 100 Gibits
+        clientBandwidthDown: 100 Gibits
+        latency:
+          uniform: true
+          replicas: 100000 us
+          clients: 1000 us
+        packetLoss: 0.0
+      replica: 
+        replicas: 100 
+        fanout: 10
+        pipeDepth: 6
+        pipeLatency: 10
+        blockSize: 1000
+        replySize: 0
+      client:
+        numberOfHosts: 4
+        clients: 4
+        startTime: 100 s
+        outStandingPerClient: 500
+        requestSize: 0
