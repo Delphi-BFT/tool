@@ -80,7 +80,7 @@ async function main() {
     level: process.env.LOG_LEVEL,
     format: combine(format.colorize(), splat(), timestamp(), shadowLogFormat),
     transports: [
-    /*  new transports.File({
+      /*  new transports.File({
         filename: path.join(experimentsPath, 'combined.log'),
       }),
       */
@@ -132,33 +132,34 @@ async function main() {
       await eg.exportPNS(hosts, EDO.network, networkFilePath, logger)
       let experimentStartTime = performance.now()
       try {
-      	await Promise.all([
-        	run(executionDir, logger),
-        (shadowInterval = monitor.register(
-          process.env.SHADOW_PROCESS,
-          process.env.RESOURCE_MONITOR_INTERVAL,
-          logger,
-        )),
-        (procInterval = monitor.register(
-          protocol.getProcessName(),
-          process.env.RESOURCE_MONITOR_INTERVAL,
-          logger,
-        )),
-        (totalInterval = monitor.registerSI(
-          process.env.RESOURCE_MONITOR_INTERVAL,
-          logger,
-        )),
-      ])
+        await Promise.all([
+          run(executionDir, logger),
+          (shadowInterval = monitor.register(
+            process.env.SHADOW_PROCESS,
+            process.env.RESOURCE_MONITOR_INTERVAL,
+            logger,
+          )),
+          (procInterval = monitor.register(
+            protocol.getProcessName(),
+            process.env.RESOURCE_MONITOR_INTERVAL,
+            logger,
+          )),
+          (totalInterval = monitor.registerSI(
+            process.env.RESOURCE_MONITOR_INTERVAL,
+            logger,
+          )),
+        ])
       } catch (e) {
-      	logger.error(`Experiment did not terminate successfully`)
+        logger.error(`Experiment did not terminate successfully`)
       }
       if (protocol.getProcessName() == 'java') {
-	try{
-          await promisified_spawn('killall', ['java'], executionDir, logger) 
-	} catch(e) {
-          
-         logger.info(`killall failed, BFT-SMaRt was killed successfully by Shadow ;)`)
-	}
+        try {
+          await promisified_spawn('killall', ['java'], executionDir, logger)
+        } catch (e) {
+          logger.info(
+            `killall failed, BFT-SMaRt was killed successfully by Shadow ;)`,
+          )
+        }
       }
       let experimentEndTime = performance.now()
       let elapsedSeconds = (experimentEndTime - experimentStartTime) / 1000

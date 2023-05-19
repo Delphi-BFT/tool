@@ -9,6 +9,7 @@ This simulation method is resource-friendly and preserves application-realism si
 A preprint of the paper is now available: https://www.researchgate.net/publication/363136002_Simulating_BFT_Protocol_Implementations_at_Scale
 
 Citing the paper:
+
 ```
 @misc{berger22simulating,
   doi = {10.48550/ARXIV.2208.14745},
@@ -76,6 +77,7 @@ We recommend Ubuntu 20.04 LTS and Shadow v2.2 (newest version as of time of writ
 **Installing dependencies with Ansible (Ubuntu 20.04 and Debian 10)**:
 
 change ansible/group_vars/all.yml to your desired values, add your hosts to ansible/inventory.yml then run:
+
 ```
 ansible-playbook ansible/setup.yml -i ansible/inventory.yml -u <YOUR_USERNAME> --ask-become-pass
 ```
@@ -180,7 +182,8 @@ make
 
 To start an experiment you have to pass an experiment description file to the orchestrator. See `examples/[ProtocolName].yaml`.
 
-IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories. Also, make sure to create the output directory (e.g. [ProtocolName]_EXPERIMENTS_OUTPUT_DIR) of your experiments for each protocol beforehand.
+IMPORTANT: rename .env.example to .env and change the placeholders with the appropriate directories. Also, make sure to create the output directory (e.g. [ProtocolName]\_EXPERIMENTS_OUTPUT_DIR) of your experiments for each protocol beforehand.
+
 ```
 nano .env.example
 mv .env.example .env
@@ -228,4 +231,5 @@ experiments: Array describing the experiments to be made
             This is for protocol-specific and replica-specific configurations, this will be passed to
             your connector.
 ```
+
 you may also use the .env file to define protocol-specific settings

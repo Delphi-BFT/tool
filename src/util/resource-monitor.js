@@ -37,9 +37,11 @@ async function compute(processName, log) {
 async function register(processName, time, log) {
   let interval = setInterval(async function () {
     await compute(processName, log).catch((error) => {
-    	log.error(`an error occurred while fetching usage data for ${processName} unregistering...`);
-	unregister(log);
-    });
+      log.error(
+        `an error occurred while fetching usage data for ${processName} unregistering...`,
+      )
+      unregister(log)
+    })
   }, time)
   let intervalObject = {}
   intervalObject['interval'] = interval

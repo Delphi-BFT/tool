@@ -21,8 +21,7 @@ async function deleteDirectoryIfExists(path) {
 }
 
 function median(values) {
-  if (values.length === 0)
-    return null;
+  if (values.length === 0) return null
 
   values.sort(function (first, second) {
     return first - second

@@ -5,7 +5,7 @@ const { promisified_spawn } = require('../util/exec')
 const util = require('util')
 const exec = util.promisify(require('node:child_process').exec)
 const { isNullOrEmpty } = require('../util/helpers')
-const timediff = require('timediff');
+const timediff = require('timediff')
 const processName = 'hotstuff-app'
 const ipsFile = 'ips.txt'
 function _parse(replicaSettings, clientSettings) {
@@ -173,19 +173,23 @@ function getExperimentsOutputDirectory() {
   return process.env.KAURI_EXPERIMENTS_OUTPUT_DIR
 }
 async function getStats(experimentId, log) {
-  let replicaFileLines = await fs.readFile(
-    path.join(
-      path.join(process.env.KAURI_EXPERIMENTS_OUTPUT_DIR, experimentId),
+  let replicaFileLines = await fs
+    .readFile(
       path.join(
-        `hosts/${process.env.KAURI_REPLICA_HOST_PREFIX}0/${process.env.KAURI_REPLICA_HOST_PREFIX}0.hotstuff-app.1000.stderr`,
+        path.join(process.env.KAURI_EXPERIMENTS_OUTPUT_DIR, experimentId),
+        path.join(
+          `hosts/${process.env.KAURI_REPLICA_HOST_PREFIX}0/${process.env.KAURI_REPLICA_HOST_PREFIX}0.hotstuff-app.1000.stderr`,
+        ),
       ),
-    ),
-  ).toString().split('\n');
+    )
+    .toString()
+    .split('\n')
   // Get first and last timestamps
-  let firstTimeStamp = replicaFileLines[0].split(' [')[0];
-  let lastTimeStamp = replicaFileLines[replicaFileLines.length() - 1].split(' [')[0];
-  let duration = timediff(firstTimeStamp, lastTimeStamp,'S').seconds;
-  console.log('Experiment has lasted ' + duration + ' seconds!');
+  let firstTimeStamp = replicaFileLines[0].split(' [')[0]
+  let lastTimeStamp =
+    replicaFileLines[replicaFileLines.length() - 1].split(' [')[0]
+  let duration = timediff(firstTimeStamp, lastTimeStamp, 'S').seconds
+  console.log('Experiment has lasted ' + duration + ' seconds!')
 }
 module.exports = {
   build,

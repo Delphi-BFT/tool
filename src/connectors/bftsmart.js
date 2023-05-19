@@ -186,7 +186,7 @@ async function genSystemConfig(replicaSettings, clientSettings) {
   bftsmartSysConf.system.servers.f = Math.floor(
     (replicaSettings.replicas - 1) / 3,
   )
-	bftsmartSysConf.system.totalordermulticast.maxBatchSizeInBytes = 999999999999
+  bftsmartSysConf.system.totalordermulticast.maxBatchSizeInBytes = 999999999999
   bftsmartSysConf.system.totalordermulticast.maxbatchsize =
     replicaSettings.blockSize
   bftsmartSysConf.system.totalordermulticast.timeout = replicaSettings.timeout
