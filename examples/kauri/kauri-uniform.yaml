@@ -4,7 +4,7 @@ experiments:
     - name: 4rep
       misc:
         runahead: 630 us
-        duration: 120 s
+        duration: 3000 s
         parallelism: 34
         useShortestPath: false
       network:
@@ -17,8 +17,8 @@ experiments:
           replicas: 100000 us
           clients: 1000 us
         packetLoss: 0.0
-      replica: 
-        replicas: 100 
+      replica:
+        replicas: 100
         fanout: 10
         pipeDepth: 6
         pipeLatency: 10

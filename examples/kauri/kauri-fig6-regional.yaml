@@ -1,0 +1,84 @@
+protocolName: kauri
+protocolConnectorPath: ./connectors/kauri.js
+experiments:
+    - name: regional-100
+      misc:
+        runahead: 630 us
+        duration: 300 s
+        parallelism: 34
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 100 Mbits
+        replicaBandwidthDown: 100 Mbits
+        clientBandwidthUp: 100 Gibits
+        clientBandwidthDown: 100 Gibits
+        latency:
+          uniform: true
+          replicas: 50000 us
+          clients: 1000 us
+        packetLoss: 0.0
+      replica:
+        replicas: 100
+        fanout: 10
+        pipeDepth: 10
+        pipeLatency: 10
+        blockSize: 1000
+      client:
+        numberOfHosts: 4
+        clients: 4
+        startTime: 100 s
+        outStandingPerClient: 500
+    - name: regional-200
+      misc:
+        runahead: 630 us
+        duration: 300 s
+        parallelism: 34
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 100 Mbits
+        replicaBandwidthDown: 100 Mbits
+        clientBandwidthUp: 100 Gibits
+        clientBandwidthDown: 100 Gibits
+        latency:
+          uniform: true
+          replicas: 50000 us
+          clients: 1000 us
+        packetLoss: 0.0
+      replica:
+        replicas: 200
+        fanout: 14
+        pipeDepth: 5
+        pipeLatency: 10
+        blockSize: 1000
+      client:
+        numberOfHosts: 4
+        clients: 4
+        startTime: 100 s
+        outStandingPerClient: 500
+    - name: regional-400
+      misc:
+        runahead: 630 us
+        duration: 300 s
+        parallelism: 34
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 100 Mbits
+        replicaBandwidthDown: 100 Mbits
+        clientBandwidthUp: 100 Gibits
+        clientBandwidthDown: 100 Gibits
+        latency:
+          uniform: true
+          replicas: 50000 us
+          clients: 1000 us
+        packetLoss: 0.0
+      replica:
+        replicas: 400
+        fanout: 20
+        pipeDepth: 3
+        pipeLatency: 10
+        blockSize: 1000
+      client:
+        numberOfHosts: 4
+        clients: 4
+        startTime: 100 s
+        outStandingPerClient: 500

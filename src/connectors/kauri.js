@@ -137,7 +137,6 @@ async function build(replicaSettings, clientSettings, log) {
       '-DCMAKE_BUILD_TYPE=Release',
       '-DBUILD_SHARED=ON',
       '-DHOTSTUFF_PROTO_LOG=ON',
-      `-DCMAKE_CXX_FLAGS=-DHOTSTUFF_CMD_RESPSIZE=${replicaSettings.replySize} -DHOTSTUFF_CMD_REQSIZE=${clientSettings.requestSize}`,
     ],
     process.env.KAURI_DIR,
     log,
@@ -173,8 +172,8 @@ function getExperimentsOutputDirectory() {
   return process.env.KAURI_EXPERIMENTS_OUTPUT_DIR
 }
 async function getStats(experimentId, log) {
-  let replicaFileLines = await fs
-    .readFile(
+  let replicaFileLines = (
+    await fs.readFile(
       path.join(
         path.join(process.env.KAURI_EXPERIMENTS_OUTPUT_DIR, experimentId),
         path.join(
@@ -182,14 +181,54 @@ async function getStats(experimentId, log) {
         ),
       ),
     )
+  )
     .toString()
     .split('\n')
   // Get first and last timestamps
   let firstTimeStamp = replicaFileLines[0].split(' [')[0]
   let lastTimeStamp =
-    replicaFileLines[replicaFileLines.length() - 1].split(' [')[0]
+    replicaFileLines[replicaFileLines.length - 2].split(' [')[0]
   let duration = timediff(firstTimeStamp, lastTimeStamp, 'S').seconds
-  console.log('Experiment has lasted ' + duration + ' seconds!')
+  let committedBlocks = 0
+  let stateFound = false
+  let blockSizeFound = false
+  let latencyFound = false
+  let blockSize = 0
+  let latency = 0
+
+  for (const line of replicaFileLines.reverse()) {
+    if (stateFound && blockSizeFound && latencyFound) break
+    if (line.includes('now state') && !stateFound) {
+      for (const token of line.split(' ')) {
+        if (token.includes('hqc.height')) {
+          console.log('token split= ' + token.split('=')[1])
+          committedBlocks = Number(token.split('=')[1])
+          stateFound = true
+          break
+        }
+      }
+    }
+    if (line.includes('blk_size') && !blockSizeFound) {
+      blockSize = Number(line.trim().split(' = ')[1])
+      blockSizeFound = true
+    }
+    if (line.includes('Average:') && !latencyFound) {
+      latency = Number(line.trim().split('Average: ')[1])
+      latencyFound = true
+    }
+  }
+  let TPS = (committedBlocks * blockSize) / duration
+  console.log(
+    `Experiment has lasted ${duration} seconds, committing a total of ${committedBlocks} blocks and
+      a total of ${committedBlocks} resulting in ${
+      committedBlocks * blockSize
+    } transactions
+      committed and ${TPS} TPS and ${latency} ms latency`,
+  )
+  return {
+    maxThroughput: TPS,
+    latencyAll: latency,
+  }
 }
 module.exports = {
   build,
