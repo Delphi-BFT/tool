@@ -12,3 +12,7 @@
 	path = Kauri-Public
 	url = https://github.com/Raycoms/Kauri-Public.git
 	branch = latest
+[submodule "themis-gosig"]
+	path = themis-gosig
+	url = https://gitlab.sec.uni-passau.de/cb/themis.git
+	branch = gosig
