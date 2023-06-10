@@ -184,8 +184,20 @@ async function getStats(experimentId, log) {
   )
     .toString()
     .split('\n')
+  let clientFileLines = (
+    await fs.readFile(
+      path.join(
+        path.join(process.env.KAURI_EXPERIMENTS_OUTPUT_DIR, experimentId),
+        path.join(
+          `hosts/${process.env.KAURI_CLIENT_HOST_PREFIX}0/${process.env.KAURI_CLIENT_HOST_PREFIX}0.hotstuff-client.1000.stderr`,
+        ),
+      ),
+    )
+  )
+    .toString()
+    .split('\n')
   // Get first and last timestamps
-  let firstTimeStamp = replicaFileLines[0].split(' [')[0]
+  let firstTimeStamp = clientFileLines[0].split(' [')[0]
   let lastTimeStamp =
     replicaFileLines[replicaFileLines.length - 2].split(' [')[0]
   let duration = timediff(firstTimeStamp, lastTimeStamp, 'S').seconds
