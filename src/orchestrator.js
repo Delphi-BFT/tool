@@ -123,6 +123,7 @@ async function main() {
             hosts,
             EDO.fault.threshold,
             EDO.fault.timestamp,
+            EDO.fault.restartClients,
             logger,
           )
       }
