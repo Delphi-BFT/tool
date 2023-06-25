@@ -1,0 +1,10 @@
+[gosig]
+faults = 1
+reply_mode = 'All'
+stage_1_length = 2000
+stage_2_length = 4000
+gossip_time = 2000
+proposer_threshold = 7
+max_transactions = 100000
+max_rounds = 0
+

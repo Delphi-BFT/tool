@@ -1,0 +1,5 @@
+[gossip]
+gossip_count = 3
+gossip_period = 100
+update_expiration = 10000
+direct_sending = true
