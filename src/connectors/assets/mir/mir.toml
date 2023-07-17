@@ -1,0 +1,40 @@
+[pbft]
+faults = 1
+first_primary = 0
+checkpoint_interval = 1000
+high_mark_delta = 3000
+request_timeout = 8000
+keep_checkpoints = 2
+primary_forwarding = 'Full'
+backup_forwarding = 'Full'
+reply_mode = 'All'
+# numbers of requests per batch
+batch_size = 100
+# length of ephemeral epochs
+epoch_length = 100
+# toggle low load timer
+use_low_load_timer = false
+# low load time in ms
+low_load_time = 400
+# window size of client watermarks
+# also needs to be set in themis-client/src/bft.rs in bft client new function
+client_mark_window = 100000
+# amount of clients
+# needed for client entrys in peers for the tracking of clientwatermarks
+client_amount = 10
+# activates bucket rotation
+use_bucket_rotation = true
+# interval at which buckets are rotatet
+bucket_rotation_interval = 500
+# activates signature verification sharding, requires use_client_signature to be true
+use_svs = true
+# activates client signatures on requests
+# additionally needed steps are putting clients = "Ecdsa" in auth entry in config.toml
+# and setting authentication of request tag in themis-core/src/app/mod.rs to None
+# each client requires an entry in config.toml with paths to public and private keys
+use_client_signatures = true
+# limits leaders to 4
+limit_leaders = true
+# if set to false, initiated epoch changes are blocked
+use_epoch_changes = false
+

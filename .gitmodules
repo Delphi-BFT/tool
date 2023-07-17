@@ -16,3 +16,7 @@
 	path = themis-gosig
 	url = https://gitlab.sec.uni-passau.de/cb/themis.git
 	branch = gosig
+[submodule "themis-mir"]
+	path = themis-mir
+	url = https://gitlab.sec.uni-passau.de/cb/themis.git
+	branch = mir-bft

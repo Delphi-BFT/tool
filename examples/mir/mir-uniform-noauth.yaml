@@ -1,0 +1,38 @@
+protocolName: mir
+protocolConnectorPath: ./connectors/mir-no-auth.js
+experiments:
+  - name: 4rep # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 3600 s
+      parallelism: 36
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 10 Gibits
+      replicaBandwidthDown: 10 Gibits
+      clientBandwidthUp: 100 Gibits
+      clientBandwidthDown: 100 Gibits
+      latency:
+        uniform: true
+        replicas: 10000 us
+        clients: 100000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 10
+      minBatchSize: 100
+      maxBatchSize: 100
+      replySize: 0
+      batchReplies: true
+      requestTimeout: 40000
+      epochLength: 1000
+      clientMarkWindow: 100000
+      batchTimeout:
+        secs: 10
+        nano: 0
+    client:
+      numberOfHosts: 1
+      clients: 4
+      startTime: 100 s
+      payload: 0
+      concurrent: 1600
+      duration: 3500 # WATCH OUT FOR THIS VALUE (for now)
