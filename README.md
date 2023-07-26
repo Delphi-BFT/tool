@@ -6,7 +6,7 @@ This simulation method is resource-friendly and preserves application-realism si
 
 ## The Paper
 
-A preprint of the paper is now available: https://www.researchgate.net/publication/363136002_Simulating_BFT_Protocol_Implementations_at_Scale
+A preprint of the paper is now available.
 
 Citing the paper:
 
