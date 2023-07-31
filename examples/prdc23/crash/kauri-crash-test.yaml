@@ -1,0 +1,66 @@
+protocolName: kauri
+protocolConnectorPath: ./connectors/kauri.js
+experiments:
+    - name: regional-200-crash+restart
+      misc:
+        runahead: 630 us
+        duration: 300 s
+        parallelism: 34
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 100 Mbits
+        replicaBandwidthDown: 100 Mbits
+        clientBandwidthUp: 100 Gibits
+        clientBandwidthDown: 100 Gibits
+        latency:
+          uniform: true
+          replicas: 50000 us
+          clients: 1000 us
+        packetLoss: 0.0
+      replica:
+        replicas: 200
+        fanout: 14
+        pipeDepth: 5
+        pipeLatency: 10
+        blockSize: 1000
+      client:
+        numberOfHosts: 4
+        clients: 4
+        startTime: 100 s
+        outStandingPerClient: 500
+      fault:
+        type: crash
+        threshold: 0.33
+        timestamp: 150 s
+        restartClients: true
+  #    - name: regional-200-crash-0.33-norestart
+  #      misc:
+  #        runahead: 630 us
+  #        duration: 300 s
+  #        parallelism: 34
+  #        useShortestPath: false
+  #      network:
+  #        replicaBandwidthUp: 100 Mbits
+  #        replicaBandwidthDown: 100 Mbits
+  #        clientBandwidthUp: 100 Gibits
+  #        clientBandwidthDown: 100 Gibits
+  #        latency:
+  #          uniform: true
+  #          replicas: 50000 us
+  #          clients: 1000 us
+  #        packetLoss: 0.0
+  #      replica:
+  #        replicas: 200
+  #        fanout: 14
+  #        pipeDepth: 5
+  #        pipeLatency: 10
+  #        blockSize: 1000
+  #      client:
+  #        numberOfHosts: 4
+  #        clients: 4
+  #        startTime: 100 s
+  #        outStandingPerClient: 500
+  #      fault:
+  #        type: crash
+  #        threshold: 0.33
+  #        timestamp: 150 s

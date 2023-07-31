@@ -1,0 +1,44 @@
+protocolName: gosig
+protocolConnectorPath: ./connectors/gosig.js
+experiments:
+  - name: gosig-128 # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 1610 s
+      parallelism: 34
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 25 Mbits
+      replicaBandwidthDown: 25 Mbits
+      clientBandwidthUp: 10 Gbits
+      clientBandwidthDown: 10 Gbits
+      latency:
+        uniform: true
+        replicas: 100000 us
+        clients: 1000 us
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 128
+      requestTimeout: 6000000
+      batchReplies: true
+      batchSize: 5000
+      batchTimeout:
+        secs: 1
+        nano: 100_000_000
+      firstStageLength: 60000
+      secondStageLength: 80000
+      gossipTime: 4000 #4000
+      maxRounds: 11
+      gossip:
+        gossipCount: 3
+        gossipPeriod: 100 #10000
+        updateExpiration: 60000 #30000
+        useDirectSending: false
+      replySize: 0
+    client:
+      numberOfHosts: 1
+      clients: 1
+      startTime: 0 s
+      payload: 32
+      concurrent: 5000
+      duration: 1600 # WATCH OUT FOR THIS VALUE (for now)

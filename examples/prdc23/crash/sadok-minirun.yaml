@@ -1,0 +1,36 @@
+protocolName: kauri
+protocolConnectorPath: ./connectors/kauri.js
+experiments:
+    - name: kauri-crash-test-4reps
+      misc:
+        runahead: 630 us
+        duration: 221 s
+        parallelism: 34
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 10 Gibits
+        replicaBandwidthDown: 10 Gibits
+        clientBandwidthUp: 10 Gbits
+        clientBandwidthDown: 10 Gbits
+        latency:
+          uniform: true
+          replicas: 10000 us
+          clients: 1000 us
+        packetLoss: 0.0
+      replica:
+        replicas: 4
+        fanout: 4
+        pipeDepth: 1
+        pipeLatency: 10
+        blockSize: 1000
+        replySize: 0
+      client:
+        numberOfHosts: 4
+        clients: 4
+        startTime: 10 s
+        outStandingPerClient: 500
+        requestSize: 500
+      fault:
+        type: crash
+        threshold: 0.33
+        timestamp: 30 s

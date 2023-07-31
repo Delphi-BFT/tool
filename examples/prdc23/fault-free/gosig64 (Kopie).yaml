@@ -1,0 +1,44 @@
+protocolName: gosig
+protocolConnectorPath: ./connectors/gosig.js
+experiments:
+  - name: gosig-64 # this will be passed to as data_dir value in shadow.yaml
+    misc:
+      runahead: 630 us
+      duration: 1610 s
+      parallelism: 34
+      useShortestPath: false
+    network:
+      replicaBandwidthUp: 25 Mbits
+      replicaBandwidthDown: 25 Mbits
+      clientBandwidthUp: 10 Gbits
+      clientBandwidthDown: 10 Gbits
+      latency:
+        uniform: false
+        replicas: ['eu-west-1': 4, 'af-south-1': 3, 'ap-east-1': 3, 'ap-northeast-1': 3, 'ap-northeast-2': 3, 'ap-northeast-3': 3, 'ap-south-1': 3, 'ap-southeast-1': 3, 'ap-southeast-2': 3, 'ca-central-1': 3, 'eu-central-1': 3, 'eu-north-1': 3, 'eu-south-1': 3, 'eu-west-2': 3, 'eu-west-3': 3, 'me-south-1': 3, 'sa-east-1': 3, 'us-east-1': 3, 'us-east-2': 3, 'us-west-1': 3, 'us-west-2': 3]
+        clients: ['eu-west-1': 1]
+      packetLoss: 0.0
+    replica: # should be validated by connectors (currently not done, they are passed as-is)
+      replicas: 64
+      requestTimeout: 6000000
+      batchReplies: true
+      batchSize: 1000
+      batchTimeout:
+        secs: 1
+        nano: 100_000_000
+      firstStageLength: 50000
+      secondStageLength: 50000
+      gossipTime: 4000
+      maxRounds: 3
+      gossip:
+        gossipCount: 3
+        gossipPeriod: 100 #100
+        updateExpiration: 30000
+        useDirectSending: true
+      replySize: 0
+    client:
+      numberOfHosts: 1
+      clients: 1
+      startTime: 0 s
+      payload: 32
+      concurrent: 1000
+      duration: 1600 # WATCH OUT FOR THIS VALUE (for now)

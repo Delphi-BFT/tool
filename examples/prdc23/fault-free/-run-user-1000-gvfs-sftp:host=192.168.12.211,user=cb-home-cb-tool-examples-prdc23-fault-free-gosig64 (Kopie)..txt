@@ -1,0 +1,1 @@
+/run/user/1000/gvfs/sftp:host=192.168.12.211,user=cb/home/cb/tool/examples/prdc23/fault-free/gosig64 (Kopie).yaml
