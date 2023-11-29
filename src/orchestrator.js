@@ -49,6 +49,8 @@ async function run(executionDir, log) {
 }
 
 async function createShadowHostConfig(shadowTemplate, replicas) {
+
+  //console.log('create Shadow Host Config for .. ' + replicas.length + ' hosts , i.e.,' + JSON.stringify(replicas))
   for (let i = 0; i < replicas.length; i++) {
     shadowTemplate = eg.makeHost(
       shadowTemplate,
@@ -128,6 +130,7 @@ async function main() {
           )
       }
       shadowTemplate = await createShadowHostConfig(shadowTemplate, hosts)
+      logger.info('Created Shadow Host Config sucessfully')
       // Generate Shadow File
       await eg.out(shadowFilePath, shadowTemplate)
       await eg.exportPNS(hosts, EDO.network, networkFilePath, logger)
