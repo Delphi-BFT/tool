@@ -1,0 +1,30 @@
+protocolName: tusk
+protocolConnectorPath: ./connectors/tusk.js
+experiments:
+    - name: fault-free-tusk-4
+      misc:
+        runahead: 630 us
+        duration: 2100 s
+        parallelism: 32
+        useShortestPath: false
+      network:
+        replicaBandwidthUp: 500 Mbits
+        replicaBandwidthDown: 500 Mbits
+        clientBandwidthUp: 10 Gbits
+        clientBandwidthDown: 10 Gbits
+        latency:
+          uniform: false
+          replicas: ['eu-west-1': 1, 'af-south-1': 1, 'ap-east-1': 1,  'us-east-1': 1]
+          clients: ['eu-west-1': 1]
+        packetLoss: 0.0
+      replica:
+        replicas: 4
+        blockSize: 500000
+      client:
+        numberOfHosts: 1
+        clients: 1
+        rate: 100000
+        requestSize: 500
+        startTime: 10 s
+        concurrent: 2000
+        duration: 2000
