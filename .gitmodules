@@ -18,7 +18,7 @@
 	branch = main
 [submodule "bullshark"]
 	path = bullshark
-	url = https://github.com/facebookresearch/narwhal.git
+	url = https://github.com/facebookresearch/narwhal/
 	branch = bullshark
 
 
