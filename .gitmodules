@@ -12,11 +12,13 @@
 	path = Kauri-Public
 	url = https://github.com/Raycoms/Kauri-Public.git
 	branch = latest
-[submodule "themis-gosig"]
-	path = themis-gosig
-	url = https://gitlab.sec.uni-passau.de/cb/themis.git
-	branch = gosig
-[submodule "themis-mir"]
-	path = themis-mir
-	url = https://gitlab.sec.uni-passau.de/cb/themis.git
-	branch = mir-bft
+[submodule "narwhal"]
+	path = narwhal
+	url = https://github.com/facebookresearch/narwhal.git
+	branch = main
+[submodule "bullshark"]
+	path = bullshark
+	url = https://github.com/facebookresearch/narwhal.git
+	branch = bullshark
+
+
